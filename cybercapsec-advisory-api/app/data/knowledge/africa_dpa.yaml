@@ -1,0 +1,103 @@
+snippets:
+  - id: popia.overview
+    title: POPIA — Overview for fintechs serving South Africa
+    content: >
+      POPIA (Protection of Personal Information Act 2013, fully effective
+      2021) is South Africa's data protection law. The eight conditions
+      for lawful processing are the spine of POPIA compliance:
+      Accountability, Processing Limitation, Purpose Specification,
+      Further Processing Limitation, Information Quality, Openness,
+      Security Safeguards (section 19), and Data Subject Participation.
+      The Information Regulator enforces and has shown willingness to
+      issue substantial fines for non-compliance.
+    framework_codes: [popia]
+    tags: [overview, conditions, lawful_processing]
+
+  - id: popia.section_19
+    title: POPIA — Section 19 security safeguards
+    content: >
+      Section 19 is POPIA's main security clause and reads similarly to
+      NDPA §24 / GDPR Art 32. It requires "appropriate, reasonable
+      technical and organisational measures" to prevent loss, damage,
+      unauthorised destruction, and unlawful access. The standard of
+      "reasonable" is interpreted contextually — a small e-commerce
+      operator is held to a different bar than a bank, but encryption
+      of personal data, access controls, and a documented information
+      security policy are the table stakes.
+    framework_codes: [popia]
+    tags: [security, section_19, encryption]
+    source: POPIA §19
+
+  - id: kenya_dpa.overview
+    title: Kenya DPA — Overview and registration
+    content: >
+      The Kenya Data Protection Act 2019 is enforced by the Office of
+      the Data Protection Commissioner (ODPC). A distinctive feature is
+      the registration requirement: data controllers and processors
+      meeting thresholds set by the Commissioner must register with
+      the ODPC, providing details of processing activities and security
+      measures. Most fintechs and SaaS operating in Kenya meet these
+      thresholds. Registration is renewable annually.
+    framework_codes: [kenya_dpa]
+    tags: [overview, registration, odpc]
+
+  - id: kenya_dpa.transfers
+    title: Kenya DPA — International transfers
+    content: >
+      Cross-border transfers of personal data require demonstrated
+      safeguards. The ODPC has been active in setting expectations: a
+      transfer impact assessment, contractual safeguards (the ODPC has
+      indicated standard contractual clauses are acceptable), and in
+      some cases prior approval. Sensitive data has tighter restrictions.
+      For startups using AWS or GCP regions outside Africa, a written
+      transfer assessment in the file is the practical control.
+    framework_codes: [kenya_dpa]
+    tags: [international_transfer, sccs, cross_border]
+
+  - id: africa_dpa.commonalities
+    title: Cross-DPA — African data protection law commonalities
+    content: >
+      NDPA (Nigeria), POPIA (South Africa), Kenya DPA, and the broader
+      African Union Convention on Cyber Security and Personal Data
+      Protection share substantial structural commonalities, largely
+      reflecting GDPR-style principles: lawful basis, data subject
+      rights (access, rectification, erasure), breach notification with
+      72-hour-ish timelines, DPO requirements for high-volume / sensitive
+      processing, and processor due diligence with Data Processing
+      Agreements. A fintech operating across multiple African markets
+      can typically build one privacy programme satisfying the security
+      and processor-management clauses across countries, with
+      country-specific layers for: lawful basis disclosure, regulator
+      registration, breach notification timelines, and DPO appointment
+      where thresholds differ.
+    framework_codes: [ndpa, popia, kenya_dpa]
+    tags: [pan_african, comparison, multi_jurisdiction]
+
+  - id: africa_dpa.dpo_combined
+    title: Cross-DPA — DPO requirements across jurisdictions
+    content: >
+      Both NDPA (§32) and Kenya DPA (§24) require DPO designation for
+      organisations meeting "major importance" or "large-scale
+      monitoring / sensitive data" thresholds. POPIA requires an
+      Information Officer (the CEO by default, though the role can be
+      delegated). For African fintechs operating multi-country, the
+      practical pattern is to designate one person as the global DPO
+      and Information Officer with country-specific deputies where local
+      law requires. The DPO's contact details must be published in the
+      privacy notice and notified to each relevant regulator.
+    framework_codes: [ndpa, popia, kenya_dpa]
+    tags: [dpo, information_officer, multi_jurisdiction]
+
+  - id: africa_dpa.breach_clocks
+    title: Cross-DPA — Comparing breach notification timelines
+    content: >
+      Breach notification clocks across African DPAs: NDPA requires
+      notification to NDPC within 72 hours of awareness; Kenya DPA
+      requires 72 hours to ODPC; POPIA requires "as soon as reasonably
+      possible" without a specific hour count. Where multiple
+      jurisdictions apply, the tightest clock dominates the IR plan —
+      and for fintechs subject to CBN, the CBN 24-hour requirement
+      typically dominates everything. Build the IR plan around the
+      tightest applicable clock and you satisfy the rest.
+    framework_codes: [ndpa, popia, kenya_dpa, cbn_cyber]
+    tags: [breach, notification, timelines, multi_jurisdiction]

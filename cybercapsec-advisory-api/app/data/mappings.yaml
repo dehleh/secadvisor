@@ -1,0 +1,567 @@
+# Cross-framework control mappings.
+#
+# strength values:
+#   equivalent  - the controls assess substantially the same thing; evidence
+#                 for one can be reused with minor wording changes
+#   partial     - significant overlap but with framework-specific gaps;
+#                 evidence may need supplementation
+#   related     - addresses a similar concern from a different angle;
+#                 reference only, evidence does not transfer
+#
+# Mappings are directional in the model but conceptually symmetric for
+# equivalent. We seed both directions for equivalent and partial mappings
+# so propagation works regardless of which side a user submits evidence for.
+
+mappings:
+  # ----- SOC 2 CC6.1 (Logical access) <-> peers -----
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: ndpa
+    target_code: SEC_24
+    strength: equivalent
+    notes: Both require appropriate technical and organisational security measures.
+
+  - source_framework: ndpa
+    source_code: SEC_24
+    target_framework: soc2
+    target_code: CC6.1
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: iso27001
+    target_code: A.5.15
+    strength: equivalent
+    notes: ISO A.5.15 is the access control policy; SOC 2 CC6.1 is its operational expression.
+
+  - source_framework: iso27001
+    source_code: A.5.15
+    target_framework: soc2
+    target_code: CC6.1
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: cbn_cyber
+    target_code: "4.2"
+    strength: equivalent
+    notes: CBN 4.2 explicitly requires MFA, RBAC, and least privilege — same as CC6.1.
+
+  - source_framework: cbn_cyber
+    source_code: "4.2"
+    target_framework: soc2
+    target_code: CC6.1
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: popia
+    target_code: COND_7_S19
+    strength: equivalent
+
+  - source_framework: popia
+    source_code: COND_7_S19
+    target_framework: soc2
+    target_code: CC6.1
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: kenya_dpa
+    target_code: SEC_41
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: SEC_41
+    target_framework: soc2
+    target_code: CC6.1
+    strength: equivalent
+
+  # ----- DPA <-> DPA cross-mappings (security clauses) -----
+  - source_framework: ndpa
+    source_code: SEC_24
+    target_framework: popia
+    target_code: COND_7_S19
+    strength: equivalent
+    notes: Both require appropriate technical and organisational measures for security.
+
+  - source_framework: popia
+    source_code: COND_7_S19
+    target_framework: ndpa
+    target_code: SEC_24
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: SEC_24
+    target_framework: kenya_dpa
+    target_code: SEC_41
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: SEC_41
+    target_framework: ndpa
+    target_code: SEC_24
+    strength: equivalent
+
+  - source_framework: popia
+    source_code: COND_7_S19
+    target_framework: kenya_dpa
+    target_code: SEC_41
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: SEC_41
+    target_framework: popia
+    target_code: COND_7_S19
+    strength: equivalent
+
+  # ----- Access provisioning / privileged access -----
+  - source_framework: soc2
+    source_code: CC6.2
+    target_framework: iso27001
+    target_code: A.8.2
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.8.2
+    target_framework: soc2
+    target_code: CC6.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.2
+    target_framework: cbn_cyber
+    target_code: "4.2"
+    strength: partial
+    notes: CC6.2 is access provisioning; CBN 4.2 covers the broader IAM lifecycle.
+
+  - source_framework: soc2
+    source_code: CC6.3
+    target_framework: cbn_cyber
+    target_code: "4.2"
+    strength: partial
+    notes: CC6.3 is offboarding; CBN 4.2 covers the broader IAM lifecycle including offboarding.
+
+  # ----- Authentication / MFA -----
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: iso27001
+    target_code: A.5.17
+    strength: partial
+    notes: A.5.17 is specifically authentication info; CC6.1 is broader.
+
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: iso27001
+    target_code: A.8.5
+    strength: partial
+
+  - source_framework: iso27001
+    source_code: A.8.5
+    target_framework: cbn_cyber
+    target_code: "4.2"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.2"
+    target_framework: iso27001
+    target_code: A.8.5
+    strength: equivalent
+
+  # ----- Encryption / boundary protection -----
+  - source_framework: soc2
+    source_code: CC6.7
+    target_framework: iso27001
+    target_code: A.8.24
+    strength: equivalent
+    notes: CC6.7 is transmission protection; A.8.24 is cryptography use.
+
+  - source_framework: iso27001
+    source_code: A.8.24
+    target_framework: soc2
+    target_code: CC6.7
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.7
+    target_framework: cbn_cyber
+    target_code: "4.6"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.6"
+    target_framework: soc2
+    target_code: CC6.7
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC6.6
+    target_framework: cbn_cyber
+    target_code: "4.5"
+    strength: equivalent
+    notes: Both cover network segmentation and boundary protection.
+
+  - source_framework: cbn_cyber
+    source_code: "4.5"
+    target_framework: soc2
+    target_code: CC6.6
+    strength: equivalent
+
+  # ----- Vulnerability management / monitoring -----
+  - source_framework: soc2
+    source_code: CC7.1
+    target_framework: iso27001
+    target_code: A.8.8
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.8.8
+    target_framework: soc2
+    target_code: CC7.1
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC7.1
+    target_framework: cbn_cyber
+    target_code: "4.4"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.4"
+    target_framework: soc2
+    target_code: CC7.1
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC7.2
+    target_framework: iso27001
+    target_code: A.8.16
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.8.16
+    target_framework: soc2
+    target_code: CC7.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC7.2
+    target_framework: cbn_cyber
+    target_code: "4.11"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.11"
+    target_framework: soc2
+    target_code: CC7.2
+    strength: equivalent
+
+  # ----- Incident response -----
+  - source_framework: soc2
+    source_code: CC7.3
+    target_framework: iso27001
+    target_code: A.5.24
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.5.24
+    target_framework: soc2
+    target_code: CC7.3
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC7.3
+    target_framework: cbn_cyber
+    target_code: "4.7"
+    strength: partial
+    notes: CBN 4.7 adds 24-hour CBN reporting requirement.
+
+  - source_framework: soc2
+    source_code: CC7.3
+    target_framework: ndpa
+    target_code: BREACH_28
+    strength: partial
+    notes: NDPA adds 72-hour NDPC notification for personal data breaches.
+
+  - source_framework: ndpa
+    source_code: BREACH_28
+    target_framework: popia
+    target_code: COND_7_S22
+    strength: equivalent
+    notes: Both require breach notification to regulator and affected subjects.
+
+  - source_framework: popia
+    source_code: COND_7_S22
+    target_framework: ndpa
+    target_code: BREACH_28
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: BREACH_28
+    target_framework: kenya_dpa
+    target_code: BREACH_43
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: BREACH_43
+    target_framework: ndpa
+    target_code: BREACH_28
+    strength: equivalent
+
+  - source_framework: popia
+    source_code: COND_7_S22
+    target_framework: kenya_dpa
+    target_code: BREACH_43
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: BREACH_43
+    target_framework: popia
+    target_code: COND_7_S22
+    strength: equivalent
+
+  # ----- Change management / secure development -----
+  - source_framework: soc2
+    source_code: CC8.1
+    target_framework: iso27001
+    target_code: A.8.28
+    strength: partial
+    notes: CC8.1 is change management; A.8.28 is secure coding (overlapping).
+
+  - source_framework: iso27001
+    source_code: A.8.28
+    target_framework: soc2
+    target_code: CC8.1
+    strength: partial
+
+  # ----- Vendor / processor management -----
+  - source_framework: soc2
+    source_code: CC9.2
+    target_framework: ndpa
+    target_code: SEC_29
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: SEC_29
+    target_framework: soc2
+    target_code: CC9.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC9.2
+    target_framework: popia
+    target_code: COND_7_S21
+    strength: equivalent
+
+  - source_framework: popia
+    source_code: COND_7_S21
+    target_framework: soc2
+    target_code: CC9.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC9.2
+    target_framework: kenya_dpa
+    target_code: PROCESSOR_42
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: PROCESSOR_42
+    target_framework: soc2
+    target_code: CC9.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC9.2
+    target_framework: cbn_cyber
+    target_code: "4.8"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.8"
+    target_framework: soc2
+    target_code: CC9.2
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: SEC_29
+    target_framework: popia
+    target_code: COND_7_S21
+    strength: equivalent
+
+  - source_framework: popia
+    source_code: COND_7_S21
+    target_framework: ndpa
+    target_code: SEC_29
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: SEC_29
+    target_framework: kenya_dpa
+    target_code: PROCESSOR_42
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: PROCESSOR_42
+    target_framework: ndpa
+    target_code: SEC_29
+    strength: equivalent
+
+  # ----- Backup / availability -----
+  - source_framework: soc2
+    source_code: A1.2
+    target_framework: iso27001
+    target_code: A.8.13
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.8.13
+    target_framework: soc2
+    target_code: A1.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: A1.2
+    target_framework: cbn_cyber
+    target_code: "4.6"
+    strength: partial
+    notes: A1.2 is backup; CBN 4.6 includes encryption + backup + recovery.
+
+  - source_framework: soc2
+    source_code: A1.3
+    target_framework: cbn_cyber
+    target_code: "4.9"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.9"
+    target_framework: soc2
+    target_code: A1.3
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: A1.3
+    target_framework: iso27001
+    target_code: A.5.30
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.5.30
+    target_framework: soc2
+    target_code: A1.3
+    strength: equivalent
+
+  # ----- Awareness / training -----
+  - source_framework: soc2
+    source_code: CC1.4
+    target_framework: iso27001
+    target_code: A.6.3
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.6.3
+    target_framework: soc2
+    target_code: CC1.4
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC1.4
+    target_framework: cbn_cyber
+    target_code: "4.10"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.10"
+    target_framework: soc2
+    target_code: CC1.4
+    strength: equivalent
+
+  # ----- Governance / oversight -----
+  - source_framework: soc2
+    source_code: CC1.2
+    target_framework: cbn_cyber
+    target_code: "4.1"
+    strength: equivalent
+
+  - source_framework: cbn_cyber
+    source_code: "4.1"
+    target_framework: soc2
+    target_code: CC1.2
+    strength: equivalent
+
+  - source_framework: soc2
+    source_code: CC1.1
+    target_framework: iso27001
+    target_code: A.5.1
+    strength: equivalent
+
+  - source_framework: iso27001
+    source_code: A.5.1
+    target_framework: soc2
+    target_code: CC1.1
+    strength: equivalent
+
+  # ----- Data subject rights cross-mapping -----
+  - source_framework: ndpa
+    source_code: RIGHTS_34
+    target_framework: popia
+    target_code: COND_8
+    strength: equivalent
+
+  - source_framework: popia
+    source_code: COND_8
+    target_framework: ndpa
+    target_code: RIGHTS_34
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: RIGHTS_34
+    target_framework: kenya_dpa
+    target_code: RIGHTS_26
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: RIGHTS_26
+    target_framework: ndpa
+    target_code: RIGHTS_34
+    strength: equivalent
+
+  - source_framework: ndpa
+    source_code: RIGHTS_36
+    target_framework: kenya_dpa
+    target_code: RIGHTS_26
+    strength: partial
+
+  # ----- DPO designation -----
+  - source_framework: ndpa
+    source_code: SEC_32
+    target_framework: kenya_dpa
+    target_code: DPO_24
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: DPO_24
+    target_framework: ndpa
+    target_code: SEC_32
+    strength: equivalent
+
+  # ----- DPIA -----
+  - source_framework: ndpa
+    source_code: SEC_31
+    target_framework: kenya_dpa
+    target_code: DPIA_31
+    strength: equivalent
+
+  - source_framework: kenya_dpa
+    source_code: DPIA_31
+    target_framework: ndpa
+    target_code: SEC_31
+    strength: equivalent
+
+  # ----- Records of processing / accountability -----
+  - source_framework: ndpa
+    source_code: SEC_33
+    target_framework: popia
+    target_code: COND_1
+    strength: partial
+    notes: NDPA RoPA is a specific artifact; POPIA accountability is broader.

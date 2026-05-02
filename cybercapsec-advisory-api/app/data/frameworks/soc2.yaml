@@ -1,0 +1,392 @@
+code: soc2
+name: SOC 2 Trust Services Criteria
+version: "2017 (rev. 2022)"
+jurisdiction: USA / Global
+description: >
+  AICPA Trust Services Criteria covering Security (Common Criteria), Availability,
+  Processing Integrity, Confidentiality, and Privacy. Most US enterprise customers
+  require a SOC 2 Type II report from their vendors. African startups serving US
+  customers typically pursue SOC 2 first.
+source_url: https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services
+
+controls:
+  # Common Criteria — Control Environment
+  - code: CC1.1
+    title: Demonstrates commitment to integrity and ethical values
+    category: control_environment
+    description: >
+      The organization establishes and maintains a code of conduct, a documented
+      information security policy, and processes to address ethical violations.
+      Tone-from-the-top from leadership is evidenced by recurring communications
+      and visible policy enforcement.
+    guidance: >
+      Evidence: signed code of conduct, information security policy, board minutes
+      referencing security topics, documented response to past violations.
+
+  - code: CC1.2
+    title: Board oversight of internal control
+    category: control_environment
+    description: >
+      The board (or equivalent governance body) maintains oversight responsibility
+      for internal control. Security and risk topics appear on board agendas at
+      defined intervals.
+    guidance: >
+      Evidence: board / advisory minutes mentioning security; charter referencing
+      security oversight; quarterly risk reports to leadership.
+
+  - code: CC1.3
+    title: Organizational structure and reporting lines
+    category: control_environment
+    description: >
+      The organization establishes structures, reporting lines, and appropriate
+      authorities and responsibilities to support internal control.
+    guidance: >
+      Evidence: organization chart, RACI for security responsibilities, written
+      delegation of authority.
+
+  - code: CC1.4
+    title: Commitment to attracting and developing competent personnel
+    category: control_environment
+    description: >
+      The organization demonstrates a commitment to attract, develop, and retain
+      competent individuals. Hiring practices include verification appropriate
+      to role, and security awareness training is required and tracked.
+    guidance: >
+      Evidence: background check policy and records, training completion logs,
+      job descriptions with security responsibilities.
+
+  - code: CC1.5
+    title: Accountability for internal control responsibilities
+    category: control_environment
+    description: >
+      The organization holds individuals accountable for their internal control
+      responsibilities through performance management and disciplinary processes.
+    guidance: >
+      Evidence: performance review templates referencing security objectives,
+      disciplinary policy, examples of enforcement.
+
+  # Common Criteria — Communication and Information
+  - code: CC2.1
+    title: Quality information for internal control
+    category: communication
+    description: >
+      The organization obtains or generates relevant, quality information to
+      support the functioning of internal control.
+    guidance: >
+      Evidence: monitoring dashboards, defined metrics, regular security reporting.
+
+  - code: CC2.2
+    title: Internal communication of information
+    category: communication
+    description: >
+      The organization internally communicates information, including objectives
+      and responsibilities for internal control, to support its functioning.
+    guidance: >
+      Evidence: published policies accessible to staff, onboarding materials,
+      acknowledgment records.
+
+  - code: CC2.3
+    title: External communication
+    category: communication
+    description: >
+      The organization communicates with external parties regarding matters
+      affecting the functioning of internal control. This includes published
+      privacy notices, status pages, and incident communications.
+    guidance: >
+      Evidence: privacy policy, terms of service, status page, customer
+      notification templates.
+
+  # Common Criteria — Risk Assessment
+  - code: CC3.1
+    title: Risk identification objectives
+    category: risk_assessment
+    description: >
+      The organization specifies objectives with sufficient clarity to enable
+      identification and assessment of risks. Includes operational, reporting,
+      and compliance objectives.
+    guidance: >
+      Evidence: documented risk register, formal risk assessment cadence,
+      meeting minutes from risk reviews.
+
+  - code: CC3.2
+    title: Risk identification and analysis
+    category: risk_assessment
+    description: >
+      The organization identifies risks to the achievement of its objectives,
+      analyses them, and determines how to manage them.
+    guidance: >
+      Evidence: risk assessments, threat modelling outputs, mitigation plans.
+
+  - code: CC3.3
+    title: Fraud risk consideration
+    category: risk_assessment
+    description: >
+      The organization considers the potential for fraud in assessing risks,
+      including financial fraud, misappropriation of assets, and corruption.
+    guidance: >
+      Evidence: fraud risk assessment, segregation of duties analysis,
+      payment authorisation controls.
+
+  - code: CC3.4
+    title: Identifying and assessing changes
+    category: risk_assessment
+    description: >
+      The organization identifies and assesses changes that could significantly
+      impact the system of internal control.
+    guidance: >
+      Evidence: change impact analyses, periodic environment reviews.
+
+  # Common Criteria — Monitoring Activities
+  - code: CC4.1
+    title: Ongoing and separate evaluations
+    category: monitoring
+    description: >
+      The organization selects, develops, and performs ongoing or separate
+      evaluations to ascertain whether components of internal control are
+      present and functioning.
+    guidance: >
+      Evidence: continuous monitoring outputs, internal audit reports,
+      penetration test reports.
+
+  - code: CC4.2
+    title: Communication of internal control deficiencies
+    category: monitoring
+    description: >
+      The organization evaluates and communicates internal control deficiencies
+      in a timely manner to those responsible for taking corrective action.
+    guidance: >
+      Evidence: finding tracking system, remediation plans with owners and
+      due dates.
+
+  # Common Criteria — Control Activities (Logical & Physical Access)
+  - code: CC6.1
+    title: Logical access security software, infrastructure, and architectures
+    category: access_control
+    description: >
+      The entity implements logical access security to protect information assets
+      from security events. Includes user identification, role-based access,
+      least-privilege enforcement, encryption of data at rest and in transit,
+      and secure handling of credentials. MFA on privileged users is the de facto
+      baseline.
+    guidance: >
+      Evidence: identity provider configuration, MFA enforcement screenshots,
+      access matrix, encryption configuration documentation.
+
+  - code: CC6.2
+    title: Access provisioning and authorisation
+    category: access_control
+    description: >
+      Access is authorised, provisioned, modified, and removed based on role and
+      need. Periodic access reviews — typically quarterly — confirm current access
+      remains appropriate.
+    guidance: >
+      Evidence: access request workflows, approval records, quarterly access
+      review documentation.
+
+  - code: CC6.3
+    title: Access removal on termination
+    category: access_control
+    description: >
+      Access is removed promptly when no longer required, including when
+      employees or contractors depart. Same-day or next-day offboarding is
+      the auditor expectation.
+    guidance: >
+      Evidence: offboarding checklist, last 5–10 offboarding records showing
+      timely revocation across all systems.
+
+  - code: CC6.4
+    title: Restricting physical access
+    category: access_control
+    description: >
+      Physical access to facilities and assets is restricted to authorised
+      personnel. For cloud-native organisations, this is typically inherited
+      from the cloud provider's SOC 2.
+    guidance: >
+      Evidence: office access control records; cloud provider's SOC 2 in
+      vendor file.
+
+  - code: CC6.5
+    title: Discontinuance of physical assets
+    category: access_control
+    description: >
+      Physical assets are securely disposed of when no longer needed. Hard
+      drives are wiped or destroyed; documentation of destruction is retained.
+    guidance: >
+      Evidence: device retirement log, destruction certificates from disposal
+      vendor.
+
+  - code: CC6.6
+    title: Boundary protection
+    category: access_control
+    description: >
+      The entity implements logical and physical boundary protections to
+      detect and prevent unauthorised access. Includes firewalls, network
+      segmentation, and bastion hosts for production access.
+    guidance: >
+      Evidence: network architecture diagram, firewall rule reviews, VPN
+      configuration.
+
+  - code: CC6.7
+    title: Restricting transmission, movement, and removal of information
+    category: access_control
+    description: >
+      The entity restricts transmission of information to authorised internal
+      and external users and protects it during transmission. TLS 1.2+ for all
+      external traffic is the baseline; internal service-to-service encryption
+      is increasingly expected.
+    guidance: >
+      Evidence: TLS configuration, SSL Labs reports, internal service mTLS
+      configuration.
+
+  - code: CC6.8
+    title: Prevention of unauthorised software
+    category: access_control
+    description: >
+      The entity implements controls to prevent or detect and act upon the
+      introduction of unauthorised or malicious software.
+    guidance: >
+      Evidence: endpoint protection (EDR / antivirus) deployment records,
+      software allowlist policies.
+
+  # Common Criteria — System Operations (CC7)
+  - code: CC7.1
+    title: Detection of vulnerabilities and configuration changes
+    category: operations
+    description: >
+      The entity uses detection and monitoring procedures to identify changes
+      that could introduce vulnerabilities. Continuous or scheduled scanning of
+      code (SAST), dependencies (SCA), and running infrastructure with
+      severity-based remediation SLAs.
+    guidance: >
+      Evidence: SAST / SCA tool configuration, scan reports, vulnerability
+      tracking with documented remediation SLAs.
+
+  - code: CC7.2
+    title: Anomalies and events monitoring
+    category: operations
+    description: >
+      The entity monitors system components for anomalies indicative of
+      malicious activity. Centralised logging with active alerting on
+      security-relevant events is the expected control.
+    guidance: >
+      Evidence: SIEM / log aggregator configuration, alert runbooks, on-call
+      rotation, examples of triggered alerts and responses.
+
+  - code: CC7.3
+    title: Evaluation and response to security events
+    category: operations
+    description: >
+      The entity evaluates security events to determine impact and takes
+      action to prevent or address failures. A documented incident response
+      plan, tested at least annually via tabletop exercises, is the expected
+      evidence.
+    guidance: >
+      Evidence: IR plan, tabletop exercise records, post-incident reviews.
+
+  - code: CC7.4
+    title: Communication of security incidents
+    category: operations
+    description: >
+      The entity has a defined process for communicating security incidents
+      to internal and external parties as appropriate.
+    guidance: >
+      Evidence: communication runbook, customer notification templates.
+
+  - code: CC7.5
+    title: Recovery from security incidents
+    category: operations
+    description: >
+      The entity identifies, develops, and implements activities to recover
+      from identified security incidents.
+    guidance: >
+      Evidence: post-incident reviews, recovery runbooks, restored-system
+      validation procedures.
+
+  # Common Criteria — Change Management (CC8)
+  - code: CC8.1
+    title: Change management
+    category: change_management
+    description: >
+      The entity authorises, designs, develops, configures, documents, tests,
+      approves, and implements changes to infrastructure, data, software, and
+      procedures. Mandatory peer code review before merging to main, automated
+      testing in CI, and approval records are the de facto controls.
+    guidance: >
+      Evidence: branch protection rules, PR records with reviewer approval,
+      CI configuration, deployment logs.
+
+  # Common Criteria — Risk Mitigation (CC9)
+  - code: CC9.1
+    title: Risk mitigation activities
+    category: risk_mitigation
+    description: >
+      The entity identifies, selects, and develops risk mitigation activities.
+    guidance: >
+      Evidence: risk register with mitigations linked to controls, periodic
+      review.
+
+  - code: CC9.2
+    title: Vendor and business partner management
+    category: vendor_management
+    description: >
+      The entity assesses and manages risks associated with vendors and
+      business partners. Formal vendor due diligence, security questionnaires,
+      review of vendor SOC 2 / equivalent reports, and contracts with security
+      obligations.
+    guidance: >
+      Evidence: vendor register with classification, security questionnaire
+      responses, signed DPAs, periodic reassessments.
+
+  # Availability
+  - code: A1.1
+    title: Capacity management
+    category: availability
+    description: >
+      The entity maintains, monitors, and evaluates current processing capacity
+      and use of system components against current and projected demand.
+    guidance: >
+      Evidence: capacity dashboards, scaling configurations, demand forecasts.
+
+  - code: A1.2
+    title: Environmental protections, software, data backup, and recovery
+    category: availability
+    description: >
+      The entity authorises and implements environmental protections, software,
+      data backup processes, and recovery infrastructure. Automated backups
+      with documented restore tests (at minimum annually, ideally quarterly)
+      are standard expectations.
+    guidance: >
+      Evidence: backup configuration, restore test reports with measured
+      RTO / RPO.
+
+  - code: A1.3
+    title: Recovery infrastructure testing
+    category: availability
+    description: >
+      The entity tests recovery plans and infrastructure to support the
+      achievement of objectives.
+    guidance: >
+      Evidence: disaster recovery test reports, tabletop exercise outputs.
+
+  # Confidentiality
+  - code: C1.1
+    title: Identification and protection of confidential information
+    category: confidentiality
+    description: >
+      The entity identifies and maintains confidential information to meet
+      objectives related to confidentiality. Data classification, encryption,
+      and access restriction.
+    guidance: >
+      Evidence: data classification policy, encryption configuration, access
+      control restrictions tied to classification.
+
+  - code: C1.2
+    title: Disposal of confidential information
+    category: confidentiality
+    description: >
+      The entity disposes of confidential information to meet objectives
+      related to confidentiality. Documented retention schedules, automated
+      deletion where feasible.
+    guidance: >
+      Evidence: data retention schedule, automated deletion job logs,
+      deletion verification records.

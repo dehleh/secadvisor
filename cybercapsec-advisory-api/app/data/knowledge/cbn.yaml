@@ -1,0 +1,71 @@
+snippets:
+  - id: cbn.cyber_overview
+    title: CBN — Risk-Based Cybersecurity Framework overview
+    content: >
+      The CBN Risk-Based Cybersecurity Framework applies to all CBN-licensed
+      institutions — banks, payment service providers, microfinance banks,
+      mobile money operators, and other financial institutions. It is
+      explicitly risk-based, meaning a Tier-1 commercial bank is held to a
+      higher bar than a small microfinance bank, but every institution
+      must implement controls proportionate to its risk profile. CBN
+      examiners assess against the framework during periodic on-site
+      examinations, and self-assessments are required.
+    framework_codes: [cbn_cyber]
+    tags: [overview, scope, applicability]
+
+  - id: cbn.incident_24h
+    title: CBN — 24-hour incident reporting requirement
+    content: >
+      Material cybersecurity incidents must be reported to the CBN within
+      24 hours of detection. "Material" is interpreted broadly and
+      includes incidents that compromise systems handling customer data,
+      result in financial loss, disrupt critical services, or could damage
+      institution reputation. The 24-hour window is much tighter than
+      NDPA's 72 hours, so for fintechs the CBN clock typically dominates
+      the IR plan. A pre-prepared notification template that fills in
+      institution-specific details fast is essential.
+    framework_codes: [cbn_cyber]
+    tags: [incident_response, reporting, timelines]
+    source: CBN Risk-Based Cybersecurity Framework §4.7
+
+  - id: cbn.governance
+    title: CBN — Cybersecurity governance expectations
+    content: >
+      CBN expects board-level oversight of cybersecurity. The board
+      should approve the cybersecurity strategy and policy, receive
+      periodic (typically quarterly) reports on the cyber risk posture,
+      and confirm allocation of adequate resources. A Chief Information
+      Security Officer or equivalent role accountable to the CEO/MD is
+      expected for larger institutions; smaller institutions can combine
+      the role with the CTO/CIO so long as the security responsibilities
+      are formally documented and budgeted.
+    framework_codes: [cbn_cyber]
+    tags: [governance, board, ciso]
+
+  - id: cbn.third_party
+    title: CBN — Third-party and outsourcing risk
+    content: >
+      CBN scrutinises third-party arrangements closely, particularly
+      cloud providers and core banking system vendors. Due diligence
+      before onboarding must include security assessment, financial
+      stability check, and review of the vendor's incident history.
+      Contracts must include audit rights, breach notification
+      requirements, data localisation considerations (sensitive customer
+      data should typically remain in Nigeria or have explicit CBN
+      approval for cross-border processing), and termination/exit
+      provisions including data return.
+    framework_codes: [cbn_cyber]
+    tags: [vendor_management, outsourcing, cloud, data_localisation]
+
+  - id: cbn.business_continuity
+    title: CBN — Business continuity and disaster recovery
+    content: >
+      A documented Business Continuity Plan and Disaster Recovery Plan
+      covering critical business processes is required, with annual
+      testing and updates based on test outcomes. For fintechs operating
+      payment rails, the bar is high: typical Recovery Time Objective is
+      4 hours or less for mission-critical systems; Recovery Point
+      Objective is typically 15 minutes to 1 hour. Backups must be
+      tested via actual restore — not just verified for existence.
+    framework_codes: [cbn_cyber]
+    tags: [bcp, dr, rto, rpo, backups]

@@ -1,0 +1,146 @@
+# Knowledge snippets — Nigeria Data Protection Act
+# These are paraphrased advisory text grounded on the NDPA. They are NOT
+# verbatim regulatory text — for definitive language consult ndpc.gov.ng.
+snippets:
+  - id: ndpa.security_processing
+    title: NDPA — Security of processing
+    content: >
+      The NDPA requires controllers and processors to implement appropriate
+      technical and organisational measures to ensure a level of security
+      appropriate to risk. In practice this means: encryption of personal
+      data at rest and in transit; access controls scoped to least privilege;
+      MFA on all systems handling personal data; documented backup and
+      recovery procedures; and a regular process for testing the
+      effectiveness of security measures. The proportionality principle
+      means that a 5-person fintech is not held to the same standards as a
+      bank, but the underlying control categories are the same.
+    framework_codes: [ndpa]
+    tags: [security, encryption, controls, mfa, backups]
+    source: NDPA 2023 §24
+
+  - id: ndpa.lawful_basis
+    title: NDPA — Lawful basis for processing
+    content: >
+      Every processing activity must rest on one of the lawful bases
+      enumerated in the NDPA: consent of the data subject, contract
+      necessity, legal obligation, vital interests, public interest, or
+      legitimate interests pursued by the controller (subject to a
+      balancing test against the data subject's rights). The lawful basis
+      should be documented per processing activity and disclosed to data
+      subjects in the privacy notice. Consent must be specific, informed,
+      and freely given — bundled consent buried in terms of service is not
+      valid consent under the NDPA.
+    framework_codes: [ndpa]
+    tags: [lawful_basis, consent, privacy_notice]
+    source: NDPA 2023 §25
+
+  - id: ndpa.data_subject_rights
+    title: NDPA — Data subject rights
+    content: >
+      Data subjects have the rights to access, rectification, erasure,
+      restriction, portability, and to object to processing including
+      automated decision-making with significant effects. Controllers must
+      respond to a verified data subject request within 30 days, extendable
+      by 60 days for complex requests with notice. A documented intake
+      procedure with response SLAs is the practical control: verify
+      identity, log the request, route to the data team, return the
+      response, and retain proof.
+    framework_codes: [ndpa]
+    tags: [dsar, data_subject_rights, rights]
+    source: NDPA 2023 §§ 26 - 36
+
+  - id: ndpa.breach_notification
+    title: NDPA — Breach notification
+    content: >
+      A personal data breach must be reported to the Nigeria Data
+      Protection Commission (NDPC) within 72 hours of becoming aware of
+      it, unless the breach is unlikely to result in risk to data subjects.
+      Where the breach is likely to result in high risk to rights and
+      freedoms, affected data subjects must also be notified without undue
+      delay. The 72-hour clock starts at *awareness*, not investigation
+      conclusion — meaning your incident response plan needs to make a
+      preliminary risk decision quickly. A breach register documenting
+      decisions, even where notification was not required, is expected.
+    framework_codes: [ndpa]
+    tags: [incident_response, breach, notification]
+    source: NDPA 2023 §28
+
+  - id: ndpa.dpo
+    title: NDPA — Data Protection Officer designation
+    content: >
+      A data controller of "major importance" must designate a Data
+      Protection Officer with expertise in data protection law and
+      practice. Major importance broadly covers organisations processing
+      large volumes of personal data, sensitive data, or data of children;
+      financial institutions; and entities engaged in regular monitoring of
+      data subjects. The DPO must report to the highest level of management,
+      not be in a conflicting role (e.g. cannot be the CTO directly
+      managing data infrastructure), and their contact details must be
+      published in the privacy notice and notified to the NDPC.
+    framework_codes: [ndpa]
+    tags: [dpo, governance]
+    source: NDPA 2023 §32
+
+  - id: ndpa.dpia
+    title: NDPA — Data protection impact assessments
+    content: >
+      Where processing is likely to result in high risk to data subjects'
+      rights and freedoms — for instance, large-scale processing of
+      sensitive data, systematic monitoring, or use of new technologies — a
+      Data Protection Impact Assessment must be conducted before processing
+      begins. A DPIA template covering: nature, scope, context, and
+      purposes of processing; necessity and proportionality assessment;
+      identified risks; mitigation measures; and consultation with the DPO
+      is the minimum artefact. Repeat the DPIA when processing materially
+      changes.
+    framework_codes: [ndpa]
+    tags: [dpia, governance, risk_assessment]
+    source: NDPA 2023 §31
+
+  - id: ndpa.processor_dpa
+    title: NDPA — Data processing agreements with processors
+    content: >
+      Where personal data is processed by a third party (vendor) on the
+      controller's behalf, a written Data Processing Agreement is required
+      covering: the subject matter and duration of processing; the nature
+      and purpose; categories of data and data subjects; obligations of
+      the processor including assistance with data subject requests and
+      breach notification; sub-processor authorisation; and return or
+      deletion of data on contract termination. Off-the-shelf SaaS contracts
+      typically include a DPA addendum — make sure it is signed and stored.
+    framework_codes: [ndpa]
+    tags: [vendor_management, dpa, processor]
+    source: NDPA 2023 §29
+
+  - id: ndpa.international_transfer
+    title: NDPA — International data transfers
+    content: >
+      Transfer of personal data outside Nigeria requires either: an
+      adequacy decision by the NDPC for the destination country;
+      appropriate safeguards (typically standard contractual clauses or
+      binding corporate rules); explicit consent of the data subject after
+      being informed of the risks; or one of a narrow set of derogations.
+      Most African startups using US-based infrastructure (AWS, GCP, Azure
+      US regions) rely on contractual safeguards. A documented Transfer
+      Impact Assessment showing that destination country protections plus
+      contractual safeguards together provide essentially equivalent
+      protection is increasingly expected.
+    framework_codes: [ndpa]
+    tags: [international_transfer, cloud, contracts]
+    source: NDPA 2023 §30
+
+  - id: ndpa.ropa
+    title: NDPA — Records of processing activities
+    content: >
+      Controllers and processors must maintain a Record of Processing
+      Activities documenting: name and contact details of the controller;
+      purposes of processing; categories of data subjects and data;
+      recipients including in third countries; international transfers;
+      retention periods; and a general description of security measures.
+      The RoPA must be available to the NDPC on request. A spreadsheet
+      with one row per processing activity is sufficient for early-stage
+      organisations; the discipline of maintaining it forces clarity about
+      what data is processed and why.
+    framework_codes: [ndpa]
+    tags: [ropa, governance, accountability]
+    source: NDPA 2023 §33

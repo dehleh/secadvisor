@@ -1,0 +1,120 @@
+# Knowledge snippets — SOC 2 Trust Services Criteria
+snippets:
+  - id: soc2.tsc_overview
+    title: SOC 2 — Trust Services Criteria overview
+    content: >
+      SOC 2 reports are issued against the AICPA Trust Services Criteria.
+      Security (Common Criteria) is mandatory; Availability, Processing
+      Integrity, Confidentiality, and Privacy are optional categories
+      selected based on what the customer cares about. Most US enterprise
+      customers ask for Security + Availability. SaaS handling sensitive
+      data adds Confidentiality. The audit period for a Type II report is
+      typically 6 to 12 months — controls must operate effectively for the
+      entire period, not just at the assessment date.
+    framework_codes: [soc2]
+    tags: [overview, type1, type2, scope]
+
+  - id: soc2.cc6_logical_access
+    title: SOC 2 — CC6 logical and physical access controls
+    content: >
+      The CC6 series is the largest cluster of controls and where most
+      first-time SOC 2 efforts focus. CC6.1 covers logical access design
+      including MFA, encryption, and least privilege. CC6.2 covers access
+      provisioning and authorisation; quarterly access reviews are the
+      auditor expectation. CC6.3 covers access removal — same-day or
+      next-day offboarding is the bar. CC6.6 covers boundary protection
+      (firewalls, network segmentation, bastion access to production).
+      CC6.7 covers transmission protection (TLS 1.2 minimum, increasingly
+      1.3 baseline). CC6.8 covers preventing unauthorised software (EDR /
+      antivirus on endpoints).
+    framework_codes: [soc2]
+    tags: [access_control, mfa, encryption, network]
+
+  - id: soc2.cc7_operations
+    title: SOC 2 — CC7 system operations
+    content: >
+      CC7 covers the operational disciplines that keep security working
+      day-to-day. CC7.1 is vulnerability management — SAST, SCA,
+      infrastructure scanning, with severity-based remediation SLAs and
+      evidence of actual remediation. CC7.2 is monitoring — centralised
+      logging, alerting on anomalies, an on-call rotation that responds.
+      CC7.3 / CC7.4 / CC7.5 cover incident response: a documented IR plan,
+      an annual tabletop exercise, post-incident reviews. Auditors will
+      ask for examples of detected events and the response — meaning the
+      paper plan is not enough; real incidents (or convincingly real
+      tabletop exercises) need a paper trail.
+    framework_codes: [soc2]
+    tags: [vulnerability_management, monitoring, incident_response]
+
+  - id: soc2.cc8_change_management
+    title: SOC 2 — CC8.1 change management
+    content: >
+      CC8.1 is one control that covers a lot. The auditor wants to see
+      that production changes go through a controlled process: peer review
+      before merge to main, automated testing in CI, and approval records.
+      For most modern startups this is enforced by GitHub / GitLab branch
+      protection rules requiring approving reviews and passing CI. Capture
+      the configuration, capture sample PRs showing the rules being
+      followed, capture the deployment logs.
+    framework_codes: [soc2]
+    tags: [change_management, ci_cd, github]
+
+  - id: soc2.cc9_2_vendor_management
+    title: SOC 2 — CC9.2 vendor and third-party management
+    content: >
+      CC9.2 has become a heavy focus area as supply chain attacks
+      increase. The expectation is a vendor register classifying vendors
+      by risk tier, security questionnaire responses for high-risk
+      vendors, copies of vendor SOC 2 / ISO 27001 reports, and signed
+      Data Processing Agreements where personal data is involved. For
+      African startups, the practical pattern: maintain a Notion / sheets
+      register, request SOC 2 reports from cloud and SaaS vendors at
+      onboarding, and re-check annually.
+    framework_codes: [soc2]
+    tags: [vendor_management, supply_chain, dpa]
+
+  - id: soc2.evidence_strategy
+    title: SOC 2 — Practical evidence strategy
+    content: >
+      The audit succeeds or fails on evidence quality. Three patterns
+      consistently work: (1) evidence at source — pull screenshots and
+      configuration exports directly from the systems they describe, not
+      from re-typed documents; (2) one piece of evidence per control,
+      anchored to a specific date within the audit window; (3) evidence
+      that demonstrates the control operating, not just existing — the
+      access review *output*, not just the access review *policy*. For
+      controls that operate continuously, sampling 2-3 instances at random
+      points in the audit window is the auditor's approach.
+    framework_codes: [soc2]
+    tags: [evidence, audit_prep, samples]
+
+  - id: soc2.policy_starter_pack
+    title: SOC 2 — Required policy starter pack
+    content: >
+      A SOC 2 Type II audit will request a baseline set of policies. At
+      minimum: Information Security Policy, Access Control Policy, Data
+      Protection / Privacy Policy, Incident Response Plan, Acceptable Use
+      Policy, Vendor Management Policy, Change Management Policy, Backup
+      and Recovery Policy, Security Awareness Training Policy. Each policy
+      should be: signed/approved by leadership; published and accessible
+      to staff; acknowledged by employees at onboarding; reviewed
+      annually with date stamps proving the review. Templates are fine —
+      the auditor cares about adoption and review evidence, not novel
+      prose.
+    framework_codes: [soc2]
+    tags: [policies, audit_prep]
+
+  - id: soc2.audit_timeline
+    title: SOC 2 — Realistic timeline for first Type II
+    content: >
+      A first SOC 2 Type II from "we want one" to "we have one" is
+      typically 9-15 months. Roughly: 2-3 months to design and implement
+      controls, 3-6 month observation window for Type II, 1-2 months for
+      audit fieldwork and report. A SOC 2 Type I (point-in-time) can be
+      completed in 4-6 months and is sometimes used as a stepping stone.
+      Auditor selection takes longer than founders expect — large firms
+      have months-long backlogs. For an African startup, mid-tier firms
+      like Prescient Assurance, Sensiba, and others targeting startups
+      typically offer faster turnaround.
+    framework_codes: [soc2]
+    tags: [audit_timeline, planning, audit_firm]

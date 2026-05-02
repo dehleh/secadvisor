@@ -1,0 +1,192 @@
+code: ndpa
+name: Nigeria Data Protection Act
+version: "2023"
+jurisdiction: Nigeria
+description: >
+  The Nigeria Data Protection Act, 2023 governs processing of personal data of
+  data subjects in Nigeria. Enforced by the Nigeria Data Protection Commission
+  (NDPC). Replaces the 2019 NDPR. Applies to any controller or processor
+  handling personal data of Nigerian residents, including foreign companies.
+source_url: https://ndpc.gov.ng/
+
+controls:
+  - code: SEC_24
+    title: Security of processing — appropriate technical and organisational measures
+    category: security
+    description: >
+      Controllers and processors must implement appropriate technical and
+      organisational measures to ensure personal data is processed securely,
+      including protection against unauthorised or unlawful processing and
+      against accidental loss, destruction, or damage. Measures should be
+      proportionate to the risk.
+    guidance: >
+      Evidence: information security policy, access controls, encryption of
+      data at rest and in transit, vendor security obligations, periodic
+      security assessments.
+
+  - code: SEC_25
+    title: Confidentiality and integrity
+    category: security
+    description: >
+      Personal data must be processed in a manner that ensures appropriate
+      security, including protection against unauthorised processing using
+      technical or organisational measures.
+    guidance: >
+      Evidence: encryption controls, access logs, segregation of duties,
+      role-based access enforcement.
+
+  - code: SEC_26
+    title: Storage limitation
+    category: security
+    description: >
+      Personal data must be kept in a form which permits identification of
+      data subjects for no longer than is necessary for the purposes for which
+      the data is processed. Documented retention schedules with deletion or
+      anonymisation triggers.
+    guidance: >
+      Evidence: data retention policy, automated deletion records, retention
+      schedule per data category, anonymisation procedures.
+
+  - code: SEC_27
+    title: Data minimisation
+    category: privacy_principle
+    description: >
+      Personal data collected must be adequate, relevant, and limited to what
+      is necessary for the purposes for which they are processed.
+    guidance: >
+      Evidence: data inventory mapping data fields to purposes, data collection
+      review records.
+
+  - code: BREACH_28
+    title: Personal data breach notification
+    category: incident_response
+    description: >
+      A personal data breach must be reported to the Commission within 72 hours
+      of becoming aware of it, unless the breach is unlikely to result in risk
+      to data subjects. Where the breach is likely to result in high risk,
+      affected data subjects must also be notified without undue delay.
+    guidance: >
+      Evidence: incident response plan with NDPC notification timelines,
+      breach decision matrix, notification templates, breach register.
+
+  - code: SEC_29
+    title: Processor due diligence
+    category: vendor_management
+    description: >
+      Where processing is carried out on behalf of a controller, the controller
+      shall use only processors providing sufficient guarantees of appropriate
+      technical and organisational measures. Documented Data Processing
+      Agreements covering NDPA-required terms.
+    guidance: >
+      Evidence: signed DPAs with processors, vendor security questionnaire
+      responses, processor register.
+
+  - code: SEC_30
+    title: International transfers
+    category: privacy_principle
+    description: >
+      Transfer of personal data to a country outside Nigeria requires that the
+      destination country provides an adequate level of protection, or the
+      transfer is subject to appropriate safeguards (binding corporate rules,
+      standard contractual clauses, or explicit consent).
+    guidance: >
+      Evidence: transfer impact assessments, SCCs in vendor contracts,
+      adequacy assessments.
+
+  - code: SEC_31
+    title: Data protection impact assessment
+    category: governance
+    description: >
+      Where processing is likely to result in high risk to the rights and
+      freedoms of data subjects, the controller shall, prior to processing,
+      carry out a data protection impact assessment.
+    guidance: >
+      Evidence: DPIA template, completed DPIAs for high-risk processing,
+      mitigation register.
+
+  - code: SEC_32
+    title: Data protection officer designation
+    category: governance
+    description: >
+      A data controller of major importance shall designate a data protection
+      officer with expertise in data protection law and practices. The DPO
+      reports to the highest level of management and is involved in all data
+      protection issues.
+    guidance: >
+      Evidence: DPO appointment letter, DPO contact details published in
+      privacy notice, DPO reporting line documented.
+
+  - code: SEC_33
+    title: Records of processing activities
+    category: governance
+    description: >
+      Each controller shall maintain a record of all categories of processing
+      activities under its responsibility. The RoPA must be available to the
+      Commission on request.
+    guidance: >
+      Evidence: RoPA document with all required fields (purpose, categories,
+      retention, transfers, security measures), maintained current.
+
+  - code: RIGHTS_34
+    title: Right of access
+    category: data_subject_rights
+    description: >
+      Data subjects have the right to obtain confirmation of whether personal
+      data concerning them is being processed, and where so, access to that
+      data and information about the processing.
+    guidance: >
+      Evidence: data subject access request (DSAR) procedure with response
+      SLA, request log, response templates.
+
+  - code: RIGHTS_35
+    title: Right to rectification
+    category: data_subject_rights
+    description: >
+      Data subjects have the right to obtain rectification of inaccurate
+      personal data without undue delay.
+    guidance: >
+      Evidence: rectification procedure, request log.
+
+  - code: RIGHTS_36
+    title: Right to erasure
+    category: data_subject_rights
+    description: >
+      Data subjects have the right to obtain erasure of personal data
+      concerning them where one of several grounds applies (consent withdrawn,
+      data no longer necessary, unlawful processing, etc.).
+    guidance: >
+      Evidence: erasure procedure documenting decision logic, request log,
+      verification of deletion.
+
+  - code: RIGHTS_37
+    title: Right to data portability
+    category: data_subject_rights
+    description: >
+      Data subjects have the right to receive personal data concerning them in
+      a structured, commonly used, machine-readable format and have it
+      transmitted to another controller.
+    guidance: >
+      Evidence: data export functionality, format specification, request log.
+
+  - code: CONSENT_38
+    title: Lawful basis for processing
+    category: privacy_principle
+    description: >
+      Processing of personal data must rest on a lawful basis: consent,
+      contract, legal obligation, vital interests, public interest, or
+      legitimate interests. The lawful basis must be documented and
+      communicated to data subjects.
+    guidance: >
+      Evidence: privacy notice identifying lawful basis per processing
+      activity, consent capture mechanism for consent-based processing.
+
+  - code: SEC_40
+    title: Privacy by design and by default
+    category: governance
+    description: >
+      The controller shall implement appropriate technical and organisational
+      measures designed to implement data protection principles in an effective
+      manner and integrate necessary safeguards into the processing.
+    guidance: >
+      Evidence: privacy review in product development lifecycle, default
+      privacy settings, design documentation referencing privacy principles.

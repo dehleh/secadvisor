@@ -1,0 +1,208 @@
+code: iso27001
+name: ISO/IEC 27001 Annex A Controls
+version: "2022"
+jurisdiction: Global
+description: >
+  ISO/IEC 27001:2022 Annex A. The 2022 revision restructured controls into
+  four themes (Organizational, People, Physical, Technological) totaling 93
+  controls. This seed covers the controls most commonly required for SaaS
+  and fintech contexts; full coverage of Annex A can be expanded in YAML
+  without code changes.
+source_url: https://www.iso.org/standard/27001
+
+controls:
+  # Organizational controls (A.5)
+  - code: A.5.1
+    title: Policies for information security
+    category: organizational
+    description: >
+      A set of information security policies is defined, approved by
+      management, published, communicated to staff and relevant external
+      parties, and reviewed at planned intervals or when significant changes
+      occur.
+    guidance: >
+      Evidence: signed information security policy, distribution records,
+      review history.
+
+  - code: A.5.7
+    title: Threat intelligence
+    category: organizational
+    description: >
+      Information related to information security threats is collected and
+      analysed to produce threat intelligence used to inform risk
+      assessment and security decisions.
+    guidance: >
+      Evidence: threat intel sources, periodic intel reports, decisions
+      driven by intel.
+
+  - code: A.5.10
+    title: Acceptable use of information and other associated assets
+    category: organizational
+    description: >
+      Rules for the acceptable use of information assets are identified,
+      documented, and implemented. Staff acknowledge the rules at onboarding
+      and at policy refresh.
+    guidance: >
+      Evidence: Acceptable Use Policy, signed acknowledgments.
+
+  - code: A.5.15
+    title: Access control
+    category: organizational
+    description: >
+      Access to information and associated assets is restricted based on
+      business and information security requirements. Role-based access
+      control with least privilege.
+    guidance: >
+      Evidence: access control policy, role definitions, access matrix.
+
+  - code: A.5.17
+    title: Authentication information
+    category: organizational
+    description: >
+      Allocation and management of authentication information (passwords,
+      tokens) follows defined controls. MFA on all sensitive systems.
+    guidance: >
+      Evidence: password policy, MFA configuration screenshots, secrets
+      management tool.
+
+  - code: A.5.23
+    title: Information security for use of cloud services
+    category: organizational
+    description: >
+      Processes for acquisition, use, management and exit from cloud
+      services are established in accordance with the organisation's
+      information security requirements.
+    guidance: >
+      Evidence: cloud usage policy, vendor risk assessments for cloud
+      providers, exit plan documentation.
+
+  - code: A.5.24
+    title: Information security incident management planning and preparation
+    category: organizational
+    description: >
+      Information security incident management is planned and prepared, with
+      roles, responsibilities, and procedures defined.
+    guidance: >
+      Evidence: IR plan, named roles, runbooks, contact tree.
+
+  - code: A.5.30
+    title: ICT readiness for business continuity
+    category: organizational
+    description: >
+      ICT readiness is planned, implemented, maintained, and tested based on
+      business continuity objectives and ICT continuity requirements.
+    guidance: >
+      Evidence: ICT continuity plan, test reports, lessons learned.
+
+  # People controls (A.6)
+  - code: A.6.3
+    title: Information security awareness, education, and training
+    category: people
+    description: >
+      Personnel and relevant interested parties receive appropriate
+      information security awareness, education, and training, with regular
+      updates relevant to their role.
+    guidance: >
+      Evidence: training programme, completion records.
+
+  # Physical controls (A.7) — typically inherited from cloud provider for SaaS
+  - code: A.7.4
+    title: Physical security monitoring
+    category: physical
+    description: >
+      Premises are continuously monitored for unauthorised physical access.
+      For cloud-native organisations, this is typically inherited from the
+      cloud provider's certification.
+    guidance: >
+      Evidence: cloud provider's ISO 27001 / SOC 2; for offices, access
+      control logs.
+
+  # Technological controls (A.8)
+  - code: A.8.2
+    title: Privileged access rights
+    category: technological
+    description: >
+      Allocation and use of privileged access rights is restricted and
+      managed. Privileged sessions are recorded and reviewed.
+    guidance: >
+      Evidence: PAM tool configuration, session recording samples,
+      review records.
+
+  - code: A.8.5
+    title: Secure authentication
+    category: technological
+    description: >
+      Secure authentication technologies and procedures are implemented based
+      on information access restrictions and the access control policy. MFA
+      on all external-facing identity surfaces.
+    guidance: >
+      Evidence: identity provider configuration, MFA enforcement.
+
+  - code: A.8.7
+    title: Protection against malware
+    category: technological
+    description: >
+      Protection against malware is implemented and supported by appropriate
+      user awareness. Endpoint protection on all employee devices and
+      production systems where applicable.
+    guidance: >
+      Evidence: EDR / antivirus deployment records, scan reports.
+
+  - code: A.8.8
+    title: Management of technical vulnerabilities
+    category: technological
+    description: >
+      Information about technical vulnerabilities is obtained, exposure to
+      such vulnerabilities is evaluated, and appropriate measures are taken.
+      Severity-based remediation SLAs.
+    guidance: >
+      Evidence: vulnerability scanner output, remediation tracker, defined
+      SLAs per severity.
+
+  - code: A.8.12
+    title: Data leakage prevention
+    category: technological
+    description: >
+      Data leakage prevention measures are applied to systems, networks, and
+      any other devices that process, store, or transmit sensitive
+      information.
+    guidance: >
+      Evidence: DLP configuration, egress monitoring, exfiltration alerts.
+
+  - code: A.8.13
+    title: Information backup
+    category: technological
+    description: >
+      Backup copies of information, software, and systems are maintained and
+      regularly tested in accordance with the agreed backup policy.
+    guidance: >
+      Evidence: backup configuration, restore test reports.
+
+  - code: A.8.16
+    title: Monitoring activities
+    category: technological
+    description: >
+      Networks, systems, and applications are monitored for anomalous
+      behaviour and appropriate actions taken.
+    guidance: >
+      Evidence: SIEM / monitoring tool, alert runbooks, review records.
+
+  - code: A.8.24
+    title: Use of cryptography
+    category: technological
+    description: >
+      Rules for the effective use of cryptography, including cryptographic
+      key management, are defined and implemented.
+    guidance: >
+      Evidence: cryptography policy, encryption configuration, key
+      management procedures.
+
+  - code: A.8.28
+    title: Secure coding
+    category: technological
+    description: >
+      Secure coding principles are applied to software development. Includes
+      training, code review, and security testing.
+    guidance: >
+      Evidence: secure coding guidelines, mandatory peer review, SAST
+      results, security training records.

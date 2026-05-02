@@ -1,0 +1,142 @@
+code: cbn_cyber
+name: CBN Risk-Based Cybersecurity Framework
+version: "2022"
+jurisdiction: Nigeria (Banking)
+description: >
+  The Central Bank of Nigeria's Risk-Based Cybersecurity Framework and Guidelines
+  for Other Financial Institutions. Mandatory for banks, payment service providers,
+  microfinance banks, and other CBN-licensed institutions. Penalties for
+  non-compliance include fines and licence revocation.
+source_url: https://www.cbn.gov.ng/
+
+controls:
+  - code: "4.1"
+    title: Cybersecurity governance and oversight
+    category: governance
+    description: >
+      The board and senior management have oversight of cybersecurity risk
+      management. A documented cybersecurity strategy aligned with business
+      strategy, with periodic reporting to the board on the cyber risk
+      posture.
+    guidance: >
+      Evidence: board-approved cybersecurity strategy, board minutes
+      referencing cyber risk, cybersecurity steering committee charter.
+
+  - code: "4.2"
+    title: Identity and access management
+    category: access_control
+    description: >
+      Logical access to systems and data is restricted based on role and
+      least privilege. Privileged access is monitored, MFA enforced for
+      privileged users and remote access. Periodic access reviews — typically
+      quarterly for production systems.
+    guidance: >
+      Evidence: identity provider configuration, MFA enforcement, privileged
+      access monitoring tool output, quarterly access review records.
+
+  - code: "4.3"
+    title: Asset management
+    category: governance
+    description: >
+      An inventory of information assets — hardware, software, data — is
+      maintained and reviewed at least annually. Each asset is classified by
+      sensitivity and criticality.
+    guidance: >
+      Evidence: asset inventory, classification scheme, last review date.
+
+  - code: "4.4"
+    title: Threat and vulnerability management
+    category: operations
+    description: >
+      Vulnerabilities in systems are identified through scanning and
+      penetration testing, with remediation tracked against severity-based
+      SLAs. Threat intelligence feeds are subscribed to and acted upon.
+    guidance: >
+      Evidence: vulnerability scan reports, penetration test reports,
+      remediation tracker, threat intel subscriptions.
+
+  - code: "4.5"
+    title: Network security and segmentation
+    category: access_control
+    description: >
+      Networks are segmented to limit lateral movement; perimeter defences
+      and intrusion detection are in place. Critical systems are isolated
+      from internet-facing networks.
+    guidance: >
+      Evidence: network architecture diagram, firewall rules, IDS / IPS
+      configuration.
+
+  - code: "4.6"
+    title: Data protection — encryption, backups, recovery
+    category: data_protection
+    description: >
+      Sensitive data is encrypted at rest and in transit. Backups are
+      automated, tested, and stored separately. Documented Recovery Time
+      Objective and Recovery Point Objective for critical systems.
+    guidance: >
+      Evidence: encryption configuration, backup schedule and restore test
+      reports, RTO / RPO documentation.
+
+  - code: "4.7"
+    title: Incident response and reporting
+    category: incident_response
+    description: >
+      A documented incident response plan is in place, tested at least
+      annually. Material cybersecurity incidents must be reported to the CBN
+      within 24 hours of detection. Internal communication and customer
+      notification procedures are defined.
+    guidance: >
+      Evidence: IR plan, tabletop exercise records, CBN notification
+      template, incident register.
+
+  - code: "4.8"
+    title: Third-party risk management
+    category: vendor_management
+    description: >
+      Third-party providers handling sensitive data or providing critical
+      services undergo due diligence before onboarding and periodic
+      reassessment. Contracts include security obligations, breach
+      notification requirements, and audit rights.
+    guidance: >
+      Evidence: vendor register, due diligence records, contract templates
+      with security clauses, periodic reassessment schedule.
+
+  - code: "4.9"
+    title: Business continuity and disaster recovery
+    category: availability
+    description: >
+      Documented business continuity and disaster recovery plans cover
+      critical business processes. Plans are tested annually and updated
+      based on test outcomes.
+    guidance: >
+      Evidence: BCP / DR plan, test reports, updated procedures.
+
+  - code: "4.10"
+    title: Security awareness and training
+    category: governance
+    description: >
+      All staff complete cybersecurity awareness training at onboarding and
+      annually thereafter. Targeted training is provided for staff in
+      privileged roles or handling sensitive data.
+    guidance: >
+      Evidence: training records, onboarding curriculum, annual refresh
+      tracker.
+
+  - code: "4.11"
+    title: Logging, monitoring, and event analysis
+    category: operations
+    description: >
+      Security-relevant events are logged, centralised, retained for at
+      least 12 months, and monitored for indicators of compromise.
+    guidance: >
+      Evidence: SIEM configuration, log retention policy, alert rules and
+      response runbooks.
+
+  - code: "4.12"
+    title: Cybersecurity audit and assurance
+    category: monitoring
+    description: >
+      Independent cybersecurity audits are performed at least annually,
+      with findings reported to the board and tracked to remediation.
+    guidance: >
+      Evidence: audit reports, board reporting, remediation tracker.

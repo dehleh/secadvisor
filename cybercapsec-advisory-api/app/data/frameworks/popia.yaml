@@ -1,0 +1,120 @@
+code: popia
+name: Protection of Personal Information Act
+version: "2013 (effective 2021)"
+jurisdiction: South Africa
+description: >
+  The Protection of Personal Information Act, No. 4 of 2013, regulates the
+  processing of personal information in South Africa. Enforced by the
+  Information Regulator. Eight conditions for lawful processing form the
+  core of POPIA compliance, plus security safeguards in section 19.
+source_url: https://www.justice.gov.za/inforeg/
+
+controls:
+  - code: COND_1
+    title: Accountability
+    category: privacy_principle
+    description: >
+      The responsible party (controller) must ensure the conditions for
+      lawful processing and all measures giving effect to those conditions
+      are complied with.
+    guidance: >
+      Evidence: documented privacy programme with named accountable owner,
+      management review records.
+
+  - code: COND_2
+    title: Processing limitation
+    category: privacy_principle
+    description: >
+      Personal information must be processed lawfully and in a reasonable
+      manner that does not infringe the privacy of the data subject.
+      Processing must rest on consent, contract necessity, legal obligation,
+      or other lawful basis.
+    guidance: >
+      Evidence: privacy notice identifying lawful basis per processing,
+      consent capture for consent-based processing.
+
+  - code: COND_3
+    title: Purpose specification
+    category: privacy_principle
+    description: >
+      Personal information must be collected for specific, explicitly defined,
+      and lawful purposes related to a function or activity of the responsible
+      party.
+    guidance: >
+      Evidence: privacy notice with stated purposes, data inventory mapping
+      data to purposes.
+
+  - code: COND_4
+    title: Further processing limitation
+    category: privacy_principle
+    description: >
+      Further processing must be in accordance or compatible with the purpose
+      for which it was collected.
+    guidance: >
+      Evidence: review of secondary uses, compatibility assessment records.
+
+  - code: COND_5
+    title: Information quality
+    category: privacy_principle
+    description: >
+      The responsible party must take reasonably practicable steps to ensure
+      personal information is complete, accurate, not misleading, and updated
+      where necessary.
+    guidance: >
+      Evidence: data quality processes, rectification procedures.
+
+  - code: COND_6
+    title: Openness
+    category: privacy_principle
+    description: >
+      The responsible party must take reasonably practicable steps to ensure
+      data subjects are aware of the information being collected, the purpose,
+      and other prescribed disclosures.
+    guidance: >
+      Evidence: published privacy notice, in-product disclosures.
+
+  - code: COND_7_S19
+    title: Security safeguards (section 19)
+    category: security
+    description: >
+      The responsible party must secure the integrity and confidentiality of
+      personal information in its possession or under its control by taking
+      appropriate, reasonable technical and organisational measures to prevent
+      loss, damage, unauthorised destruction, and unlawful access or
+      processing.
+    guidance: >
+      Evidence: information security policy, encryption configuration, access
+      controls, periodic risk assessments.
+
+  - code: COND_7_S21
+    title: Operator (processor) obligations
+    category: vendor_management
+    description: >
+      Where an operator processes personal information for a responsible
+      party, processing must be subject to a written contract requiring the
+      operator to establish and maintain appropriate security safeguards and
+      to notify the responsible party of any security compromise.
+    guidance: >
+      Evidence: signed operator agreements, breach notification clauses.
+
+  - code: COND_7_S22
+    title: Notification of security compromises
+    category: incident_response
+    description: >
+      Where there are reasonable grounds to believe personal information has
+      been accessed or acquired by unauthorised persons, the responsible party
+      must notify the Information Regulator and affected data subjects as
+      soon as reasonably possible.
+    guidance: >
+      Evidence: incident response plan with Information Regulator notification
+      procedure, breach register, notification templates.
+
+  - code: COND_8
+    title: Data subject participation
+    category: data_subject_rights
+    description: >
+      Data subjects have rights to access their personal information, request
+      correction or deletion, and object to processing in defined circumstances.
+    guidance: >
+      Evidence: DSAR procedure with response SLA, request log, response
+      templates, deletion procedure.

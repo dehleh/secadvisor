@@ -1,0 +1,164 @@
+snippets:
+  - id: practice.mfa_baseline
+    title: Multi-factor authentication — the baseline control
+    content: >
+      MFA is the highest-leverage single control for African startups: it
+      is referenced or required by every framework in our coverage (SOC 2
+      CC6.1, NDPA §24 derived, ISO A.5.17 / A.8.5, CBN 4.2). Practical
+      enforcement: an identity provider (Google Workspace, Okta, or
+      Microsoft Entra) configured to enforce MFA for all employees as a
+      blocking condition, and step-up MFA for privileged actions. SMS-based
+      MFA is acceptable for low-risk applications but TOTP / hardware keys
+      are the bar for production access. Capture the IdP configuration as
+      evidence — it propagates across multiple frameworks.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber, popia, kenya_dpa]
+    tags: [mfa, identity, access_control, leverage_control]
+
+  - id: practice.access_review_cadence
+    title: Access reviews — quarterly is the de facto standard
+    content: >
+      A quarterly access review covering all production systems and
+      sensitive SaaS satisfies SOC 2 CC6.2, ISO A.5.15, NDPA §24
+      derived, and CBN 4.2. The mechanics: export the user list per
+      system, ask the system owner to confirm each user still requires
+      access, document removals, retain the export and the confirmation.
+      For tiny startups (< 10 people) the cadence can extend to
+      semi-annual but the artefact is the same. Auditor red flag: a
+      "review" with no removals across multiple cycles — it suggests
+      rubber-stamping rather than real review.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber]
+    tags: [access_review, quarterly, audit_evidence]
+
+  - id: practice.offboarding_checklist
+    title: Offboarding — the same-day checklist
+    content: >
+      Same-day or next-day offboarding satisfies SOC 2 CC6.3, ISO
+      A.5.15, NDPA §24, CBN 4.2. The checklist: revoke IdP / SSO
+      account; revoke direct access to systems not federated through SSO
+      (yes there are always some); rotate any shared secrets the person
+      had access to; remove from Slack / messaging; collect or remotely
+      wipe equipment; final pay considerations. Templated as a Notion or
+      Linear ticket assigned at termination, with a timestamp showing
+      completion within 24 hours, this is one of the cleanest pieces of
+      evidence in a SOC 2 audit.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber]
+    tags: [offboarding, leverage_control, same_day]
+
+  - id: practice.encryption_at_rest_in_transit
+    title: Encryption — at rest and in transit
+    content: >
+      Data encryption at rest and in transit is required by every
+      framework in scope. In transit: TLS 1.2 minimum, 1.3 baseline for
+      new deployments, with certificate management automated (Let's
+      Encrypt, AWS Certificate Manager, etc.). At rest: cloud-managed
+      encryption using provider-default keys is the minimum;
+      customer-managed keys (KMS / Cloud KMS) for sensitive data is
+      the next tier. Database-level transparent encryption is enabled
+      by default in modern managed databases. The evidence is typically
+      a configuration screenshot or terraform plan output showing
+      `encryption: enabled`.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber, popia]
+    tags: [encryption, tls, kms, leverage_control]
+
+  - id: practice.logging_centralisation
+    title: Centralised logging — table stakes for monitoring
+    content: >
+      Centralised logging satisfies SOC 2 CC7.2, ISO A.8.16, CBN 4.11.
+      The minimum: cloud provider audit logs (CloudTrail / Cloud Audit
+      Logs / Activity Log), application logs, IdP logs, and database
+      audit logs aggregated into a single tool with at least 12 months
+      retention. Cost-effective options for African startups: BetterStack,
+      Logtail, Grafana Cloud, AWS CloudWatch Logs with appropriate
+      retention. Alerts on: failed authentication spikes, privilege
+      escalation, mass-data export, configuration changes to security
+      controls.
+    framework_codes: [soc2, iso27001, cbn_cyber]
+    tags: [logging, siem, monitoring]
+
+  - id: practice.vendor_due_diligence
+    title: Vendor due diligence — the lightweight playbook
+    content: >
+      Pre-onboarding vendor due diligence satisfies SOC 2 CC9.2, ISO
+      A.5.23, NDPA §29, CBN 4.8, POPIA §21, Kenya DPA §42. The
+      lightweight playbook: maintain a vendor register classifying
+      vendors as critical / important / standard; for critical and
+      important, request the vendor's SOC 2 / ISO 27001 / equivalent;
+      for vendors processing personal data, sign a DPA; review at
+      least annually. Off-the-shelf SaaS like Vanta and Drata maintain
+      vendor security report libraries; for startups not on those
+      platforms, a Notion table works.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber, popia, kenya_dpa]
+    tags: [vendor_management, due_diligence, dpa]
+
+  - id: practice.training_completion_evidence
+    title: Security awareness training — completion evidence
+    content: >
+      All frameworks require security awareness training for staff
+      with measurable evidence of completion. Practical implementation:
+      use a training platform (KnowBe4, Hoxhunt, or even YouTube + a
+      quiz form) that issues completion records; require completion
+      within 30 days of joining and annually thereafter; track in a
+      spreadsheet or HRIS. The auditor will sample 5-10 employees and
+      ask for their training records — if the records exist with dates
+      that match the policy cadence, you pass.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber]
+    tags: [training, awareness, evidence]
+
+  - id: practice.incident_response_tabletop
+    title: Incident response — annual tabletop is non-negotiable
+    content: >
+      Every framework requires an incident response plan, and the test
+      that distinguishes "plan" from "process" is the tabletop
+      exercise: an annual rehearsal where the IR team walks through a
+      realistic scenario (ransomware, lost laptop, credential leak,
+      data exfiltration) and identifies gaps. The tabletop output —
+      attendee list, scenario description, decisions taken, follow-up
+      action items — is concrete evidence that the IR plan is real.
+      Schedule it the same week every year so it doesn't slip; pair it
+      with a backup restore test for combined evidence.
+    framework_codes: [soc2, ndpa, iso27001, cbn_cyber]
+    tags: [incident_response, tabletop, dr_test, evidence]
+
+  - id: practice.startup_evidence_pattern
+    title: African startup — the evidence collection pattern
+    content: >
+      For seed and Series A startups, the practical evidence pattern is:
+      a single source-of-truth folder (Google Drive or Notion) organised
+      by control framework, with one document per evidence item, each
+      named with date and control code. Typical first-effort coverage:
+      30-50 evidence artefacts spanning policies, screenshots,
+      configuration exports, and review records. This is enough for a
+      Type I report or an enterprise customer security questionnaire.
+      Type II audits require samples spanning the audit window,
+      typically 3-5 instances per recurring control.
+    framework_codes: [soc2, ndpa, iso27001]
+    tags: [evidence, startup_practical, audit_prep]
+
+  - id: practice.policies_dont_overengineer
+    title: Policies — don't over-engineer
+    content: >
+      First-time founders often over-engineer policy documents,
+      producing 30-page treatises that nobody reads. The auditor wants:
+      a clear scope statement, named owner, reasonable controls, last
+      review date within the past year, and evidence of staff
+      acknowledgment. Two pages of clear English beats twenty pages of
+      legalese for adoption. Use a templated set (CyberCapSec ships
+      ten), customise the company-specific variables, publish, require
+      acknowledgments, and review annually. Iterate from there.
+    framework_codes: [soc2, ndpa, iso27001]
+    tags: [policies, audit_prep, over_engineering]
+
+  - id: practice.cloud_inheritance
+    title: Cloud provider inheritance — what you get for free
+    content: >
+      Operating on AWS, GCP, or Azure means physical security, hardware
+      lifecycle, and base infrastructure controls are inherited from
+      the provider's own SOC 2 / ISO 27001 certifications. Map your
+      Statement of Applicability to "inherited from cloud provider" for:
+      ISO A.7.x physical controls; SOC 2 CC6.4 / 6.5 physical access /
+      disposal; portions of network boundary protection at the data
+      centre level. Keep the provider's most recent SOC 2 / ISO 27001
+      report in your vendor file as the inheritance evidence. Do *not*
+      mark application-layer controls as inherited — those are yours.
+    framework_codes: [soc2, ndpa, iso27001]
+    tags: [cloud, inheritance, soa, physical]

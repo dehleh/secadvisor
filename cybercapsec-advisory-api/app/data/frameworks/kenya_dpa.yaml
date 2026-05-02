@@ -1,0 +1,113 @@
+code: kenya_dpa
+name: Kenya Data Protection Act
+version: "2019"
+jurisdiction: Kenya
+description: >
+  The Data Protection Act, No. 24 of 2019, regulates processing of personal
+  data in Kenya. Enforced by the Office of the Data Protection Commissioner
+  (ODPC). Includes a registration requirement for data controllers and
+  processors meeting thresholds set by the Commissioner.
+source_url: https://www.odpc.go.ke/
+
+controls:
+  - code: REG_18
+    title: Registration of data controllers and processors
+    category: governance
+    description: >
+      Data controllers and processors meeting thresholds set by the
+      Commissioner must register with the ODPC. Registration includes
+      details of processing activities and security measures.
+    guidance: >
+      Evidence: ODPC registration certificate, registration application records.
+
+  - code: PRIN_25
+    title: Principles of data protection
+    category: privacy_principle
+    description: >
+      Personal data must be processed lawfully, fairly, and transparently;
+      collected for specified purposes; adequate, relevant, and limited;
+      accurate and current; kept no longer than necessary; processed
+      securely.
+    guidance: >
+      Evidence: privacy programme covering all principles, RoPA, retention
+      schedules.
+
+  - code: SEC_41
+    title: Security of processing
+    category: security
+    description: >
+      Every data controller or data processor must implement appropriate
+      technical and organisational measures to ensure the integrity and
+      confidentiality of personal data, having regard to the state of the
+      art, costs of implementation, and risks of varying likelihood and
+      severity.
+    guidance: >
+      Evidence: information security policy, encryption controls, access
+      controls, periodic security assessments.
+
+  - code: BREACH_43
+    title: Notification of personal data breaches
+    category: incident_response
+    description: >
+      Where a personal data breach is likely to result in real risk of harm
+      to a data subject, the data controller must notify the Commissioner
+      within 72 hours and affected data subjects in writing within a
+      reasonable time.
+    guidance: >
+      Evidence: incident response plan with ODPC notification timelines,
+      breach decision matrix, breach register, notification templates.
+
+  - code: TRANSFER_48
+    title: Transfer of personal data outside Kenya
+    category: privacy_principle
+    description: >
+      Personal data may only be transferred outside Kenya where the data
+      controller has provided proof to the Commissioner that the transfer is
+      based on appropriate safeguards or other lawful conditions.
+    guidance: >
+      Evidence: transfer impact assessments, contractual safeguards in
+      vendor agreements.
+
+  - code: RIGHTS_26
+    title: Rights of data subjects
+    category: data_subject_rights
+    description: >
+      Data subjects have rights to be informed, to access their data, to
+      object to processing, to correction or deletion of inaccurate data,
+      and to data portability.
+    guidance: >
+      Evidence: DSAR procedure, request log, response templates, deletion
+      and rectification procedures.
+
+  - code: DPIA_31
+    title: Data protection impact assessment
+    category: governance
+    description: >
+      Where processing operations are likely to result in high risk to
+      rights and freedoms of data subjects, a DPIA must be carried out prior
+      to processing.
+    guidance: >
+      Evidence: DPIA template, completed DPIAs for high-risk processing.
+
+  - code: PROCESSOR_42
+    title: Processor obligations
+    category: vendor_management
+    description: >
+      A data controller must use only data processors that provide
+      sufficient guarantees of appropriate technical and organisational
+      measures, governed by a written contract.
+    guidance: >
+      Evidence: signed data processing agreements, processor due diligence
+      records.
+
+  - code: DPO_24
+    title: Designation of data protection officer
+    category: governance
+    description: >
+      A data controller or processor whose processing operations require
+      regular and systematic monitoring of data subjects on a large scale,
+      or processes sensitive data on a large scale, must designate a data
+      protection officer.
+    guidance: >
+      Evidence: DPO appointment letter, published contact details, reporting
+      line documented.
