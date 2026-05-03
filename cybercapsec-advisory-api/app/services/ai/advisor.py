@@ -215,11 +215,23 @@ class ClaudeAdvisor(AdvisorEngine):
         )
 
         client = Anthropic(api_key=self._api_key)
+        # Prompt caching: the system prompt is identical across every
+        # report we generate, so we mark it as a cached prefix. Anthropic
+        # bills cached input tokens at ~10% of the normal rate after the
+        # first call, with a 5-minute TTL that refreshes on each hit.
+        # See https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching
+        system_blocks = [
+            {
+                "type": "text",
+                "text": system,
+                "cache_control": {"type": "ephemeral"},
+            }
+        ]
         start = time.perf_counter()
         response = client.messages.create(
             model=self._model,
             max_tokens=self._max_tokens,
-            system=system,
+            system=system_blocks,
             messages=messages,
         )
         elapsed_ms = int((time.perf_counter() - start) * 1000)

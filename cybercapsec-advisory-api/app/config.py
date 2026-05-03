@@ -37,7 +37,10 @@ class Settings(BaseSettings):
 
     # Anthropic / Claude
     ANTHROPIC_API_KEY: str = ""
-    CLAUDE_MODEL: str = "claude-opus-4-7"
+    # Haiku 4.5 is ~10–15× cheaper than Opus and strong enough for
+    # templated structured-JSON report generation. Override via env to
+    # use Sonnet (claude-sonnet-4-5) or Opus (claude-opus-4-7).
+    CLAUDE_MODEL: str = "claude-haiku-4-5"
 
     # CORS
     CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
