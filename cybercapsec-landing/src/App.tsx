@@ -90,9 +90,7 @@ function Header() {
     <header className="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-md bg-gradient-to-br from-brand-600 to-brand-900 flex items-center justify-center">
-            <ShieldCheck className="h-5 w-5 text-white" />
-          </div>
+          <img src="/logo.png" alt="CyberCapSec" className="h-9 w-9" />
           <span className="font-semibold text-slate-900">CyberCapSec</span>
           <span className="text-slate-500 text-sm">Advisory</span>
         </a>

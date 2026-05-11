@@ -4,13 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Brand palette — electric blue, matched to the CyberCapSec logo
         brand: {
           50: "#eef2ff",
-          100: "#e0e7ff",
-          500: "#6366f1",
-          600: "#4f46e5",
-          700: "#4338ca",
-          900: "#312e81",
+          100: "#dbe4ff",
+          200: "#b8c7ff",
+          300: "#8ea4ff",
+          400: "#5d77ff",
+          500: "#2c4aff",
+          600: "#0006ff",
+          700: "#0005d6",
+          800: "#0004a8",
+          900: "#00038a",
         },
         accent: { 500: "#f59e0b", 600: "#d97706" },
       },

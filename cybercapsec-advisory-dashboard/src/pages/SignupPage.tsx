@@ -1,6 +1,5 @@
 import { type FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { Input, Select } from "@/components/Field";
@@ -94,9 +93,7 @@ export function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-brand-50 p-6">
       <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-brand-900 mb-3">
-            <ShieldCheck className="h-7 w-7 text-white" />
-          </div>
+          <img src="/logo.png" alt="CyberCapSec" className="h-14 w-14 mx-auto mb-3" />
           <h1 className="text-2xl font-bold text-slate-900">
             Create your account
           </h1>

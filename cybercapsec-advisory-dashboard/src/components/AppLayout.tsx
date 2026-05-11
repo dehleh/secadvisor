@@ -40,9 +40,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
         <div className="px-5 py-5 border-b border-slate-200">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-md bg-gradient-to-br from-brand-600 to-brand-900 flex items-center justify-center">
-              <ShieldCheck className="h-5 w-5 text-white" />
-            </div>
+            <img src="/logo.png" alt="CyberCapSec" className="h-9 w-9" />
             <div>
               <div className="font-semibold text-slate-900 text-sm">
                 CyberCapSec
