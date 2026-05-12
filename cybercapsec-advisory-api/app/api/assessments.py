@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from app.core.tenancy import get_tenant_object_or_404
 from app.database import get_db
-from app.deps import get_current_company, get_current_user
+from app.deps import get_current_company, get_current_user, require_writer
 from app.models import Assessment, Company, User
 from app.schemas import (
     AssessmentCreate,
@@ -155,6 +155,7 @@ def _scoring_to_out(scoring: ScoringResult) -> ScoringSummaryOut:
     response_model=AssessmentOut,
     status_code=status.HTTP_201_CREATED,
     summary="Create a new draft assessment",
+    dependencies=[Depends(require_writer())],
 )
 def create_assessment(
     payload: AssessmentCreate,
@@ -210,6 +211,7 @@ def get_assessment(
     "/assessments/{assessment_id}/responses",
     response_model=AssessmentOut,
     summary="Save partial or full responses on a draft",
+    dependencies=[Depends(require_writer())],
 )
 def update_responses(
     assessment_id: str,
@@ -240,6 +242,7 @@ def assessment_progress(
     "/assessments/{assessment_id}/submit",
     response_model=AssessmentSubmitOut,
     summary="Submit and score an assessment, generating an AI report",
+    dependencies=[Depends(require_writer())],
 )
 def submit(
     assessment_id: str,

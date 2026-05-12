@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.tenancy import get_tenant_object_or_404
 from app.database import get_db
-from app.deps import get_current_company, get_current_user
+from app.deps import get_current_company, get_current_user, require_writer
 from app.models import Company, Evidence, MappingStrength, User
 from app.schemas import (
     ControlEvidenceOut,
@@ -34,6 +34,7 @@ router = APIRouter(prefix="/evidence", tags=["evidence"])
     response_model=EvidenceWithCoverageOut,
     status_code=status.HTTP_201_CREATED,
     summary="Submit evidence anchored to a control",
+    dependencies=[Depends(require_writer())],
 )
 def create(
     payload: EvidenceCreateRequest,
@@ -102,6 +103,7 @@ def get_one(
     "/{evidence_id}/status",
     response_model=EvidenceOut,
     summary="Update evidence status",
+    dependencies=[Depends(require_writer())],
 )
 def update_status(
     evidence_id: str,

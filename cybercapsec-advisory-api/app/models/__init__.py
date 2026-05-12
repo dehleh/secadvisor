@@ -26,6 +26,7 @@ from app.models.compliance import (
     FrameworkCode,
     MappingStrength,
     Report,
+    ReportShare,
     ReportType,
 )
 from app.models.workbench import (
@@ -64,6 +65,7 @@ __all__ = [
     "PolicyStatus",
     "PolicyTemplateCode",
     "Report",
+    "ReportShare",
     "ReportType",
     "RoadmapItem",
     "RoadmapStatus",

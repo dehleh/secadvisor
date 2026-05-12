@@ -30,7 +30,20 @@ from app.schemas.billing import (
     PricingOut,
     SubscriptionOut,
 )
-from app.schemas.report import ReportOut, ReportSummaryOut
+from app.schemas.report import (
+    PublicReportOut,
+    ReportOut,
+    ReportShareCreateRequest,
+    ReportShareOut,
+    ReportSummaryOut,
+)
+from app.schemas.users import (
+    PasswordChangeRequest,
+    UserInviteRequest,
+    UserInviteResponse,
+    UserSummaryOut,
+    UserUpdateRequest,
+)
 from app.schemas.workbench import (
     ControlEvidenceOut,
     CoverageMatrixOut,
@@ -72,6 +85,7 @@ __all__ = [
     "EvidenceWithCoverageOut",
     "FrameworkScoreOut",
     "LoginRequest",
+    "PasswordChangeRequest",
     "PlanOut",
     "PolicyAcknowledgeRequest",
     "PolicyAcknowledgmentOut",
@@ -82,11 +96,14 @@ __all__ = [
     "PolicyTemplateVariableOut",
     "PricingOut",
     "PropagatedControlOut",
+    "PublicReportOut",
     "QuestionnaireOptionOut",
     "QuestionnaireOut",
     "QuestionnaireQuestionOut",
     "QuestionnaireSectionOut",
     "ReportOut",
+    "ReportShareCreateRequest",
+    "ReportShareOut",
     "ReportSummaryOut",
     "RoadmapItemOut",
     "RoadmapItemUpdateRequest",
@@ -99,5 +116,9 @@ __all__ = [
     "SubscriptionOut",
     "TokenRefreshRequest",
     "TokenResponse",
+    "UserInviteRequest",
+    "UserInviteResponse",
     "UserResponse",
+    "UserSummaryOut",
+    "UserUpdateRequest",
 ]

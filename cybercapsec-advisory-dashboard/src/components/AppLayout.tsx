@@ -9,6 +9,7 @@ import {
   LogOut,
   ShieldCheck,
   FilePlus2,
+  Users,
 } from "lucide-react";
 
 import { Button } from "@/components/Button";
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
   { to: "/policies", label: "Policies", icon: FileText },
   { to: "/evidence", label: "Evidence", icon: FilePlus2 },
   { to: "/reports", label: "Reports", icon: ShieldCheck },
+  { to: "/team", label: "Team", icon: Users },
   { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
 

@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowLeft, FileText, Printer, Share2 } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
+import { ShareReportModal } from "@/components/ShareReportModal";
 import {
   Badge,
   Card,
@@ -80,6 +82,7 @@ export function ReportDetailPage() {
   const navigate = useNavigate();
   const { reportId = "" } = useParams<{ reportId: string }>();
   const { data: report, isLoading, error } = useReport(reportId);
+  const [shareOpen, setShareOpen] = useState(false);
 
   if (isLoading) return <LoadingPage />;
   if (error || !report) {
@@ -92,14 +95,27 @@ export function ReportDetailPage() {
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="mb-4"
-        onClick={() => navigate("/reports")}
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to reports
-      </Button>
+      <div className="flex items-center justify-between mb-4 no-print">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate("/reports")}
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to reports
+        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.print()}
+          >
+            <Printer className="h-4 w-4" /> Download PDF
+          </Button>
+          <Button size="sm" onClick={() => setShareOpen(true)}>
+            <Share2 className="h-4 w-4" /> Share
+          </Button>
+        </div>
+      </div>
 
       <PageHeader
         title={
@@ -248,6 +264,12 @@ export function ReportDetailPage() {
           </CardBody>
         </Card>
       )}
+
+      <ShareReportModal
+        reportId={reportId}
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+      />
     </>
   );
 }

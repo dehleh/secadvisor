@@ -17,3 +17,30 @@
 .prose h1, .prose h2, .prose h3, .prose h4 {
   scroll-margin-top: 4rem;
 }
+
+/* Print: hide app chrome, render report cleanly */
+@media print {
+  aside,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  body {
+    background: white !important;
+  }
+  .shadow-sm,
+  .shadow,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl {
+    box-shadow: none !important;
+  }
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}
+

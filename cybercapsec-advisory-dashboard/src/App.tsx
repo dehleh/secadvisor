@@ -8,9 +8,11 @@ import { EvidencePage } from "@/pages/EvidencePage";
 import { LoginPage } from "@/pages/LoginPage";
 import { PoliciesPage } from "@/pages/PoliciesPage";
 import { PolicyDetailPage } from "@/pages/PolicyDetailPage";
+import { PublicReportPage } from "@/pages/PublicReportPage";
 import { ReportDetailPage, ReportsListPage } from "@/pages/ReportPages";
 import { RoadmapPage } from "@/pages/RoadmapPage";
 import { SignupPage } from "@/pages/SignupPage";
+import { TeamPage } from "@/pages/TeamPage";
 import { RequireAuth, RequireGuest } from "@/routes/Guards";
 
 export function App() {
@@ -135,6 +137,19 @@ export function App() {
           </RequireAuth>
         }
       />
+      <Route
+        path="/team"
+        element={
+          <RequireAuth>
+            <AppLayout>
+              <TeamPage />
+            </AppLayout>
+          </RequireAuth>
+        }
+      />
+
+      {/* Public shared report */}
+      <Route path="/shared/reports/:token" element={<PublicReportPage />} />
 
       {/* Redirects */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

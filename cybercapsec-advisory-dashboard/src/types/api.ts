@@ -262,6 +262,52 @@ export interface ReportSummary {
   created_at: string;
 }
 
+// ----- Report shares (public links) -----------------------------------------
+
+export interface ReportShare {
+  id: string;
+  report_id: string;
+  token: string;
+  label: string | null;
+  expires_at: string | null;
+  revoked_at: string | null;
+  view_count: number;
+  last_viewed_at: string | null;
+  created_at: string;
+}
+
+export interface PublicReport {
+  company_name: string;
+  report_type: "initial" | "reassessment" | "quarterly" | "ad_hoc";
+  executive_summary: string | null;
+  risk_register: ReportRisk[];
+  roadmap: ReportRoadmapTask[];
+  framework_gaps: Record<string, FrameworkGap>;
+  overall_risk_score: number | null;
+  soc2_readiness_score: number | null;
+  ndpa_compliance_score: number | null;
+  generated_at: string;
+  label: string | null;
+}
+
+// ----- Team management ------------------------------------------------------
+
+export interface TeamUser {
+  id: string;
+  email: string;
+  full_name: string;
+  job_title: string | null;
+  role: UserRole;
+  is_active: boolean;
+  is_verified: boolean;
+  created_at: string;
+}
+
+export interface UserInviteResponse {
+  user: TeamUser;
+  temporary_password: string;
+}
+
 // ----- Policies --------------------------------------------------------------
 
 export type PolicyTemplateCode =

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.tenancy import get_tenant_object_or_404
 from app.database import get_db
-from app.deps import get_current_company
+from app.deps import get_current_company, require_writer
 from app.models import Assessment, Company, Report, RoadmapItem, User
 from app.schemas import (
     RoadmapItemOut,
@@ -44,6 +44,7 @@ def _get_report_scoped(db: Session, report_id: str, company_id: str) -> Report:
     response_model=RoadmapSeedResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Seed roadmap items from a report's roadmap array (idempotent)",
+    dependencies=[Depends(require_writer())],
 )
 def seed(
     report_id: str,
@@ -98,6 +99,7 @@ def get_item(
     "/items/{item_id}",
     response_model=RoadmapItemOut,
     summary="Update a roadmap item (status, assignee, due date, notes)",
+    dependencies=[Depends(require_writer())],
 )
 def update_item_endpoint(
     item_id: str,

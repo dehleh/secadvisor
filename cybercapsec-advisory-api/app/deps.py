@@ -77,3 +77,13 @@ def require_role(*allowed_roles: UserRole):
         return user
 
     return checker
+
+
+# Roles allowed to mutate company workbench data. AUDITOR is read-only.
+WRITER_ROLES = (UserRole.OWNER, UserRole.ADMIN, UserRole.MEMBER)
+
+
+def require_writer():
+    """Side-effect dependency: rejects auditor (or any future read-only role)."""
+    return require_role(*WRITER_ROLES)
+

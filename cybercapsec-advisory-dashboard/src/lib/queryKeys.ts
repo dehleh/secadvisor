@@ -28,6 +28,7 @@ export const queryKeys = {
     detail: (id: string) => ["reports", id] as const,
     byAssessment: (assessmentId: string) =>
       ["reports", "by-assessment", assessmentId] as const,
+    shares: (id: string) => ["reports", id, "shares"] as const,
   },
 
   policies: {
@@ -58,5 +59,13 @@ export const queryKeys = {
   billing: {
     pricing: ["billing", "pricing"] as const,
     subscription: ["billing", "subscription"] as const,
+  },
+
+  users: {
+    all: ["users"] as const,
+  },
+
+  publicReports: {
+    detail: (token: string) => ["public-reports", token] as const,
   },
 } as const;

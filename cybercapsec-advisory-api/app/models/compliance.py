@@ -1,7 +1,8 @@
 """Compliance framework, control library, and AI-generated report models."""
+from datetime import datetime
 from enum import Enum as PyEnum
 
-from sqlalchemy import JSON, Enum, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import JSON, Boolean, DateTime, Enum, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -159,3 +160,35 @@ class Report(Base, UUIDPKMixin, TimestampMixin):
     generation_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     assessment: Mapped["Assessment"] = relationship("Assessment", back_populates="reports")  # type: ignore  # noqa
+    shares: Mapped[list["ReportShare"]] = relationship(
+        "ReportShare", back_populates="report", cascade="all, delete-orphan"
+    )
+
+
+class ReportShare(Base, UUIDPKMixin, TimestampMixin):
+    """Tokenised, public, read-only access to a report.
+
+    Used to share a report with auditors, investors, customers, etc. without
+    requiring them to sign up. Token is opaque and not enumerable. Optional
+    expiry. Revocable. View counter for light analytics.
+    """
+
+    __tablename__ = "report_shares"
+
+    report_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("reports.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    company_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("companies.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    created_by_user_id: Mapped[str | None] = mapped_column(
+        String(36), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    token: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
+    label: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    view_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    last_viewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    report: Mapped[Report] = relationship("Report", back_populates="shares")

@@ -11,8 +11,10 @@ from app.api import (
     evidence,
     meta,
     policies,
+    public,
     reports,
     roadmap,
+    users,
 )
 from app.config import get_settings
 
@@ -51,12 +53,14 @@ def create_app() -> FastAPI:
     # Routes
     app.include_router(meta.router, prefix=settings.API_V1_PREFIX)
     app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(users.router, prefix=settings.API_V1_PREFIX)
     app.include_router(assessments.router, prefix=settings.API_V1_PREFIX)
     app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
     app.include_router(policies.router, prefix=settings.API_V1_PREFIX)
     app.include_router(evidence.router, prefix=settings.API_V1_PREFIX)
     app.include_router(roadmap.router, prefix=settings.API_V1_PREFIX)
     app.include_router(billing.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(public.router, prefix=settings.API_V1_PREFIX)
 
     return app
 

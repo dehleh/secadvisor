@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.tenancy import get_tenant_object_or_404
 from app.database import get_db
-from app.deps import get_current_company, get_current_user
+from app.deps import get_current_company, get_current_user, require_writer
 from app.models import Company, Policy, PolicyAcknowledgment, User
 from app.schemas import (
     PolicyAcknowledgeRequest,
@@ -95,6 +95,7 @@ def get_template_endpoint(
     response_model=PolicyOut,
     status_code=status.HTTP_201_CREATED,
     summary="Generate a new draft policy from a template",
+    dependencies=[Depends(require_writer())],
 )
 def create_policy(
     payload: PolicyGenerateRequest,
@@ -115,6 +116,7 @@ def create_policy(
     response_model=StarterPackResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Generate the full starter pack of policies as drafts",
+    dependencies=[Depends(require_writer())],
 )
 def starter_pack(
     company: Annotated[Company, Depends(get_current_company)],
@@ -162,6 +164,7 @@ def get_policy(
     "/policies/{policy_id}/publish",
     response_model=PolicyOut,
     summary="Publish a draft policy (archives any prior published version)",
+    dependencies=[Depends(require_writer())],
 )
 def publish(
     policy_id: str,
@@ -177,6 +180,7 @@ def publish(
     "/policies/{policy_id}/archive",
     response_model=PolicyOut,
     summary="Archive a policy",
+    dependencies=[Depends(require_writer())],
 )
 def archive(
     policy_id: str,
