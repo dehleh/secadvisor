@@ -578,9 +578,11 @@ function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="h-8 w-8 rounded-md bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
-                <ShieldCheck className="h-5 w-5 text-white" />
-              </div>
+              <img
+                src="/logo.png"
+                alt="CyberCapSec"
+                className="h-9 w-9 bg-white rounded-md p-0.5"
+              />
               <span className="font-semibold text-white">CyberCapSec</span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
