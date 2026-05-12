@@ -132,7 +132,7 @@ function PlanCard({
           </PlanFeature>
           <PlanFeature included>
             {plan.max_frameworks === null
-              ? "All frameworks (SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA)"
+              ? "All frameworks (SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, PCI DSS)"
               : `${plan.max_frameworks} frameworks`}
           </PlanFeature>
           <PlanFeature included={plan.ai_advisor_enabled}>

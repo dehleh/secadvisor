@@ -565,3 +565,162 @@ mappings:
     target_code: COND_1
     strength: partial
     notes: NDPA RoPA is a specific artifact; POPIA accountability is broader.
+
+  # ----- PCI DSS <-> peers -----
+  # Encryption at rest / key management
+  - source_framework: pci_dss
+    source_code: REQ_3.5
+    target_framework: soc2
+    target_code: CC6.1
+    strength: equivalent
+  - source_framework: soc2
+    source_code: CC6.1
+    target_framework: pci_dss
+    target_code: REQ_3.5
+    strength: equivalent
+
+  - source_framework: pci_dss
+    source_code: REQ_3.5
+    target_framework: iso27001
+    target_code: A.8.24
+    strength: equivalent
+  - source_framework: iso27001
+    source_code: A.8.24
+    target_framework: pci_dss
+    target_code: REQ_3.5
+    strength: equivalent
+
+  - source_framework: pci_dss
+    source_code: REQ_3.5
+    target_framework: ndpa
+    target_code: SEC_24
+    strength: partial
+    notes: Both require encryption of personal/account data; PCI is PAN-specific.
+
+  # Encryption in transit
+  - source_framework: pci_dss
+    source_code: REQ_4.2
+    target_framework: soc2
+    target_code: CC6.7
+    strength: equivalent
+  - source_framework: soc2
+    source_code: CC6.7
+    target_framework: pci_dss
+    target_code: REQ_4.2
+    strength: equivalent
+
+  # MFA / strong authentication
+  - source_framework: pci_dss
+    source_code: REQ_8.4
+    target_framework: soc2
+    target_code: CC6.1
+    strength: partial
+    notes: SOC 2 CC6.1 covers logical access generally; PCI 8.4 mandates MFA for remote/admin.
+  - source_framework: pci_dss
+    source_code: REQ_8.4
+    target_framework: cbn_cyber
+    target_code: "4.2"
+    strength: equivalent
+  - source_framework: cbn_cyber
+    source_code: "4.2"
+    target_framework: pci_dss
+    target_code: REQ_8.4
+    strength: equivalent
+  - source_framework: pci_dss
+    source_code: REQ_8.4
+    target_framework: iso27001
+    target_code: A.5.15
+    strength: partial
+    notes: ISO A.5.15 is access control; PCI 8.4 specifically requires MFA.
+
+  # Logging and monitoring
+  - source_framework: pci_dss
+    source_code: REQ_10.2
+    target_framework: soc2
+    target_code: CC7.2
+    strength: equivalent
+  - source_framework: soc2
+    source_code: CC7.2
+    target_framework: pci_dss
+    target_code: REQ_10.2
+    strength: equivalent
+  - source_framework: pci_dss
+    source_code: REQ_10.2
+    target_framework: iso27001
+    target_code: A.8.15
+    strength: equivalent
+  - source_framework: iso27001
+    source_code: A.8.15
+    target_framework: pci_dss
+    target_code: REQ_10.2
+    strength: equivalent
+
+  # Vulnerability management
+  - source_framework: pci_dss
+    source_code: REQ_6.3
+    target_framework: soc2
+    target_code: CC7.1
+    strength: equivalent
+  - source_framework: soc2
+    source_code: CC7.1
+    target_framework: pci_dss
+    target_code: REQ_6.3
+    strength: equivalent
+  - source_framework: pci_dss
+    source_code: REQ_11.3
+    target_framework: iso27001
+    target_code: A.8.8
+    strength: equivalent
+  - source_framework: iso27001
+    source_code: A.8.8
+    target_framework: pci_dss
+    target_code: REQ_11.3
+    strength: equivalent
+
+  # Incident response
+  - source_framework: pci_dss
+    source_code: REQ_12.10
+    target_framework: soc2
+    target_code: CC7.4
+    strength: partial
+    notes: Both require an IR plan; PCI mandates payment-brand notification specifics.
+  - source_framework: pci_dss
+    source_code: REQ_12.10
+    target_framework: ndpa
+    target_code: SEC_29
+    strength: partial
+    notes: NDPA SEC_29 covers breach notification; PCI requires brand/acquirer notification.
+
+  # Governance / policy
+  - source_framework: pci_dss
+    source_code: REQ_12.1
+    target_framework: soc2
+    target_code: CC1.1
+    strength: equivalent
+  - source_framework: soc2
+    source_code: CC1.1
+    target_framework: pci_dss
+    target_code: REQ_12.1
+    strength: equivalent
+  - source_framework: pci_dss
+    source_code: REQ_12.1
+    target_framework: iso27001
+    target_code: A.5.1
+    strength: equivalent
+  - source_framework: iso27001
+    source_code: A.5.1
+    target_framework: pci_dss
+    target_code: REQ_12.1
+    strength: equivalent
+
+  # Awareness training
+  - source_framework: pci_dss
+    source_code: REQ_12.6
+    target_framework: soc2
+    target_code: CC1.4
+    strength: equivalent
+  - source_framework: soc2
+    source_code: CC1.4
+    target_framework: pci_dss
+    target_code: REQ_12.6
+    strength: equivalent

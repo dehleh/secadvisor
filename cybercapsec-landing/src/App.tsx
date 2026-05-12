@@ -149,8 +149,8 @@ function Hero() {
           <p className="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl">
             CyberCapSec Advisory is the AI-powered compliance platform for
             startups in Lagos, Nairobi, Joburg, and Accra. Get a tailored SOC 2,
-            NDPA, CBN, ISO 27001, POPIA, or Kenya DPA roadmap in 20 minutes —
-            then track every control to done.
+            NDPA, CBN, ISO 27001, POPIA, Kenya DPA, or PCI DSS roadmap in 20
+            minutes — then track every control to done.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <a
@@ -187,7 +187,7 @@ function Features() {
     {
       icon: Layers,
       title: "Cross-framework propagation",
-      body: "Submit one piece of evidence — say, MFA enforcement on Google Workspace — and it satisfies the equivalent control in SOC 2, NDPA, CBN, ISO 27001, POPIA, and Kenya DPA. Prep once, comply everywhere.",
+      body: "Submit one piece of evidence — say, MFA enforcement on Google Workspace — and it satisfies the equivalent control in SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, and PCI DSS. Prep once, comply everywhere.",
     },
     {
       icon: ShieldCheck,
@@ -253,6 +253,11 @@ function Frameworks() {
       controls: "10 controls",
     },
     { code: "Kenya DPA", desc: "Data Protection Act 2019", controls: "9 controls" },
+    {
+      code: "PCI DSS",
+      desc: "Payment Card Industry Data Security Standard v4.0",
+      controls: "24 controls",
+    },
   ];
   return (
     <section id="frameworks" className="py-20 bg-slate-50 border-y border-slate-200">
@@ -262,9 +267,9 @@ function Frameworks() {
             Coverage that travels
           </h2>
           <p className="mt-4 text-slate-600 text-lg">
-            One assessment, six frameworks. 101 mapped controls, 87
-            cross-framework relationships. Add a new market without starting
-            over.
+            One assessment, seven frameworks. 125 mapped controls, 109
+            cross-framework relationships. Add a new market — or take cards —
+            without starting over.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

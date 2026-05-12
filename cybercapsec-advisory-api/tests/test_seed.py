@@ -125,7 +125,7 @@ class TestSeedLoader:
         # Total counts should match a single run
         total_frameworks = db_session.query(Framework).count()
         total_mappings = db_session.query(ControlMapping).count()
-        assert total_frameworks == 6
+        assert total_frameworks == 7
         # No duplicate (source_id, target_id) pairs
         pairs = [
             (m.source_control_id, m.target_control_id)

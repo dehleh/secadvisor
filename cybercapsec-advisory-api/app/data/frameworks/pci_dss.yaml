@@ -1,0 +1,321 @@
+code: pci_dss
+name: PCI DSS v4.0
+version: "4.0"
+jurisdiction: Global (Payment Card Industry)
+description: >
+  Payment Card Industry Data Security Standard v4.0. Mandatory for any
+  organisation that stores, processes, or transmits cardholder data. African
+  fintechs, payment gateways, and merchants serving Visa/Mastercard/Verve
+  flows must comply at the Self-Assessment Questionnaire (SAQ) level
+  appropriate to their merchant/service-provider scope. This seed covers the
+  12 high-level requirements with the sub-requirements most commonly cited
+  in SAQ-D and Service Provider Level 2 scopes.
+source_url: https://www.pcisecuritystandards.org/document_library/
+
+controls:
+  # ----- Build and Maintain a Secure Network and Systems --------------------
+
+  - code: REQ_1.2
+    title: Network security controls (NSC) configuration standards
+    category: network_security
+    description: >
+      Documented configuration standards for network security controls (firewalls,
+      router ACLs, security groups) that govern traffic between the cardholder
+      data environment (CDE) and untrusted networks. Reviewed at least every
+      6 months and after significant changes.
+    guidance: >
+      Evidence: firewall/security-group rule export, change-management tickets,
+      6-monthly review minutes, network diagram showing CDE boundary.
+
+  - code: REQ_1.3
+    title: Restrict inbound and outbound traffic to/from the CDE
+    category: network_security
+    description: >
+      Inbound traffic to the CDE is restricted to only what is necessary; all
+      other inbound traffic is denied. Outbound traffic from the CDE is
+      explicitly authorised. NAT/PAT used to mask internal addressing.
+    guidance: >
+      Evidence: documented allow-list, deny-by-default rule at perimeter,
+      cloud security-group inventory, segmentation test results.
+
+  - code: REQ_2.2
+    title: Secure configuration baselines for system components
+    category: secure_configuration
+    description: >
+      System configuration standards exist for every component type in the CDE,
+      derived from industry-accepted hardening guides (CIS, vendor benchmarks).
+      Default vendor accounts, passwords, and unnecessary services are removed
+      or disabled before deployment.
+    guidance: >
+      Evidence: CIS-aligned baseline documents, golden AMI/image build pipeline,
+      vulnerability scan showing absence of default creds.
+
+  # ----- Protect Account Data -----------------------------------------------
+
+  - code: REQ_3.2
+    title: Storage of cardholder data is minimised
+    category: data_protection
+    description: >
+      Account data storage is kept to the minimum required for legal, regulatory,
+      or business reasons. Sensitive Authentication Data (SAD) is never stored
+      after authorisation, even if encrypted. PAN truncation/masking applied
+      where full PAN is not required.
+    guidance: >
+      Evidence: data-flow diagram, retention schedule, database scans for PAN,
+      tokenisation provider attestation.
+
+  - code: REQ_3.5
+    title: PAN is rendered unreadable wherever stored
+    category: data_protection
+    description: >
+      Primary Account Numbers (PANs) at rest are rendered unreadable using
+      strong cryptography (AES-256 or stronger), truncation, or tokenisation.
+      Hash + truncated PAN must not be storable together unless additional
+      controls prevent reconstruction.
+    guidance: >
+      Evidence: encryption configuration, KMS key policies, tokenisation
+      vendor SOC 2 / PCI AoC, sample DB row showing masked PAN.
+
+  - code: REQ_3.6
+    title: Cryptographic key management
+    category: cryptography
+    description: >
+      Cryptographic keys used to protect stored account data are managed
+      throughout their lifecycle: generation, distribution, storage, rotation,
+      retirement, and destruction. Key custodians acknowledge their
+      responsibilities in writing.
+    guidance: >
+      Evidence: key management policy, KMS audit logs, rotation schedule,
+      signed key custodian attestations.
+
+  - code: REQ_4.2
+    title: Strong cryptography for transmission of cardholder data
+    category: cryptography
+    description: >
+      PAN is encrypted with strong cryptography (TLS 1.2+ with secure ciphers,
+      or equivalent) whenever transmitted over open or public networks
+      including the internet, wireless, mobile, satellite, and Bluetooth.
+    guidance: >
+      Evidence: TLS configuration scan (SSL Labs A+), ciphersuite allow-list,
+      certificate inventory, deprecation of TLS 1.0/1.1.
+
+  # ----- Maintain a Vulnerability Management Programme ----------------------
+
+  - code: REQ_5.2
+    title: Anti-malware deployed on systems commonly affected
+    category: malware
+    description: >
+      Anti-malware solutions are deployed on all system components in the CDE
+      that are commonly affected by malware (Windows endpoints, file servers,
+      etc.). Definitions are kept current and active scanning is enabled.
+    guidance: >
+      Evidence: EDR/AV inventory, real-time scanning configuration, weekly
+      definition update logs.
+
+  - code: REQ_6.2
+    title: Bespoke and custom software developed securely
+    category: secure_development
+    description: >
+      Software developed in-house follows a documented secure SDLC: developer
+      training, secure-coding standards, peer review for security-relevant
+      changes, and remediation of known vulnerabilities before release.
+    guidance: >
+      Evidence: SSDLC policy, code review records, SAST/DAST scan results,
+      developer security training completion.
+
+  - code: REQ_6.3
+    title: Identify and address security vulnerabilities
+    category: vulnerability_management
+    description: >
+      A process exists to identify new security vulnerabilities (vendor
+      advisories, public CVE feeds), assign a risk ranking, and apply
+      vendor-supplied security patches. Critical patches installed within
+      one month of release.
+    guidance: >
+      Evidence: patch management policy, vulnerability scanner output, ticket
+      tracker showing critical-patch SLA adherence.
+
+  - code: REQ_6.4
+    title: Public-facing web applications protected against attacks
+    category: appsec
+    description: >
+      Public-facing web applications are reviewed at least annually and after
+      changes via either (a) manual or automated application vulnerability
+      assessment, or (b) installing an automated technical solution that
+      detects and prevents web-based attacks (WAF).
+    guidance: >
+      Evidence: WAF configuration, annual penetration test report,
+      DAST scan reports.
+
+  # ----- Implement Strong Access Control Measures ---------------------------
+
+  - code: REQ_7.2
+    title: Access to system components and data is restricted
+    category: access_control
+    description: >
+      Access rights are restricted based on job classification and function
+      ("need to know"). Default deny on all systems; explicit allow only.
+      Role definitions and access privileges are documented and approved.
+    guidance: >
+      Evidence: RBAC role catalogue, IAM policy export, access-request
+      tickets with approver records.
+
+  - code: REQ_8.3
+    title: Strong authentication for all access into the CDE
+    category: authentication
+    description: >
+      All user access to system components is authenticated using something
+      the user knows (password meeting complexity), and at least one
+      additional factor (MFA) for any access into the CDE and all
+      non-console administrative access.
+    guidance: >
+      Evidence: MFA policy, IdP enforcement screenshots, authentication
+      logs showing MFA challenge.
+
+  - code: REQ_8.4
+    title: MFA for all non-console access and remote access
+    category: authentication
+    description: >
+      Multi-factor authentication is enforced for all non-console access into
+      the CDE for personnel with administrative access, and for all remote
+      access (VPN, bastion, SSH, RDP) originating from outside the entity's
+      network.
+    guidance: >
+      Evidence: VPN/bastion MFA configuration, identity-provider policy,
+      authentication audit logs.
+
+  - code: REQ_9.4
+    title: Physical access to media containing cardholder data
+    category: physical_security
+    description: >
+      Physical access to media (paper, electronic, backups) containing
+      cardholder data is restricted, classified, and logged. Media moved
+      offsite is sent via secured courier with chain-of-custody records.
+    guidance: >
+      Evidence: media inventory, courier waybills, datacentre access logs,
+      backup vendor SOC 2.
+
+  # ----- Regularly Monitor and Test Networks --------------------------------
+
+  - code: REQ_10.2
+    title: Audit logs capture security-relevant events
+    category: logging
+    description: >
+      Audit logs are enabled on all system components in the CDE and capture
+      at minimum: user identification, type of event, date/time, success/
+      failure, origination, and identity of affected data/component. Logs
+      cover all access to cardholder data, admin actions, authentication
+      attempts, and changes to identification/authentication mechanisms.
+    guidance: >
+      Evidence: SIEM dashboard, log retention policy, sample log entries
+      meeting the 9 required fields.
+
+  - code: REQ_10.4
+    title: Audit logs reviewed to identify anomalies
+    category: logging
+    description: >
+      Audit logs are reviewed at least daily for anomalies and suspicious
+      activity. Critical security events generate alerts. Review process
+      is documented and review records are retained.
+    guidance: >
+      Evidence: SIEM alert configuration, daily review checklist, ticket
+      records of investigated alerts.
+
+  - code: REQ_10.5
+    title: Audit logs retained for at least one year
+    category: logging
+    description: >
+      Audit log history is retained for at least 12 months, with at least
+      the last 3 months immediately available for analysis. Logs are
+      protected from unauthorised modification and deletion.
+    guidance: >
+      Evidence: log retention configuration, immutable log storage
+      (S3 Object Lock / equivalent), retention policy.
+
+  - code: REQ_11.3
+    title: External and internal vulnerability scans
+    category: vulnerability_management
+    description: >
+      Internal and external vulnerability scans are performed at least every
+      three months and after any significant change. External scans are
+      performed by a PCI Approved Scanning Vendor (ASV). All "high-risk"
+      vulnerabilities are remediated and the scan repeated until passing.
+    guidance: >
+      Evidence: quarterly ASV scan reports, internal scanner output,
+      remediation tickets, re-scan attestations.
+
+  - code: REQ_11.4
+    title: Penetration testing
+    category: vulnerability_management
+    description: >
+      Penetration testing methodology is documented and tests are performed
+      at least annually and after any significant infrastructure or
+      application change. Both network-layer and application-layer tests
+      are conducted; segmentation controls (if used to reduce scope) are
+      validated annually.
+    guidance: >
+      Evidence: annual pen-test report, methodology document, segmentation
+      test results, remediation tracker.
+
+  - code: REQ_11.5
+    title: Change-detection / file integrity monitoring
+    category: monitoring
+    description: >
+      A change-detection mechanism (e.g., FIM) alerts personnel to
+      unauthorised modification of critical system files, configuration
+      files, or content files in the CDE. Comparisons performed at least
+      weekly.
+    guidance: >
+      Evidence: FIM tool configuration, alert routing, sample alert
+      investigation tickets.
+
+  # ----- Maintain an Information Security Policy ----------------------------
+
+  - code: REQ_12.1
+    title: Information security policy is established and maintained
+    category: governance
+    description: >
+      An overall information security policy is established, published,
+      maintained, and disseminated to all relevant personnel. Reviewed at
+      least annually and updated when the environment or risks change.
+    guidance: >
+      Evidence: signed policy document, intranet publication, annual
+      review minutes.
+
+  - code: REQ_12.6
+    title: Security awareness programme
+    category: governance
+    description: >
+      A formal security awareness programme is implemented to make all
+      personnel aware of the information security policy and procedures and
+      their role in protecting cardholder data. Training delivered upon
+      hire and at least annually thereafter; personnel acknowledge they
+      have read and understood the policy.
+    guidance: >
+      Evidence: training platform completion report, signed acknowledgements,
+      content covering phishing, social engineering, PAN handling.
+
+  - code: REQ_12.8
+    title: Manage third-party service providers (TPSPs)
+    category: vendor_management
+    description: >
+      Maintain a list of TPSPs with whom account data is shared or that
+      could affect the security of the CDE. Written agreements include the
+      TPSP's responsibility for cardholder data security. Annual due
+      diligence (AoC review) and a documented programme to monitor TPSP
+      PCI DSS compliance status.
+    guidance: >
+      Evidence: TPSP register, signed DPAs/MSAs, collected AoCs, annual
+      vendor review records.
+
+  - code: REQ_12.10
+    title: Incident response plan
+    category: incident_response
+    description: >
+      An incident response plan is in place to be activated in the event of
+      a suspected or confirmed breach. Includes roles, responsibilities,
+      communication strategies (including notification of payment brands and
+      acquirers), business recovery, and tested at least annually.
+    guidance: >
+      Evidence: IR plan document, contact tree, annual tabletop exercise
+      report, post-incident reviews.

@@ -65,7 +65,7 @@ export function PoliciesPage() {
             <EmptyState
               icon={<FilePlus2 className="h-12 w-12" />}
               title="No policies yet"
-              description="Generate the starter pack to create 10 draft policies covering SOC 2, NDPA, and CBN essentials."
+              description="Generate the starter pack to create 10 draft policies covering SOC 2, NDPA, CBN, and PCI DSS essentials."
               action={
                 <Button
                   onClick={() => starterPack.mutate()}
