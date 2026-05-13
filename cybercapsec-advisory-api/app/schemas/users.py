@@ -1,8 +1,9 @@
 """Team management schemas."""
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
+from app.core.email_policy import assert_company_email
 from app.models.company import UserRole
 
 
@@ -30,6 +31,11 @@ class UserInviteRequest(BaseModel):
     full_name: str = Field(min_length=2, max_length=255)
     job_title: str | None = Field(default=None, max_length=255)
     role: UserRole = UserRole.MEMBER
+
+    @field_validator("email", mode="after")
+    @classmethod
+    def _company_email(cls, v: str) -> str:
+        return assert_company_email(v)
 
 
 class UserInviteResponse(BaseModel):

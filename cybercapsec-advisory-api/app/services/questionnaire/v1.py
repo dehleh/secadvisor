@@ -71,6 +71,79 @@ SECTION_COMPANY = Section(
                 Option(value="200+", label="200+"),
             ],
         ),
+        Question(
+            id="co.industry",
+            text="Which industry best describes your business?",
+            required=False,
+            help_text=(
+                "We use this to tailor the recommended frameworks, policy "
+                "templates, and report language (e.g. fintechs see PCI DSS "
+                "and CBN guidance prioritised; healthtechs see HIPAA-style "
+                "PHI handling)."
+            ),
+            type=QuestionType.SINGLE_SELECT,
+            options=[
+                Option(value="fintech", label="Fintech / Payments / Lending"),
+                Option(value="insurtech", label="Insurtech"),
+                Option(value="healthtech", label="Healthtech / Digital health"),
+                Option(value="edtech", label="Edtech"),
+                Option(value="ecommerce", label="E-commerce / Retail"),
+                Option(value="logistics", label="Logistics / Mobility"),
+                Option(value="agritech", label="Agritech"),
+                Option(value="proptech", label="Proptech / Real estate"),
+                Option(
+                    value="saas",
+                    label="B2B SaaS (horizontal — CRM, HR, dev tools, etc.)",
+                ),
+                Option(value="other", label="Other / not listed"),
+            ],
+        ),
+        Question(
+            id="co.business_model",
+            text="What is your primary business model?",
+            required=False,
+            help_text=(
+                "Affects which controls we emphasise — e.g. B2C consumer apps "
+                "get heavier privacy/breach-notification weighting, B2B SaaS "
+                "gets heavier subprocessor and DPA emphasis."
+            ),
+            type=QuestionType.SINGLE_SELECT,
+            options=[
+                Option(value="b2c", label="B2C — direct to consumers"),
+                Option(value="b2b", label="B2B — selling to businesses"),
+                Option(value="b2b2c", label="B2B2C — embedded in partners' products"),
+                Option(value="marketplace", label="Marketplace — connecting two sides"),
+                Option(value="gov", label="Government / public sector"),
+            ],
+        ),
+        Question(
+            id="co.regulated_activity",
+            required=False,
+            text=(
+                "Do you hold (or are you applying for) a financial-services "
+                "licence such as PSP, MMO, MFB, PSSP, BNPL, lending, or "
+                "insurance underwriting?"
+            ),
+            help_text=(
+                "Regulated entities have stricter cybersecurity reporting "
+                "obligations (CBN 24-hour rule, NAICOM, CMA, FSCA, etc.)."
+            ),
+            type=QuestionType.BOOLEAN,
+        ),
+        Question(
+            id="co.handles_card_data",
+            required=False,
+            text=(
+                "Do you store, process, or transmit payment card data (PAN, "
+                "CVV) directly — even if only for a portion of your flows?"
+            ),
+            help_text=(
+                "If yes, PCI DSS applies. If you fully outsource card data to "
+                "a PCI-certified processor (Paystack, Flutterwave, Stripe), "
+                "answer no — your scope is reduced to SAQ-A."
+            ),
+            type=QuestionType.BOOLEAN,
+        ),
     ],
 )
 

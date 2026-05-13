@@ -124,12 +124,13 @@ export function SignupPage() {
                   placeholder="Founder, CTO, etc."
                 />
                 <Input
-                  label="Email"
+                  label="Work email"
                   type="email"
                   value={form.email}
                   onChange={(e) => update("email", e.target.value)}
                   required
                   autoComplete="email"
+                  hint="Use your company email — Gmail, Yahoo, Outlook etc. are not accepted."
                 />
                 <Input
                   label="Password"

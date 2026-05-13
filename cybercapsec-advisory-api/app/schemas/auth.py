@@ -1,7 +1,13 @@
 """Authentication-related Pydantic schemas."""
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
+from app.core.email_policy import assert_company_email
 from app.models.company import CompanySize, CompanyStage, Sector, UserRole
+
+
+_company_email_validator = field_validator("email", mode="after")(
+    lambda cls, v: assert_company_email(v)  # noqa: ARG005
+)
 
 
 class TokenResponse(BaseModel):
@@ -20,6 +26,8 @@ class LoginRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
 
+    _validate_email = _company_email_validator
+
 
 class SignupRequest(BaseModel):
     """Initial signup creates a user AND a company (one-shot onboarding)."""
@@ -35,6 +43,8 @@ class SignupRequest(BaseModel):
     sector: Sector = Sector.OTHER
     size: CompanySize = CompanySize.MICRO
     stage: CompanyStage = CompanyStage.SEED
+
+    _validate_email = _company_email_validator
 
 
 class UserResponse(BaseModel):
