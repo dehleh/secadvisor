@@ -55,6 +55,12 @@ class Settings(BaseSettings):
     USE_MOCK_AI: bool = False
     USE_MOCK_PAYMENTS: bool = False
 
+    # Internal admin / marketing dashboard. When set, requests carrying
+    # `X-Admin-Key: <value>` to /admin/* endpoints are authorised. Leave
+    # empty to fully disable the admin surface (the default for prod
+    # safety until a key is provisioned via env).
+    ADMIN_API_KEY: str = ""
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def parse_cors_origins(cls, v):
