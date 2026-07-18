@@ -29,6 +29,7 @@ import type {
   RoadmapItem,
   TierLimitError,
 } from "@/types/api";
+import { evidenceExamples } from "@/lib/guidedReadiness";
 
 const FRAMEWORKS = [
   { value: "soc2", label: "SOC 2" },
@@ -39,6 +40,10 @@ const FRAMEWORKS = [
   { value: "kenya_dpa", label: "Kenya DPA" },
   { value: "ghana_dpa", label: "Ghana DPA" },
   { value: "iso27001", label: "ISO 27001" },
+  { value: "nist_csf", label: "NIST CSF" },
+  { value: "cis_controls", label: "CIS Controls" },
+  { value: "gdpr", label: "GDPR" },
+  { value: "hipaa", label: "HIPAA" },
   { value: "pci_dss", label: "PCI DSS" },
 ];
 
@@ -48,6 +53,18 @@ const KINDS: Array<{ value: EvidenceKind; label: string }> = [
   { value: "screenshot_url", label: "Screenshot URL" },
   { value: "narrative", label: "Narrative description" },
 ];
+
+const FRAMEWORK_LABEL_TO_CODE: Record<string, string> = {
+  "SOC 2": "soc2",
+  "ISO 27001": "iso27001",
+  "NIST CSF": "nist_csf",
+  "CIS Controls": "cis_controls",
+  "PCI DSS": "pci_dss",
+  NDPA: "ndpa",
+  GDPR: "gdpr",
+  CBN: "cbn_cyber",
+  HIPAA: "hipaa",
+};
 
 interface SubmittedEvidence {
   evidence: Evidence;
@@ -400,6 +417,54 @@ export function EvidencePage() {
           </CardBody>
         </Card>
       )}
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Evidence examples</CardTitle>
+          <p className="mt-1 text-sm text-slate-600">
+            Use these examples when a founder asks, "what should I upload for
+            PCI DSS, SOC 2, ISO 27001, or general security readiness?"
+          </p>
+        </CardHeader>
+        <CardBody className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+          {evidenceExamples.map((example) => {
+            const frameworkCode =
+              FRAMEWORK_LABEL_TO_CODE[example.frameworks[0]] ?? "soc2";
+            return (
+              <button
+                key={example.title}
+                type="button"
+                onClick={() => {
+                  setPrefill({
+                    title: example.title,
+                    description: example.description,
+                    kind: "narrative",
+                    framework_code: frameworkCode,
+                    control_code: "TBD",
+                    narrative_text: example.description,
+                  });
+                  setShowForm(true);
+                }}
+                className="rounded-md border border-slate-200 bg-white p-3 text-left transition-colors hover:border-brand-300 hover:bg-slate-50"
+              >
+                <div className="text-sm font-semibold text-slate-900">
+                  {example.title}
+                </div>
+                <p className="mt-1 text-xs leading-5 text-slate-600">
+                  {example.description}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {example.frameworks.slice(0, 2).map((framework) => (
+                    <Badge key={framework} variant="neutral">
+                      {framework}
+                    </Badge>
+                  ))}
+                </div>
+              </button>
+            );
+          })}
+        </CardBody>
+      </Card>
 
       {/* Coverage matrix */}
       {coverage?.coverage && Object.keys(coverage.coverage).length > 0 && (

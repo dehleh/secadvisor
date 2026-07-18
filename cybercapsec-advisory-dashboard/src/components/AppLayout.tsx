@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   FilePlus2,
   Target,
+  Zap,
   Users,
   X,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/onboarding", label: "Program setup", icon: Target },
   { to: "/frameworks", label: "Guides", icon: BookOpen },
+  { to: "/quick-baseline", label: "Quick baseline", icon: Zap },
   { to: "/assessment", label: "Assessment", icon: ClipboardCheck },
   { to: "/roadmap", label: "Roadmap", icon: ListChecks },
   { to: "/policies", label: "Policies", icon: FileText },

@@ -11,6 +11,7 @@ import { OnboardingPage } from "@/pages/OnboardingPage";
 import { PoliciesPage } from "@/pages/PoliciesPage";
 import { PolicyDetailPage } from "@/pages/PolicyDetailPage";
 import { PublicReportPage } from "@/pages/PublicReportPage";
+import { QuickBaselinePage } from "@/pages/QuickBaselinePage";
 import { ReportDetailPage, ReportsListPage } from "@/pages/ReportPages";
 import { RoadmapPage } from "@/pages/RoadmapPage";
 import { SignupPage } from "@/pages/SignupPage";
@@ -75,6 +76,16 @@ export function App() {
           <RequireAuth>
             <AppLayout>
               <FrameworksPage />
+            </AppLayout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/quick-baseline"
+        element={
+          <RequireAuth>
+            <AppLayout>
+              <QuickBaselinePage />
             </AppLayout>
           </RequireAuth>
         }

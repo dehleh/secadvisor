@@ -21,6 +21,10 @@ import { useRoadmapItems, useRoadmapProgress, useUpdateRoadmapItem } from "@/hoo
 import { normalizeApiError } from "@/api";
 import type { RoadmapItem, RoadmapStatus } from "@/types/api";
 import { cn } from "@/lib/cn";
+import {
+  getRoadmapEducation,
+  getRoadmapTimelineLabel,
+} from "@/lib/guidedReadiness";
 
 const COLUMNS: Array<{ status: RoadmapStatus; title: string }> = [
   { status: "todo", title: "To do" },
@@ -79,6 +83,7 @@ function ItemDetail({
   const [notes, setNotes] = useState(item.notes ?? "");
   const [blockedReason, setBlockedReason] = useState(item.blocked_reason ?? "");
   const [error, setError] = useState<string | null>(null);
+  const education = getRoadmapEducation(item);
 
   const setStatus = async (status: RoadmapStatus) => {
     setError(null);
@@ -136,6 +141,38 @@ function ItemDetail({
             <p className="text-sm text-slate-700 whitespace-pre-wrap">
               {item.description}
             </p>
+          </section>
+
+          <section className="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <h3 className="text-sm font-semibold text-slate-900 mb-3">
+              Why this matters
+            </h3>
+            <p className="text-sm leading-6 text-slate-700">{education.why}</p>
+            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div className="rounded-md bg-white p-3">
+                <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Founder view
+                </h4>
+                <p className="mt-1 text-sm leading-6 text-slate-700">
+                  {education.founderHow}
+                </p>
+              </div>
+              <div className="rounded-md bg-white p-3">
+                <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Engineer view
+                </h4>
+                <p className="mt-1 text-sm leading-6 text-slate-700">
+                  {education.engineerHow}
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {education.evidence.map((evidenceItem) => (
+                <Badge key={evidenceItem} variant="neutral">
+                  {evidenceItem}
+                </Badge>
+              ))}
+            </div>
           </section>
 
           {item.success_criteria.length > 0 && (
@@ -271,6 +308,20 @@ export function RoadmapPage() {
     }
     return map;
   }, [items]);
+  const timeline = useMemo(() => {
+    const map: Record<string, RoadmapItem[]> = {
+      "Next 7 days": [],
+      "Next 30 days": [],
+      "Next 90 days": [],
+      "Before audit or customer review": [],
+    };
+    if (items) {
+      for (const item of items) {
+        map[getRoadmapTimelineLabel(item.week_target)].push(item);
+      }
+    }
+    return map;
+  }, [items]);
 
   if (isLoading) return <LoadingPage />;
   if (error) return <ErrorMessage message={normalizeApiError(error).message} />;
@@ -314,6 +365,43 @@ export function RoadmapPage() {
           </div>
         </div>
       )}
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Timeline view</CardTitle>
+          <p className="mt-1 text-sm text-slate-600">
+            Founders can see what matters this week, this month, this quarter,
+            and before an audit or customer review.
+          </p>
+        </CardHeader>
+        <CardBody className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+          {Object.entries(timeline).map(([label, bucketItems]) => (
+            <div key={label} className="rounded-md border border-slate-200 p-3">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-semibold text-slate-900">{label}</h2>
+                <Badge variant="neutral">{bucketItems.length}</Badge>
+              </div>
+              <div className="mt-3 space-y-2">
+                {bucketItems.slice(0, 3).map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setSelected(item)}
+                    className="w-full rounded-md bg-slate-50 p-2 text-left text-xs font-medium leading-5 text-slate-700 hover:bg-brand-50"
+                  >
+                    {item.title}
+                  </button>
+                ))}
+                {bucketItems.length === 0 && (
+                  <p className="py-3 text-center text-xs text-slate-400">
+                    No tasks
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </CardBody>
+      </Card>
 
       {/* Kanban columns */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

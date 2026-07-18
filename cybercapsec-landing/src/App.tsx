@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
+  BookOpen,
   Check,
   ClipboardCheck,
   Globe,
   Layers,
+  MessageSquareText,
   ShieldCheck,
   Sparkles,
+  Zap,
   X,
 } from "lucide-react";
 
@@ -159,7 +162,7 @@ function Hero() {
               href={`${APP_URL}/signup`}
               className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium px-6 py-3 rounded-lg text-base"
             >
-              Start free assessment
+              Start free baseline
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
@@ -187,9 +190,24 @@ function Features() {
       body: "Answer practical questions about identity, cloud, applications, data, people, vendors, resilience, and response. The platform turns them into a 13-week risk-ranked roadmap.",
     },
     {
+      icon: Zap,
+      title: "5-minute founder baseline",
+      body: "Start light when the team is busy. The quick baseline explains the first security gaps before the founder commits to the full assessment.",
+    },
+    {
+      icon: BookOpen,
+      title: "PCI DSS and framework guides",
+      body: "Understand scope, readiness phases, evidence, owner actions, and common traps for PCI DSS, SOC 2, ISO 27001, NIST CSF, CIS Controls, NDPA, CBN, and privacy paths.",
+    },
+    {
       icon: Layers,
       title: "Evidence that proves real security work",
       body: "Attach links, screenshots, policy references, and narratives to controls. One strong evidence item can support several security domains and mapped compliance frameworks.",
+    },
+    {
+      icon: MessageSquareText,
+      title: "Security questionnaire assistant",
+      body: "Draft clear customer-security answers from your controls, roadmap, evidence, and framework readiness language instead of improvising under deadline pressure.",
     },
     {
       icon: ShieldCheck,

@@ -11,6 +11,7 @@ import {
   Sparkles,
   Target,
   UploadCloud,
+  Zap,
 } from "lucide-react";
 
 import { Button } from "@/components/Button";
@@ -42,6 +43,7 @@ import {
   objectiveLabels,
   priorityLabels,
 } from "@/lib/securityProgram";
+import { describeReadinessScore } from "@/lib/guidedReadiness";
 
 interface NextAction {
   title: string;
@@ -99,14 +101,24 @@ export function DashboardPage() {
                 title="Build your cyber baseline"
                 description="The 15-20 minute assessment covers identity, infrastructure, application security, data protection, vendors, people, resilience, and compliance readiness."
                 action={
-                  <Button
-                    onClick={() =>
-                      navigate(profile ? "/assessment" : "/onboarding")
-                    }
-                    size="lg"
-                  >
-                    {profile ? "Start your first assessment" : "Set up program"}
-                  </Button>
+                  <div className="flex flex-col justify-center gap-2 sm:flex-row">
+                    <Button
+                      onClick={() =>
+                        navigate(profile ? "/assessment" : "/onboarding")
+                      }
+                      size="lg"
+                    >
+                      {profile ? "Start your first assessment" : "Set up program"}
+                    </Button>
+                    <Button
+                      onClick={() => navigate("/quick-baseline")}
+                      size="lg"
+                      variant="outline"
+                    >
+                      <Zap className="h-4 w-4" />
+                      5-minute baseline
+                    </Button>
+                  </div>
                 }
               />
             </CardBody>
@@ -149,6 +161,10 @@ export function DashboardPage() {
     (sum, controls) => sum + controls.length,
     0,
   );
+  const postureDescription = describeReadinessScore(
+    completedAssessment?.overall_risk_score,
+    "overall cybersecurity posture",
+  );
   const nextAction: NextAction = !profile
     ? {
         title: "Set up your security program",
@@ -158,15 +174,15 @@ export function DashboardPage() {
         cta: "Set up program",
         icon: <Target className="h-5 w-5" />,
       }
-    : activeAssessment
+            : activeAssessment
       ? {
           title: "Finish the posture assessment",
           description:
             "Complete the remaining questions so the app can generate your risk report and action plan.",
           to: "/assessment",
           cta: "Continue assessment",
-          icon: <ClipboardCheck className="h-5 w-5" />,
-        }
+                icon: <ClipboardCheck className="h-5 w-5" />,
+              }
       : !completedAssessment
         ? {
             title: "Run your first cybersecurity assessment",
@@ -331,6 +347,12 @@ export function DashboardPage() {
                 score={completedAssessment.overall_risk_score ?? 0}
                 label="Overall posture"
               />
+              <p className="mt-3 text-sm font-medium text-slate-900">
+                {postureDescription.label}
+              </p>
+              <p className="mt-1 max-w-xs text-sm leading-6 text-slate-600">
+                {postureDescription.summary}
+              </p>
             </CardBody>
           </Card>
           <Card>

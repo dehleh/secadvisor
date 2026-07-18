@@ -27,6 +27,8 @@ import {
 } from "@/components/UI";
 import { normalizeApiError } from "@/api";
 import { useReport, useReports } from "@/hooks/useReports";
+import { frameworkGuides } from "@/lib/frameworkReadiness";
+import { describeReadinessScore } from "@/lib/guidedReadiness";
 
 export function ReportsListPage() {
   const navigate = useNavigate();
@@ -58,6 +60,34 @@ export function ReportsListPage() {
         title="Reports"
         description="AI-generated security and compliance reports from your assessments."
       />
+      <Card className="mb-6 border-brand-200 bg-brand-50/40">
+        <CardHeader>
+          <CardTitle>Framework readiness reports</CardTitle>
+          <p className="mt-1 text-sm text-slate-600">
+            Open a framework guide before sharing a report so the client sees
+            what PCI DSS, SOC 2, ISO 27001, NIST CSF, CIS Controls, and
+            regulatory readiness mean in plain English.
+          </p>
+        </CardHeader>
+        <CardBody className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          {frameworkGuides.slice(0, 6).map((guide) => (
+            <button
+              key={guide.key}
+              type="button"
+              onClick={() => navigate("/frameworks")}
+              className="rounded-md border border-slate-200 bg-white p-3 text-left transition-colors hover:border-brand-300 hover:bg-white"
+            >
+              <Badge variant="brand">{guide.category}</Badge>
+              <h3 className="mt-2 text-sm font-semibold text-slate-900">
+                {guide.shortName} readiness
+              </h3>
+              <p className="mt-1 text-xs leading-5 text-slate-600">
+                {guide.bestFor}
+              </p>
+            </button>
+          ))}
+        </CardBody>
+      </Card>
       <Card>
         <CardBody className="-mx-5 -my-4 divide-y divide-slate-100">
           {reports.map((r) => (
@@ -259,6 +289,14 @@ export function ReportDetailPage() {
                 </Badge>
               </CardHeader>
               <CardBody>
+                <p className="mb-2 text-sm font-medium text-slate-900">
+                  {
+                    describeReadinessScore(
+                      g.readiness_score,
+                      `${g.framework_name} readiness`,
+                    ).label
+                  }
+                </p>
                 <p className="text-sm text-slate-700 mb-3">{g.summary}</p>
                 {g.top_gaps.length > 0 && (
                   <>
