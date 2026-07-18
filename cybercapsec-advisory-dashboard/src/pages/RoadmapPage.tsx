@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calendar } from "lucide-react";
 
 import { Button } from "@/components/Button";
@@ -73,6 +74,7 @@ function ItemDetail({
   item: RoadmapItem;
   onClose: () => void;
 }) {
+  const navigate = useNavigate();
   const update = useUpdateRoadmapItem();
   const [notes, setNotes] = useState(item.notes ?? "");
   const [blockedReason, setBlockedReason] = useState(item.blocked_reason ?? "");
@@ -169,6 +171,25 @@ function ItemDetail({
               </div>
             </section>
           )}
+
+          <section className="rounded-md border border-brand-200 bg-brand-50 p-3">
+            <h3 className="text-sm font-semibold text-slate-900 mb-1">
+              Evidence handoff
+            </h3>
+            <p className="text-sm text-slate-700">
+              When this work is started or completed, attach evidence so the
+              control is useful for security reviews, customer due diligence,
+              and compliance mapping.
+            </p>
+            <Button
+              className="mt-3"
+              size="sm"
+              variant="outline"
+              onClick={() => navigate("/evidence")}
+            >
+              Add evidence for this work
+            </Button>
+          </section>
 
           <section>
             <h3 className="text-sm font-semibold text-slate-900 mb-2">

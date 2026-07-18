@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Check, ExternalLink, X } from "lucide-react";
+import {
+  Check,
+  ExternalLink,
+  ShieldCheck,
+  UploadCloud,
+  Users,
+  X,
+} from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
@@ -78,6 +85,14 @@ function PlanCard({
 
   // Highlight Growth — that's the price-anchor / recommended tier
   const isHighlighted = plan.tier === "growth" && !isCurrent;
+  const planFit: Record<SubscriptionTierCode, string> = {
+    free: "Try the cyber baseline and see your first risks.",
+    starter: "Run a focused security program for one or two priority areas.",
+    growth:
+      "Operate ongoing cybersecurity across controls, evidence, policies, and reports.",
+    audit_ready:
+      "Add reviewer support for customer security reviews, audits, and board-ready posture.",
+  };
 
   return (
     <Card
@@ -118,6 +133,10 @@ function PlanCard({
               <span className="text-sm text-slate-500 ml-1">/month</span>
             </div>
           )}
+        </div>
+
+        <div className="mb-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+          {planFit[plan.tier]}
         </div>
 
         <ul className="space-y-2 mb-5 min-h-[12rem]">
@@ -258,7 +277,7 @@ export function BillingPage() {
     <>
       <PageHeader
         title="Billing & Plans"
-        description={`Pricing in ${pricing.currency}. All plans bill monthly. Cancel anytime.`}
+        description={`Pricing in ${pricing.currency}. Upgrade when your security program needs more assessments, evidence, frameworks, AI guidance, or reviewer support.`}
       />
 
       {error && (
@@ -266,6 +285,44 @@ export function BillingPage() {
           <ErrorMessage message={error} />
         </div>
       )}
+
+      <Card className="mb-6 border-brand-200 bg-brand-50/40">
+        <CardBody className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="flex gap-3">
+            <ShieldCheck className="mt-1 h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Unlock broader cyber coverage
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                Move beyond a baseline into continuous risk reduction.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <UploadCloud className="mt-1 h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Store more evidence
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                Prove controls for customers, insurers, auditors, and regulators.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <Users className="mt-1 h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Support real teams
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                Assign owners, publish policies, and share posture confidently.
+              </p>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
 
       {/* Current subscription summary */}
       {activeSub && currentTier !== "free" && (

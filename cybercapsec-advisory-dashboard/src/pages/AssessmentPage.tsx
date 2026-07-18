@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Save, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { Input, Select, Textarea } from "@/components/Field";
 import { PageHeader } from "@/components/PageHeader";
 import {
+  Badge,
   Card,
   CardBody,
   CardFooter,
@@ -27,6 +28,29 @@ import type {
   QuestionnaireQuestion,
   QuestionnaireSection,
 } from "@/types/api";
+
+function sectionOutcome(section: QuestionnaireSection): string {
+  const key = `${section.id} ${section.title}`.toLowerCase();
+  if (key.includes("access") || key.includes("identity")) {
+    return "Helps find account takeover, privilege, and offboarding risk.";
+  }
+  if (key.includes("data") || key.includes("privacy")) {
+    return "Helps prioritize data protection, retention, and customer trust controls.";
+  }
+  if (key.includes("incident") || key.includes("response")) {
+    return "Checks whether your team can detect, escalate, contain, and recover.";
+  }
+  if (key.includes("vendor") || key.includes("third")) {
+    return "Surfaces supplier, SaaS, and shared-access risk in your environment.";
+  }
+  if (key.includes("cloud") || key.includes("infrastructure")) {
+    return "Reviews production exposure, resilience, logging, and recovery foundations.";
+  }
+  if (key.includes("application") || key.includes("development")) {
+    return "Connects engineering practices to vulnerabilities and release risk.";
+  }
+  return "Turns this domain into risks, roadmap tasks, evidence needs, and report language.";
+}
 
 // ----- Question rendering ----------------------------------------------------
 
@@ -333,13 +357,57 @@ export function AssessmentPage() {
   const completionPct = visibleQuestions.size
     ? Math.round((totalAnswered / visibleQuestions.size) * 100)
     : 0;
+  const remainingQuestions = Math.max(0, visibleQuestions.size - totalAnswered);
+  const minutesRemaining = Math.max(2, Math.ceil(remainingQuestions * 0.6));
 
   return (
     <>
       <PageHeader
-        title="Security & Compliance Assessment"
-        description={`${totalAnswered} of ${visibleQuestions.size} questions answered (${completionPct}%)`}
+        title="Cybersecurity assessment"
+        description={`${totalAnswered} of ${visibleQuestions.size} questions answered (${completionPct}%). Your answers create risks, roadmap tasks, evidence requests, policies, and compliance mapping.`}
       />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+        <Card>
+          <CardBody className="flex items-center gap-3">
+            <Clock className="h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                About {minutesRemaining} min left
+              </div>
+              <div className="text-xs text-slate-500">
+                Based on remaining visible questions
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="flex items-center gap-3">
+            <Save className="h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Progress is saved
+              </div>
+              <div className="text-xs text-slate-500">
+                Answers save when you move between sections
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="flex items-center gap-3">
+            <ShieldCheck className="h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Security-first output
+              </div>
+              <div className="text-xs text-slate-500">
+                Compliance mapping is included where relevant
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
 
       {/* Progress bar */}
       <div className="mb-6">
@@ -372,7 +440,17 @@ export function AssessmentPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{currentSection.title}</CardTitle>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <CardTitle>{currentSection.title}</CardTitle>
+              <p className="text-sm text-slate-600 mt-1">
+                {sectionOutcome(currentSection)}
+              </p>
+            </div>
+            <Badge variant="brand">
+              Section {sectionIdx + 1} of {sections.length}
+            </Badge>
+          </div>
           {currentSection.description && (
             <p className="text-sm text-slate-600 mt-1">
               {currentSection.description}

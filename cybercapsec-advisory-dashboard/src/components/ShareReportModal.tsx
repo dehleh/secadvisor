@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, Link2, Trash2, X } from "lucide-react";
+import { Copy, Eye, Link2, LockKeyhole, ShieldCheck, Trash2, X } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { Badge, ErrorMessage, Spinner } from "@/components/UI";
@@ -92,6 +92,39 @@ export function ShareReportModal({ reportId, open, onClose }: Props) {
         </div>
 
         <div className="px-6 py-5 space-y-5">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div className="rounded-md border border-brand-200 bg-brand-50 p-3">
+              <div className="flex items-center gap-2 text-sm font-semibold text-brand-900">
+                <Eye className="h-4 w-4" />
+                Visible
+              </div>
+              <p className="mt-1 text-xs leading-5 text-slate-700">
+                Summary, risk register, roadmap, scores, framework gaps, and
+                report label.
+              </p>
+            </div>
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <LockKeyhole className="h-4 w-4" />
+                Not visible
+              </div>
+              <p className="mt-1 text-xs leading-5 text-slate-700">
+                Raw assessment answers, evidence files, team notes, billing,
+                users, and internal policies.
+              </p>
+            </div>
+            <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3">
+              <div className="flex items-center gap-2 text-sm font-semibold text-emerald-900">
+                <ShieldCheck className="h-4 w-4" />
+                Controlled
+              </div>
+              <p className="mt-1 text-xs leading-5 text-slate-700">
+                Links can expire, be revoked, and show view count for light
+                assurance.
+              </p>
+            </div>
+          </div>
+
           {/* Create */}
           <div className="border border-slate-200 rounded-md p-4 bg-slate-50">
             <h3 className="text-sm font-semibold text-slate-900 mb-3">

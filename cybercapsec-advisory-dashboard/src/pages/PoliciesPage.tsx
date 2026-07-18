@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { FilePlus2, Sparkles } from "lucide-react";
+import { CheckCircle, FilePlus2, Send, ShieldCheck, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
@@ -38,6 +38,7 @@ export function PoliciesPage() {
   const drafts = policies?.filter((p) => p.status === "draft") ?? [];
   const published = policies?.filter((p) => p.status === "published") ?? [];
   const archived = policies?.filter((p) => p.status === "archived") ?? [];
+  const nextDraft = drafts[0];
 
   return (
     <>
@@ -58,6 +59,76 @@ export function PoliciesPage() {
           </div>
         }
       />
+
+      <Card className="mb-6 border-brand-200 bg-brand-50/40">
+        <CardBody className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2 text-sm font-semibold text-brand-800">
+              <ShieldCheck className="h-4 w-4" />
+              Security governance flow
+            </div>
+            <h2 className="mt-1 text-xl font-semibold text-slate-900">
+              Turn roadmap gaps into approved team rules
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-slate-700">
+              Policies support cybersecurity operations: access control,
+              incident response, vendor risk, backups, change management,
+              acceptable use, data protection, and awareness. Compliance
+              mappings are included where they help prove the work.
+            </p>
+          </div>
+          <div className="rounded-md border border-slate-200 bg-white p-3">
+            <div className="text-sm font-semibold text-slate-900">
+              Next policy action
+            </div>
+            {!policies?.length ? (
+              <>
+                <p className="mt-1 text-sm text-slate-600">
+                  Generate the starter pack, then review and publish.
+                </p>
+                <Button
+                  className="mt-3 w-full"
+                  size="sm"
+                  onClick={() => starterPack.mutate()}
+                  loading={starterPack.isPending}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Generate pack
+                </Button>
+              </>
+            ) : nextDraft ? (
+              <>
+                <p className="mt-1 text-sm text-slate-600">
+                  Review and publish {nextDraft.title}.
+                </p>
+                <Button
+                  className="mt-3 w-full"
+                  size="sm"
+                  onClick={() => navigate(`/policies/${nextDraft.id}`)}
+                >
+                  <Send className="h-4 w-4" />
+                  Review draft
+                </Button>
+              </>
+            ) : (
+              <>
+                <p className="mt-1 text-sm text-slate-600">
+                  Published policies are ready for team acknowledgement.
+                </p>
+                <Button
+                  className="mt-3 w-full"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate("/team")}
+                >
+                  <CheckCircle className="h-4 w-4" />
+                  Invite team
+                </Button>
+              </>
+            )}
+          </div>
+        </CardBody>
+      </Card>
 
       {!policies?.length ? (
         <Card>

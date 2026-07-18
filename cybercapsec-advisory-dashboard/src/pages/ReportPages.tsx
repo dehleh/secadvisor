@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, FileText, Printer, Share2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+  ListChecks,
+  Printer,
+  Share2,
+  ShieldCheck,
+  UploadCloud,
+} from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
@@ -127,6 +136,94 @@ export function ReportDetailPage() {
         }
         description={`Generated ${new Date(report.created_at).toLocaleString()}`}
       />
+
+      <Card className="mb-6 border-brand-200 bg-brand-50/50">
+        <CardHeader className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold text-brand-800">
+              <ShieldCheck className="h-4 w-4" />
+              Security action plan
+            </div>
+            <CardTitle className="mt-1">
+              Start with the highest-impact work
+            </CardTitle>
+            <p className="mt-1 text-sm text-slate-700">
+              This report is the diagnosis. The roadmap, evidence vault,
+              policies, and team assignments are how you reduce cyber risk.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              onClick={() => navigate("/roadmap")}
+            >
+              <ListChecks className="h-4 w-4" />
+              Start roadmap
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => navigate("/evidence")}
+            >
+              <UploadCloud className="h-4 w-4" />
+              Add evidence
+            </Button>
+          </div>
+        </CardHeader>
+        <CardBody className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div>
+            <h3 className="mb-2 text-sm font-semibold text-slate-900">
+              Top risks to reduce
+            </h3>
+            <div className="space-y-2">
+              {report.risk_register.slice(0, 3).map((risk) => (
+                <div
+                  key={risk.id}
+                  className="rounded-md border border-slate-200 bg-white p-3"
+                >
+                  <div className="mb-1 flex items-center gap-2">
+                    <span className="font-mono text-xs text-slate-500">
+                      {risk.id}
+                    </span>
+                    <SeverityBadge severity={risk.severity} />
+                  </div>
+                  <div className="text-sm font-medium text-slate-900">
+                    {risk.title}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="mb-2 text-sm font-semibold text-slate-900">
+              First roadmap actions
+            </h3>
+            <div className="space-y-2">
+              {report.roadmap.slice(0, 3).map((task) => (
+                <button
+                  key={task.id}
+                  type="button"
+                  onClick={() => navigate("/roadmap")}
+                  className="w-full rounded-md border border-slate-200 bg-white p-3 text-left transition-colors hover:border-brand-300 hover:bg-white"
+                >
+                  <div className="mb-1 flex items-center gap-2">
+                    <Badge variant="neutral">Week {task.week_target}</Badge>
+                    <Badge variant="neutral">
+                      {task.effort.replace("_", " ")}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-medium text-slate-900">
+                      {task.title}
+                    </span>
+                    <ArrowRight className="h-4 w-4 text-brand-700" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </CardBody>
+      </Card>
 
       {/* Executive summary */}
       {report.executive_summary && (

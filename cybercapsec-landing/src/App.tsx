@@ -144,13 +144,15 @@ function Hero() {
             Built for African fintechs and SaaS
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 leading-[1.05]">
-            Compliance, without the <span className="text-brand-600">consultancy bill</span>.
+            Run your cybersecurity program, not just your{" "}
+            <span className="text-brand-600">compliance checklist</span>.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl">
-            CyberCapSec Advisory is the AI-powered compliance platform for
-            startups in Lagos, Nairobi, Joburg, and Accra. Get a tailored SOC 2,
-            NDPA, CBN, ISO 27001, POPIA, Kenya DPA, or PCI DSS roadmap in 20
-            minutes — then track every control to done.
+            CyberCapSec Advisory helps startups in Lagos, Nairobi, Joburg, and
+            Accra assess cyber risk, prioritize controls, collect evidence,
+            publish policies, and share a credible posture report. Guided
+            readiness for PCI DSS, SOC 2, ISO 27001, NIST CSF, CIS Controls,
+            NDPA, CBN, POPIA, and Kenya DPA comes with it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <a
@@ -181,18 +183,18 @@ function Features() {
   const items = [
     {
       icon: ClipboardCheck,
-      title: "20-minute assessment, AI-tailored roadmap",
-      body: "Answer 33 questions about your stack, data, and goals. The platform produces a 13-week roadmap weighted by risk and effort, citing the controls each task addresses.",
+      title: "20-minute cyber posture assessment",
+      body: "Answer practical questions about identity, cloud, applications, data, people, vendors, resilience, and response. The platform turns them into a 13-week risk-ranked roadmap.",
     },
     {
       icon: Layers,
-      title: "Cross-framework propagation",
-      body: "Submit one piece of evidence — say, MFA enforcement on Google Workspace — and it satisfies the equivalent control in SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, and PCI DSS. Prep once, comply everywhere.",
+      title: "Evidence that proves real security work",
+      body: "Attach links, screenshots, policy references, and narratives to controls. One strong evidence item can support several security domains and mapped compliance frameworks.",
     },
     {
       icon: ShieldCheck,
-      title: "10 policy templates, customised to you",
-      body: "Information security, access control, data protection, incident response, and seven more — all generated with your company name, country, and DPO already filled in. Publishable in minutes.",
+      title: "Policies tied to operational risk",
+      body: "Generate access control, incident response, vendor risk, backup, change management, awareness, and data protection policies that help teams behave securely.",
     },
     {
       icon: Globe,
@@ -205,12 +207,12 @@ function Features() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="max-w-2xl mb-14">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
-            Everything an early-stage compliance program needs
+            Everything an early-stage cybersecurity program needs
           </h2>
           <p className="mt-4 text-slate-600 text-lg">
             Built by people who shipped fintech in Nigeria, Kenya, and South
-            Africa. We know what auditors ask for and what regulators actually
-            care about.
+            Africa. We know what attackers exploit, what customers ask for, and
+            what regulators actually care about.
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
@@ -239,24 +241,50 @@ function Features() {
 
 function Frameworks() {
   const frameworks = [
-    { code: "SOC 2", desc: "Trust Services Criteria", controls: "35 controls" },
-    { code: "NDPA", desc: "Nigeria Data Protection Act 2023", controls: "16 controls" },
-    {
-      code: "CBN",
-      desc: "Risk-Based Cybersecurity Framework",
-      controls: "12 controls",
-    },
-    { code: "ISO 27001", desc: "Annex A 2022", controls: "19 controls" },
-    {
-      code: "POPIA",
-      desc: "Protection of Personal Information Act",
-      controls: "10 controls",
-    },
-    { code: "Kenya DPA", desc: "Data Protection Act 2019", controls: "9 controls" },
     {
       code: "PCI DSS",
-      desc: "Payment Card Industry Data Security Standard v4.0",
-      controls: "24 controls",
+      desc: "Payment card security readiness",
+      path: "Scope payments, harden systems, collect evidence, prepare validation.",
+    },
+    {
+      code: "SOC 2",
+      desc: "Customer trust and security operations",
+      path: "Build controls, operate them consistently, package auditor-ready proof.",
+    },
+    {
+      code: "ISO 27001",
+      desc: "Information security management system",
+      path: "Run risk treatment, policies, ownership, reviews, and improvement.",
+    },
+    {
+      code: "NIST CSF",
+      desc: "Cybersecurity risk-management baseline",
+      path: "Govern, identify, protect, detect, respond, and recover with clarity.",
+    },
+    {
+      code: "CIS Controls",
+      desc: "Practical technical safeguards",
+      path: "Prioritize assets, access, configuration, vulnerability fixes, and logs.",
+    },
+    {
+      code: "NDPA",
+      desc: "Nigeria data-protection readiness",
+      path: "Map personal data, secure access, manage vendors, and prepare incidents.",
+    },
+    {
+      code: "CBN",
+      desc: "Financial-sector cybersecurity readiness",
+      path: "Show governance, resilience, monitoring, third-party risk, and reporting.",
+    },
+    {
+      code: "POPIA",
+      desc: "South Africa privacy readiness",
+      path: "Connect privacy obligations to real security controls and evidence.",
+    },
+    {
+      code: "Kenya DPA",
+      desc: "Kenya data-protection readiness",
+      path: "Track data flows, retention, access, vendors, and breach response.",
     },
   ];
   return (
@@ -264,12 +292,13 @@ function Frameworks() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="max-w-2xl mb-14">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
-            Coverage that travels
+            Frameworks explained before they become work
           </h2>
           <p className="mt-4 text-slate-600 text-lg">
-            One assessment, seven frameworks. 125 mapped controls, 109
-            cross-framework relationships. Add a new market — or take cards —
-            without starting over.
+            A client who needs PCI DSS, SOC 2, ISO 27001, NIST CSF, CIS
+            Controls, NDPA, CBN, POPIA, or Kenya DPA should understand the path
+            in minutes: what it is for, what to fix first, what evidence to
+            collect, and what readiness looks like.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -280,9 +309,7 @@ function Frameworks() {
             >
               <div className="font-semibold text-slate-900">{fw.code}</div>
               <div className="text-sm text-slate-600 mt-1">{fw.desc}</div>
-              <div className="text-xs text-slate-500 mt-3 inline-block bg-slate-100 px-2 py-0.5 rounded">
-                {fw.controls}
-              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">{fw.path}</p>
             </div>
           ))}
         </div>
@@ -558,11 +585,11 @@ function CTA() {
     <section className="py-20 bg-gradient-to-br from-brand-600 to-brand-900">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
-          Ready to put real numbers on your compliance gap?
+          Ready to put real numbers on your cyber risk?
         </h2>
         <p className="mt-4 text-brand-100 text-lg max-w-2xl mx-auto">
-          The free assessment takes 20 minutes and produces an AI-tailored
-          roadmap. No credit card. No sales call.
+          The free assessment takes 20 minutes and produces a risk-ranked
+          security roadmap. No credit card. No sales call.
         </p>
         <a
           href={`${APP_URL}/signup`}
@@ -591,8 +618,8 @@ function Footer() {
               <span className="font-semibold text-white">CyberCapSec</span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
-              AI-powered security &amp; compliance advisory for African
-              startups.
+              AI-powered cybersecurity advisory for African startups, with
+              compliance mapping built in.
             </p>
           </div>
           <div>

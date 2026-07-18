@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, KeyRound, UserPlus, X } from "lucide-react";
+import { Copy, KeyRound, ListChecks, ShieldCheck, UserPlus, X } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
@@ -63,7 +63,7 @@ export function TeamPage() {
     <>
       <PageHeader
         title="Team"
-        description="Manage who has access to this CyberCapSec workspace."
+        description="Bring the right people into your cybersecurity program and assign ownership for evidence, policies, roadmap tasks, and reviews."
         action={
           <div className="flex gap-2">
             <Button
@@ -81,6 +81,44 @@ export function TeamPage() {
           </div>
         }
       />
+
+      <Card className="mb-6 border-brand-200 bg-brand-50/40">
+        <CardBody className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="flex gap-3">
+            <ShieldCheck className="mt-1 h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Security champion
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                Invite a CTO, security lead, or operations owner to drive fixes.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <ListChecks className="mt-1 h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Task owners
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                Add teammates who can complete roadmap work and provide evidence.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <UserPlus className="mt-1 h-5 w-5 text-brand-700" />
+            <div>
+              <div className="text-sm font-semibold text-slate-900">
+                Reviewers
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                Use auditor access for read-only due diligence or advisory reviews.
+              </p>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
 
       <Card>
         {!users || users.length === 0 ? (
@@ -200,7 +238,15 @@ function InviteModal({ onClose }: { onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900">Invite user</h2>
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">
+              Invite user
+            </h2>
+            <p className="mt-0.5 text-sm text-slate-600">
+              Add someone to own security work, upload evidence, review policies,
+              or inspect reports.
+            </p>
+          </div>
           <button onClick={onClose} aria-label="Close">
             <X className="h-5 w-5 text-slate-500" />
           </button>

@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from "react";
-import { ExternalLink, FilePlus2, Plus } from "lucide-react";
+import { ExternalLink, FilePlus2, Plus, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { Input, Select, Textarea } from "@/components/Field";
@@ -21,10 +21,12 @@ import {
   useCreateEvidence,
   useEvidenceList,
 } from "@/hooks/useEvidence";
+import { useRoadmapItems } from "@/hooks/useRoadmap";
 import type {
   Evidence,
   EvidenceKind,
   PropagatedControl,
+  RoadmapItem,
   TierLimitError,
 } from "@/types/api";
 
@@ -52,12 +54,24 @@ interface SubmittedEvidence {
   propagated: PropagatedControl[];
 }
 
+interface EvidenceFormSeed {
+  title?: string;
+  description?: string;
+  kind?: EvidenceKind;
+  framework_code?: string;
+  control_code?: string;
+  external_url?: string;
+  narrative_text?: string;
+}
+
 function EvidenceForm({
   onClose,
   onSuccess,
+  initial,
 }: {
   onClose: () => void;
   onSuccess: (result: SubmittedEvidence) => void;
+  initial?: EvidenceFormSeed | null;
 }) {
   const create = useCreateEvidence();
   const [error, setError] = useState<string | null>(null);
@@ -72,13 +86,13 @@ function EvidenceForm({
     external_url: string;
     narrative_text: string;
   }>({
-    title: "",
-    description: "",
-    kind: "external_link",
-    framework_code: "soc2",
-    control_code: "",
-    external_url: "",
-    narrative_text: "",
+    title: initial?.title ?? "",
+    description: initial?.description ?? "",
+    kind: initial?.kind ?? "external_link",
+    framework_code: initial?.framework_code ?? "soc2",
+    control_code: initial?.control_code ?? "",
+    external_url: initial?.external_url ?? "",
+    narrative_text: initial?.narrative_text ?? "",
   });
 
   const update = <K extends keyof typeof form>(
@@ -226,6 +240,45 @@ function EvidenceForm({
   );
 }
 
+function buildEvidenceRecommendations(items: RoadmapItem[] = []) {
+  const seen = new Set<string>();
+  const recs: Array<{
+    key: string;
+    title: string;
+    description: string;
+    framework: string;
+    control: string;
+    week: number;
+    seed: EvidenceFormSeed;
+  }> = [];
+
+  for (const item of items) {
+    if (item.status === "done" || item.status === "cancelled") continue;
+    for (const citation of item.framework_citations) {
+      const key = `${citation.framework}:${citation.control_code}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      recs.push({
+        key,
+        title: item.title,
+        description: item.description,
+        framework: citation.framework,
+        control: citation.control_code,
+        week: item.week_target,
+        seed: {
+          title: `Evidence for ${item.title}`,
+          description: `Supports roadmap task: ${item.title}`,
+          kind: "external_link",
+          framework_code: citation.framework,
+          control_code: citation.control_code,
+        },
+      });
+    }
+  }
+
+  return recs.slice(0, 6);
+}
+
 function PropagationToast({
   result,
   onClose,
@@ -279,11 +332,15 @@ function PropagationToast({
 export function EvidencePage() {
   const { data: evidence, isLoading, error } = useEvidenceList();
   const { data: coverage } = useCoverageMatrix();
+  const { data: roadmapItems } = useRoadmapItems();
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState<SubmittedEvidence | null>(null);
+  const [prefill, setPrefill] = useState<EvidenceFormSeed | null>(null);
 
   if (isLoading) return <LoadingPage />;
   if (error) return <ErrorMessage message={normalizeApiError(error).message} />;
+
+  const recommendations = buildEvidenceRecommendations(roadmapItems);
 
   return (
     <>
@@ -291,12 +348,58 @@ export function EvidencePage() {
         title="Evidence"
         description="Attach evidence to controls. One piece of evidence often satisfies multiple frameworks."
         action={
-          <Button onClick={() => setShowForm(true)}>
+          <Button
+            onClick={() => {
+              setPrefill(null);
+              setShowForm(true);
+            }}
+          >
             <Plus className="h-4 w-4" />
             Submit evidence
           </Button>
         }
       />
+
+      {recommendations.length > 0 && (
+        <Card className="mb-6 border-brand-200 bg-brand-50/40">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-brand-700" />
+              <CardTitle>Recommended evidence</CardTitle>
+            </div>
+            <p className="text-sm text-slate-600 mt-1">
+              Start with evidence tied to open roadmap work. One upload can
+              improve several cybersecurity and compliance controls.
+            </p>
+          </CardHeader>
+          <CardBody className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {recommendations.map((rec) => (
+              <button
+                key={rec.key}
+                type="button"
+                onClick={() => {
+                  setPrefill(rec.seed);
+                  setShowForm(true);
+                }}
+                className="rounded-md border border-slate-200 bg-white p-3 text-left transition-colors hover:border-brand-300 hover:bg-white"
+              >
+                <div className="mb-2 flex flex-wrap items-center gap-1">
+                  <Badge variant="brand">
+                    {rec.framework} {rec.control}
+                  </Badge>
+                  <Badge variant="neutral">Week {rec.week}</Badge>
+                </div>
+                <div className="text-sm font-medium text-slate-900">
+                  {rec.title}
+                </div>
+                <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-600">
+                  {rec.description}
+                </p>
+              </button>
+            ))}
+          </CardBody>
+        </Card>
+      )}
 
       {/* Coverage matrix */}
       {coverage?.coverage && Object.keys(coverage.coverage).length > 0 && (
@@ -393,9 +496,11 @@ export function EvidencePage() {
 
       {showForm && (
         <EvidenceForm
+          initial={prefill}
           onClose={() => setShowForm(false)}
           onSuccess={(result) => {
             setShowForm(false);
+            setPrefill(null);
             setSubmitted(result);
           }}
         />

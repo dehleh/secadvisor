@@ -81,7 +81,7 @@ export function SignupPage() {
     setLoading(true);
     try {
       await signup(form);
-      navigate("/dashboard", { replace: true });
+      navigate("/onboarding", { replace: true });
     } catch (err) {
       setError(normalizeApiError(err).message);
     } finally {

@@ -5,7 +5,9 @@ import { AssessmentPage } from "@/pages/AssessmentPage";
 import { BillingPage } from "@/pages/BillingPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { EvidencePage } from "@/pages/EvidencePage";
+import { FrameworksPage } from "@/pages/FrameworksPage";
 import { LoginPage } from "@/pages/LoginPage";
+import { OnboardingPage } from "@/pages/OnboardingPage";
 import { PoliciesPage } from "@/pages/PoliciesPage";
 import { PolicyDetailPage } from "@/pages/PolicyDetailPage";
 import { PublicReportPage } from "@/pages/PublicReportPage";
@@ -48,11 +50,31 @@ export function App() {
         }
       />
       <Route
+        path="/onboarding"
+        element={
+          <RequireAuth>
+            <AppLayout>
+              <OnboardingPage />
+            </AppLayout>
+          </RequireAuth>
+        }
+      />
+      <Route
         path="/assessment"
         element={
           <RequireAuth>
             <AppLayout>
               <AssessmentPage />
+            </AppLayout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/frameworks"
+        element={
+          <RequireAuth>
+            <AppLayout>
+              <FrameworksPage />
             </AppLayout>
           </RequireAuth>
         }

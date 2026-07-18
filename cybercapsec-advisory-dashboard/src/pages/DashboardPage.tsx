@@ -1,8 +1,16 @@
+import type { ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertTriangle,
+  ArrowRight,
+  BookOpen,
   ClipboardCheck,
+  FileCheck2,
   ListChecks,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  UploadCloud,
 } from "lucide-react";
 
 import { Button } from "@/components/Button";
@@ -22,10 +30,26 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useAssessments } from "@/hooks/useAssessments";
 import { useCoverageMatrix } from "@/hooks/useEvidence";
+import { usePolicies } from "@/hooks/usePolicies";
 import { useReports } from "@/hooks/useReports";
 import { useReport } from "@/hooks/useReports";
 import { useRoadmapProgress } from "@/hooks/useRoadmap";
 import { normalizeApiError } from "@/api";
+import {
+  assetLabels,
+  frameworkLabels,
+  getSecurityProgramProfile,
+  objectiveLabels,
+  priorityLabels,
+} from "@/lib/securityProgram";
+
+interface NextAction {
+  title: string;
+  description: string;
+  to: string;
+  cta: string;
+  icon: ReactNode;
+}
 
 export function DashboardPage() {
   const { user } = useAuth();
@@ -35,14 +59,17 @@ export function DashboardPage() {
   const assessmentsQuery = useAssessments();
   const progressQuery = useRoadmapProgress();
   const coverageQuery = useCoverageMatrix();
+  const policiesQuery = usePolicies();
 
   const latestReportId = reportsQuery.data?.[0]?.id ?? null;
   const reportQuery = useReport(latestReportId);
+  const profile = getSecurityProgramProfile(user?.company_id);
 
   if (
     reportsQuery.isLoading ||
     assessmentsQuery.isLoading ||
-    progressQuery.isLoading
+    progressQuery.isLoading ||
+    policiesQuery.isLoading
   ) {
     return <LoadingPage />;
   }
@@ -50,7 +77,8 @@ export function DashboardPage() {
   const error =
     reportsQuery.error ||
     assessmentsQuery.error ||
-    progressQuery.error;
+    progressQuery.error ||
+    policiesQuery.error;
   if (error) {
     return <ErrorMessage message={normalizeApiError(error).message} />;
   }
@@ -61,22 +89,48 @@ export function DashboardPage() {
       <>
         <PageHeader
           title={`Welcome${user?.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}`}
-          description="Run your first assessment to get a tailored security and compliance roadmap."
+          description="Start with the security program you need, then run the assessment to turn it into a risk-ranked action plan."
         />
-        <Card>
-          <CardBody>
-            <EmptyState
-              icon={<ClipboardCheck className="h-12 w-12" />}
-              title="No assessments yet"
-              description="The 15-20 minute assessment generates an AI-tailored risk register, 13-week roadmap, and per-framework gap analysis. Let's start."
-              action={
-                <Button onClick={() => navigate("/assessment")} size="lg">
-                  Start your first assessment
-                </Button>
-              }
-            />
-          </CardBody>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <Card className="lg:col-span-2">
+            <CardBody>
+              <EmptyState
+                icon={<ClipboardCheck className="h-12 w-12" />}
+                title="Build your cyber baseline"
+                description="The 15-20 minute assessment covers identity, infrastructure, application security, data protection, vendors, people, resilience, and compliance readiness."
+                action={
+                  <Button
+                    onClick={() =>
+                      navigate(profile ? "/assessment" : "/onboarding")
+                    }
+                    size="lg"
+                  >
+                    {profile ? "Start your first assessment" : "Set up program"}
+                  </Button>
+                }
+              />
+            </CardBody>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">What happens next</CardTitle>
+            </CardHeader>
+            <CardBody className="space-y-3 text-sm text-slate-700">
+              <div className="flex gap-2">
+                <Badge variant="brand">1</Badge>
+                <span>Define your cybersecurity priorities and critical assets.</span>
+              </div>
+              <div className="flex gap-2">
+                <Badge variant="brand">2</Badge>
+                <span>Answer the assessment to generate risks and a roadmap.</span>
+              </div>
+              <div className="flex gap-2">
+                <Badge variant="brand">3</Badge>
+                <span>Add evidence, publish policies, assign owners, and share reports.</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
       </>
     );
   }
@@ -84,21 +138,189 @@ export function DashboardPage() {
   const completedAssessment = assessmentsQuery.data.find(
     (a) => a.status === "completed",
   );
+  const activeAssessment = assessmentsQuery.data.find(
+    (a) => a.status === "draft" || a.status === "in_progress",
+  );
   const report = reportQuery.data;
   const progress = progressQuery.data;
   const coverage = coverageQuery.data?.coverage ?? {};
+  const policies = policiesQuery.data ?? [];
+  const coverageCount = Object.values(coverage).reduce(
+    (sum, controls) => sum + controls.length,
+    0,
+  );
+  const nextAction: NextAction = !profile
+    ? {
+        title: "Set up your security program",
+        description:
+          "Choose the cyber outcomes, assets, and risk areas that should drive your roadmap.",
+        to: "/onboarding",
+        cta: "Set up program",
+        icon: <Target className="h-5 w-5" />,
+      }
+    : activeAssessment
+      ? {
+          title: "Finish the posture assessment",
+          description:
+            "Complete the remaining questions so the app can generate your risk report and action plan.",
+          to: "/assessment",
+          cta: "Continue assessment",
+          icon: <ClipboardCheck className="h-5 w-5" />,
+        }
+      : !completedAssessment
+        ? {
+            title: "Run your first cybersecurity assessment",
+            description:
+              "Measure identity, cloud, app security, data protection, people, vendors, and response readiness.",
+            to: "/assessment",
+            cta: "Start assessment",
+            icon: <ClipboardCheck className="h-5 w-5" />,
+          }
+        : !report
+          ? {
+              title: "Generate your security report",
+              description:
+                "Submit a completed assessment to turn answers into risks, priorities, and a roadmap.",
+              to: "/assessment",
+              cta: "Open assessment",
+              icon: <ShieldCheck className="h-5 w-5" />,
+            }
+          : progress && progress.total > 0 && progress.done === 0
+            ? {
+                title: "Start the first roadmap task",
+                description:
+                  "Move one high-impact security task into progress and assign evidence as you go.",
+                to: "/roadmap",
+                cta: "Start roadmap",
+                icon: <ListChecks className="h-5 w-5" />,
+              }
+            : coverageCount === 0
+              ? {
+                  title: "Add evidence for your top controls",
+                  description:
+                    "Attach screenshots, links, policies, or narratives to prove the controls are real.",
+                  to: "/evidence",
+                  cta: "Add evidence",
+                  icon: <UploadCloud className="h-5 w-5" />,
+                }
+              : policies.length === 0
+                ? {
+                    title: "Generate core security policies",
+                    description:
+                      "Create the starter pack for access, incident response, vendor risk, data protection, and more.",
+                    to: "/policies",
+                    cta: "Generate policies",
+                    icon: <FileCheck2 className="h-5 w-5" />,
+                  }
+                : {
+                    title: "Share your security posture",
+                    description:
+                      "Create a read-only report link for auditors, enterprise customers, investors, or partners.",
+                    to: latestReportId ? `/reports/${latestReportId}` : "/reports",
+                    cta: "Open report",
+                    icon: <Sparkles className="h-5 w-5" />,
+                  };
 
   return (
     <>
       <PageHeader
         title={`Welcome${user?.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}`}
-        description="Your security and compliance posture at a glance."
+        description="Your cybersecurity posture, actions, evidence, and compliance readiness in one place."
         action={
           <Button variant="outline" onClick={() => navigate("/assessment")}>
             New assessment
           </Button>
         }
       />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <Card className="lg:col-span-2 border-brand-200 bg-brand-50/50">
+          <CardBody className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-brand-600 text-white">
+                {nextAction.icon}
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-brand-900">
+                  Next best action
+                </div>
+                <h2 className="mt-1 text-xl font-semibold text-slate-900">
+                  {nextAction.title}
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-slate-700">
+                  {nextAction.description}
+                </p>
+              </div>
+            </div>
+            <Button
+              className="shrink-0"
+              onClick={() => navigate(nextAction.to)}
+            >
+              {nextAction.cta}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Program focus</CardTitle>
+          </CardHeader>
+          <CardBody>
+            {profile ? (
+              <div className="space-y-3">
+                <p className="text-sm text-slate-700">
+                  {objectiveLabels[profile.objective]}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {profile.priorities.slice(0, 3).map((priority) => (
+                    <Badge key={priority} variant="brand">
+                      {priorityLabels[priority]}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="text-xs text-slate-500">
+                  Securing{" "}
+                  {profile.assets
+                    .slice(0, 2)
+                    .map((asset) => assetLabels[asset].toLowerCase())
+                    .join(", ")}
+                </div>
+                {profile.targetFrameworks.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {profile.targetFrameworks.slice(0, 3).map((framework) => (
+                      <Badge key={framework} variant="neutral">
+                        {frameworkLabels[framework] ?? framework}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate("/frameworks")}
+                >
+                  <BookOpen className="h-4 w-4" />
+                  Open guides
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-slate-600">
+                  Set up your program to tailor recommendations beyond compliance.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate("/onboarding")}
+                >
+                  Configure focus
+                </Button>
+              </div>
+            )}
+          </CardBody>
+        </Card>
+      </div>
 
       {/* Score cards */}
       {completedAssessment && (
@@ -234,6 +456,12 @@ export function DashboardPage() {
               className="block text-sm font-medium text-brand-600 hover:text-brand-700 mt-3"
             >
               Manage evidence →
+            </Link>
+            <Link
+              to="/frameworks"
+              className="block text-sm font-medium text-brand-600 hover:text-brand-700 mt-2"
+            >
+              Read framework guides →
             </Link>
           </CardBody>
         </Card>
