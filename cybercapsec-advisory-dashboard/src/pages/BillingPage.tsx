@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Check,
   ExternalLink,
@@ -86,7 +87,7 @@ function PlanCard({
   // Highlight Growth — that's the price-anchor / recommended tier
   const isHighlighted = plan.tier === "growth" && !isCurrent;
   const planFit: Record<SubscriptionTierCode, string> = {
-    free: "Try the cyber baseline and see your first risks.",
+    free: "Account and billing preview only. Choose a paid licence to unlock the workspace.",
     starter: "Run a focused security program for one or two priority areas.",
     growth:
       "Operate ongoing cybersecurity across controls, evidence, policies, and reports.",
@@ -120,7 +121,14 @@ function PlanCard({
       </CardHeader>
       <CardBody>
         <div className="mb-4">
-          {plan.amount_minor === 0 ? (
+          {plan.tier === "free" ? (
+            <div>
+              <span className="text-3xl font-bold text-slate-900">
+                No licence
+              </span>
+              <span className="text-sm text-slate-500 ml-1">yet</span>
+            </div>
+          ) : plan.amount_minor === 0 ? (
             <div>
               <span className="text-3xl font-bold text-slate-900">Free</span>
               <span className="text-sm text-slate-500 ml-1">forever</span>
@@ -140,29 +148,48 @@ function PlanCard({
         </div>
 
         <ul className="space-y-2 mb-5 min-h-[12rem]">
-          <PlanFeature included>
-            {cap(plan.max_active_assessments, "active assessments")}
-          </PlanFeature>
-          <PlanFeature included>
-            {cap(plan.max_evidence_items, "evidence items")}
-          </PlanFeature>
-          <PlanFeature included>
-            {cap(plan.max_published_policies, "published policies")}
-          </PlanFeature>
-          <PlanFeature included>
-            {plan.max_frameworks === null
-              ? "All frameworks (SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, PCI DSS)"
-              : `${plan.max_frameworks} frameworks`}
-          </PlanFeature>
-          <PlanFeature included={plan.ai_advisor_enabled}>
-            AI advisor (Claude-powered)
-          </PlanFeature>
-          <PlanFeature included={plan.custom_policy_drafting}>
-            Custom policy drafting
-          </PlanFeature>
-          <PlanFeature included={plan.dedicated_reviewer}>
-            Dedicated reviewer
-          </PlanFeature>
+          {plan.tier === "free" ? (
+            <>
+              <PlanFeature included>Account creation</PlanFeature>
+              <PlanFeature included>Billing and plan selection</PlanFeature>
+              <PlanFeature included={false}>
+                Assessments and guided roadmap
+              </PlanFeature>
+              <PlanFeature included={false}>
+                Evidence, policies, and reports
+              </PlanFeature>
+              <PlanFeature included={false}>
+                Framework learning paths
+              </PlanFeature>
+              <PlanFeature included={false}>AI advisor</PlanFeature>
+            </>
+          ) : (
+            <>
+              <PlanFeature included>
+                {cap(plan.max_active_assessments, "active assessments")}
+              </PlanFeature>
+              <PlanFeature included>
+                {cap(plan.max_evidence_items, "evidence items")}
+              </PlanFeature>
+              <PlanFeature included>
+                {cap(plan.max_published_policies, "published policies")}
+              </PlanFeature>
+              <PlanFeature included>
+                {plan.max_frameworks === null
+                  ? "All frameworks (SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, PCI DSS)"
+                  : `${plan.max_frameworks} frameworks`}
+              </PlanFeature>
+              <PlanFeature included={plan.ai_advisor_enabled}>
+                AI advisor (Claude-powered)
+              </PlanFeature>
+              <PlanFeature included={plan.custom_policy_drafting}>
+                Custom policy drafting
+              </PlanFeature>
+              <PlanFeature included={plan.dedicated_reviewer}>
+                Dedicated reviewer
+              </PlanFeature>
+            </>
+          )}
         </ul>
 
         {isCurrent ? (
@@ -202,6 +229,7 @@ function PlanCard({
 }
 
 export function BillingPage() {
+  const location = useLocation();
   const pricingQuery = usePricing();
   const subscriptionQuery = useCurrentSubscription();
   const checkout = useStartCheckout();
@@ -237,6 +265,11 @@ export function BillingPage() {
   const subscription = subscriptionQuery.data!;
   const currentTier = subscription.tier;
   const activeSub = subscription.active_subscription;
+  const routeState = location.state as
+    | { reason?: string; from?: string }
+    | null;
+  const showLicenceRequiredBanner =
+    currentTier === "free" || routeState?.reason === "license_required";
 
   const handleSelect = async (tier: SubscriptionTierCode) => {
     setError(null);
@@ -284,6 +317,24 @@ export function BillingPage() {
         <div className="mb-4">
           <ErrorMessage message={error} />
         </div>
+      )}
+
+      {showLicenceRequiredBanner && (
+        <Card className="mb-6 border-amber-200 bg-amber-50">
+          <CardBody className="flex flex-col gap-3 sm:flex-row sm:items-start">
+            <ShieldCheck className="h-5 w-5 text-amber-700 sm:mt-0.5" />
+            <div>
+              <div className="text-sm font-semibold text-amber-950">
+                Choose a licence to unlock your advisory workspace
+              </div>
+              <p className="mt-1 text-sm text-amber-900">
+                You can create an account without a card, but assessments,
+                guided readiness roadmaps, framework learning paths, evidence,
+                policies, reports, and team access require a paid licence.
+              </p>
+            </div>
+          </CardBody>
+        </Card>
       )}
 
       <Card className="mb-6 border-brand-200 bg-brand-50/40">

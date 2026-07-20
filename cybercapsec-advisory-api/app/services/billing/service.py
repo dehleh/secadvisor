@@ -89,7 +89,7 @@ def start_checkout(
     if tier == SubscriptionTier.FREE:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot checkout for the free tier",
+            detail="Cannot checkout for the no-licence state",
         )
 
     plan = get_plan(tier=tier, currency=company.billing_currency)

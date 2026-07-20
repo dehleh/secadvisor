@@ -87,14 +87,17 @@ def _plan_to_out(plan, limits) -> PlanOut:
 
 
 def _free_plan_out(currency: BillingCurrency) -> PlanOut:
-    """Synthesize a PlanOut for the free tier (not in the catalog)."""
+    """Synthesize a PlanOut for the no-licence state (not in the catalog)."""
     from app.models import BillingInterval
 
     limits = TIER_LIMITS[SubscriptionTier.FREE]
     return PlanOut(
         tier=SubscriptionTier.FREE,
-        name="Free",
-        description="Try the platform. 1 assessment, 3 evidence items, 1 policy, NDPA + 1 framework.",
+        name="Free preview",
+        description=(
+            "Create an account, view pricing, and purchase a licence. "
+            "Workspace access starts on a paid plan."
+        ),
         interval=BillingInterval.MONTHLY,
         currency=currency,
         amount_minor=0,

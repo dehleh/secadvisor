@@ -81,7 +81,10 @@ export function SignupPage() {
     setLoading(true);
     try {
       await signup(form);
-      navigate("/onboarding", { replace: true });
+      navigate("/billing", {
+        replace: true,
+        state: { reason: "license_required", from: "/signup" },
+      });
     } catch (err) {
       setError(normalizeApiError(err).message);
     } finally {
@@ -98,7 +101,8 @@ export function SignupPage() {
             Create your account
           </h1>
           <p className="text-sm text-slate-600 mt-1">
-            Get a tailored security and compliance roadmap for your company.
+            Create your workspace, then choose a licence to unlock guided
+            cybersecurity readiness.
           </p>
         </div>
 

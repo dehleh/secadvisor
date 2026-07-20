@@ -1,13 +1,9 @@
 """Feature gating by subscription tier.
 
-A single source of truth for what each tier can do. Service code calls
-`require_feature()` or checks `is_within_limit()` rather than hard-coding
-tier comparisons all over the place — that way a pricing change is one
-edit, not a grep through the codebase.
-
-The free tier is deliberately limited but real: a founder can run an
-assessment, see findings, and feel the friction of caps. Upgrade is the
-escape hatch.
+A single source of truth for what each paid tier can do. Workspace access is
+licensed at the router layer, so the free tier is a billing/onboarding state:
+users can sign in, view plans, and buy a licence, but cannot enter the advisory
+workspace until they upgrade.
 """
 from dataclasses import dataclass
 
@@ -33,14 +29,14 @@ class TierLimits:
     advanced_reporting: bool
 
 
-# Single source of truth — tied to the marketing pricing table
+# Single source of truth tied to the marketing pricing table.
 TIER_LIMITS: dict[SubscriptionTier, TierLimits] = {
     SubscriptionTier.FREE: TierLimits(
-        max_active_assessments=1,
-        max_evidence_items=3,
-        max_published_policies=1,
-        max_frameworks=2,  # NDPA + 1 of their choice
-        ai_advisor_enabled=False,  # rules-only / mock advisor for free
+        max_active_assessments=0,
+        max_evidence_items=0,
+        max_published_policies=0,
+        max_frameworks=0,
+        ai_advisor_enabled=False,
         custom_policy_drafting=False,
         dedicated_reviewer=False,
         priority_support=False,

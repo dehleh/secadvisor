@@ -2,7 +2,7 @@
 
 Covers:
   - Pricing catalog (currency-aware)
-  - Tier limits enforcement on free tier
+  - Paid licence enforcement for workspace access
   - Webhook signature verification
   - Mock Paystack client behaves like the real one
   - End-to-end checkout flow with mock client
@@ -121,67 +121,44 @@ class TestCurrencyMapping:
         assert company.billing_currency == BillingCurrency.USD
 
 
-# ----- Tier limits enforcement ----------------------------------------------
+# ----- Licence gate ----------------------------------------------------------
 
 
-class TestFreeTierLimits:
-    def test_free_tier_blocks_second_assessment(self, free_tier_client):
-        first = free_tier_client.post("/api/v1/assessments", json={})
-        assert first.status_code == 201
+class TestLicenceGate:
+    def test_free_tier_requires_licence_for_assessments(self, free_tier_client):
+        resp = free_tier_client.post("/api/v1/assessments", json={})
+        assert resp.status_code == 402
+        detail = resp.json()["detail"]
+        assert detail["error"] == "license_required"
+        assert detail["current_tier"] == "free"
 
-        second = free_tier_client.post("/api/v1/assessments", json={})
-        assert second.status_code == 402
-        body = second.json()
-        # Detail can be either a dict (our shape) or string depending on FastAPI handling
-        detail = body["detail"] if isinstance(body, dict) else body
-        if isinstance(detail, dict):
-            assert detail["error"] == "tier_limit"
-            assert detail["limit"] == "max_active_assessments"
-
-    def test_free_tier_blocks_fourth_evidence(self, free_tier_client):
-        # Free tier = 3 evidence items max
-        for i in range(3):
-            r = free_tier_client.post(
-                "/api/v1/evidence",
-                json={
-                    "title": f"E{i}",
-                    "kind": "narrative",
-                    "framework_code": "soc2",
-                    "control_code": "CC6.1",
-                    "narrative_text": "We do this.",
-                },
-            )
-            assert r.status_code == 201
-
-        # 4th should fail
-        r = free_tier_client.post(
+    def test_free_tier_requires_licence_for_evidence(self, free_tier_client):
+        resp = free_tier_client.post(
             "/api/v1/evidence",
             json={
-                "title": "E4",
+                "title": "Access review",
                 "kind": "narrative",
                 "framework_code": "soc2",
                 "control_code": "CC6.1",
                 "narrative_text": "We do this.",
             },
         )
-        assert r.status_code == 402
+        assert resp.status_code == 402
+        assert resp.json()["detail"]["error"] == "license_required"
 
-    def test_free_tier_blocks_second_published_policy(self, free_tier_client):
-        # Generate two policies as drafts, publish first ok, second blocked
-        p1 = free_tier_client.post(
+    def test_free_tier_requires_licence_for_policies(self, free_tier_client):
+        resp = free_tier_client.post(
             "/api/v1/policies",
             json={"template_code": "information_security"},
-        ).json()
-        p2 = free_tier_client.post(
-            "/api/v1/policies",
-            json={"template_code": "access_control"},
-        ).json()
+        )
+        assert resp.status_code == 402
+        assert resp.json()["detail"]["error"] == "license_required"
 
-        r1 = free_tier_client.post(f"/api/v1/policies/{p1['id']}/publish")
-        assert r1.status_code == 200
-
-        r2 = free_tier_client.post(f"/api/v1/policies/{p2['id']}/publish")
-        assert r2.status_code == 402
+    def test_free_tier_can_still_view_billing(self, free_tier_client):
+        pricing = free_tier_client.get("/api/v1/billing/pricing")
+        assert pricing.status_code == 200
+        subscription = free_tier_client.get("/api/v1/billing/subscription")
+        assert subscription.status_code == 200
 
     def test_growth_tier_allows_unlimited(self, authed_client):
         # authed_client fixture upgrades to GROWTH
@@ -358,6 +335,16 @@ class TestCheckoutFlow:
         assert body["authorization_url"].startswith("https://")
         assert body["subscription_id"]
         assert body["reference"].startswith("ref_mock_")
+
+    def test_free_tier_can_start_checkout_for_paid_licence(
+        self, free_tier_client, mock_paystack
+    ):
+        resp = free_tier_client.post(
+            "/api/v1/billing/checkout",
+            json={"tier": "starter"},
+        )
+        assert resp.status_code == 201, resp.text
+        assert resp.json()["authorization_url"].startswith("https://")
 
     def test_cannot_checkout_for_free(self, authed_client, mock_paystack):
         resp = authed_client.post(

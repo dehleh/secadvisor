@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.core.security import decode_token
 from app.database import get_db
-from app.models import Company, User, UserRole
+from app.models import Company, SubscriptionTier, User, UserRole
 
 settings = get_settings()
 
@@ -65,6 +65,33 @@ def get_current_company(
     return company
 
 
+PAID_SUBSCRIPTION_TIERS = (
+    SubscriptionTier.STARTER,
+    SubscriptionTier.GROWTH,
+    SubscriptionTier.AUDIT_READY,
+)
+
+
+def require_paid_license(
+    company: Annotated[Company, Depends(get_current_company)],
+) -> Company:
+    """Reject workspace access until the company has an active paid licence."""
+    if company.subscription_tier not in PAID_SUBSCRIPTION_TIERS:
+        raise HTTPException(
+            status_code=status.HTTP_402_PAYMENT_REQUIRED,
+            detail={
+                "error": "license_required",
+                "current_tier": company.subscription_tier.value,
+                "message": (
+                    "A paid CyberCapSec-Advisory licence is required to access "
+                    "this workspace. Choose a plan to unlock assessments, "
+                    "roadmaps, evidence, policies, reports, and guided learning."
+                ),
+            },
+        )
+    return company
+
+
 def require_role(*allowed_roles: UserRole):
     """Dependency factory enforcing a minimum role on a route."""
 
@@ -86,4 +113,3 @@ WRITER_ROLES = (UserRole.OWNER, UserRole.ADMIN, UserRole.MEMBER)
 def require_writer():
     """Side-effect dependency: rejects auditor (or any future read-only role)."""
     return require_role(*WRITER_ROLES)
-

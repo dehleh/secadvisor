@@ -1,7 +1,7 @@
 """CyberCapSec Advisory API — FastAPI application entry point."""
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import (
@@ -19,6 +19,7 @@ from app.api import (
     users,
 )
 from app.config import get_settings
+from app.deps import require_paid_license
 
 settings = get_settings()
 
@@ -53,15 +54,44 @@ def create_app() -> FastAPI:
     )
 
     # Routes
+    licensed_workspace = [Depends(require_paid_license)]
     app.include_router(meta.router, prefix=settings.API_V1_PREFIX)
     app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(users.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(assessments.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(policies.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(evidence.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(guided_readiness.router, prefix=settings.API_V1_PREFIX)
-    app.include_router(roadmap.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(
+        users.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
+    app.include_router(
+        assessments.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
+    app.include_router(
+        reports.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
+    app.include_router(
+        policies.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
+    app.include_router(
+        evidence.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
+    app.include_router(
+        guided_readiness.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
+    app.include_router(
+        roadmap.router,
+        prefix=settings.API_V1_PREFIX,
+        dependencies=licensed_workspace,
+    )
     app.include_router(billing.router, prefix=settings.API_V1_PREFIX)
     app.include_router(public.router, prefix=settings.API_V1_PREFIX)
     app.include_router(admin.router, prefix=settings.API_V1_PREFIX)

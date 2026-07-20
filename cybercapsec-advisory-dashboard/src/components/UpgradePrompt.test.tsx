@@ -12,15 +12,15 @@ describe("asTierLimitError", () => {
       detail: {
         error: "tier_limit",
         limit: "max_evidence_items",
-        current_tier: "free",
-        cap: 3,
-        current_count: 3,
+        current_tier: "starter",
+        cap: 25,
+        current_count: 25,
         message: "You've reached your evidence limit",
       },
     };
     const result = asTierLimitError(err);
     expect(result).not.toBeNull();
-    expect(result?.current_tier).toBe("free");
+    expect(result?.current_tier).toBe("starter");
     expect(result?.limit).toBe("max_evidence_items");
   });
 
@@ -50,14 +50,14 @@ describe("UpgradePrompt", () => {
         <UpgradePrompt
           error={{
             error: "tier_limit",
-            current_tier: "free",
-            message: "You've hit your free tier limit.",
+            current_tier: "starter",
+            message: "You've hit your Starter evidence limit.",
           }}
         />
       </MemoryRouter>,
     );
     expect(
-      screen.getByText("You've hit your free tier limit."),
+      screen.getByText("You've hit your Starter evidence limit."),
     ).toBeInTheDocument();
     const link = screen.getByRole("link", { name: /view plans/i });
     expect(link).toHaveAttribute("href", "/billing");

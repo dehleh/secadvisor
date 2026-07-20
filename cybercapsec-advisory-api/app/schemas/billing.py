@@ -31,7 +31,7 @@ class PlanOut(BaseModel):
 
 
 class PricingOut(BaseModel):
-    """Plans available for the current company's currency, plus the free tier."""
+    """Plans available for the current company's currency, plus no-licence state."""
     currency: BillingCurrency
     free: PlanOut
     paid: list[PlanOut]

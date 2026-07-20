@@ -259,9 +259,12 @@ class TestAssessmentLifecycle:
 
 
 class TestTenantIsolation:
-    def test_other_company_cannot_see_assessment(self, client, signup_payload, full_responses):
+    def test_other_company_cannot_see_assessment(
+        self, client, signup_payload, full_responses, license_company
+    ):
         # Company A signs up and creates an assessment
         resp_a = client.post("/api/v1/auth/signup", json=signup_payload)
+        license_company(resp_a.json()["company"]["id"])
         token_a = resp_a.json()["tokens"]["access_token"]
         client.headers.update({"Authorization": f"Bearer {token_a}"})
         a_assessment = client.post("/api/v1/assessments", json={}).json()
@@ -275,6 +278,7 @@ class TestTenantIsolation:
             "company_name": "Rival Co",
         }
         resp_b = client.post("/api/v1/auth/signup", json=b_payload)
+        license_company(resp_b.json()["company"]["id"])
         token_b = resp_b.json()["tokens"]["access_token"]
         client.headers.update({"Authorization": f"Bearer {token_b}"})
 

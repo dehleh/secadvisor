@@ -140,10 +140,10 @@ function Header() {
             Sign in
           </a>
           <a
-            href={`${APP_URL}/signup`}
+            href="#pricing"
             className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 py-2 rounded-md"
           >
-            Start free
+            View plans
           </a>
         </div>
       </div>
@@ -171,10 +171,10 @@ function Hero() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <a
-              href={`${APP_URL}/signup?goal=quick_baseline`}
+              href="#pricing"
               className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-3 rounded-lg text-base"
             >
-              Start guided baseline
+              Choose a licence
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
@@ -193,7 +193,7 @@ function Hero() {
             ].map(([label, goal]) => (
               <a
                 key={goal}
-                href={`${APP_URL}/signup?goal=${goal}`}
+                href="#pricing"
                 className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-sm font-medium text-slate-200 hover:bg-white/10"
               >
                 {label}
@@ -246,8 +246,9 @@ function Hero() {
         </div>
 
         <p className="mt-5 text-sm text-slate-400">
-          No credit card required. Built for African startups, fintechs, SaaS
-          teams, and founders who need security clarity without jargon.
+          Account creation is free; a paid licence unlocks workspace access.
+          Built for African startups, fintechs, SaaS teams, and founders who
+          need security clarity without jargon.
         </p>
       </div>
     </section>
@@ -1027,17 +1028,17 @@ function Pricing() {
   const tiers: PricingTierConfig[] = [
     {
       tier: "free",
-      name: "Free",
-      blurb: "See the platform without putting in a card.",
+      name: "Preview",
+      blurb: "Create an account and choose the licence that fits your team.",
       features: [
-        { included: true, text: "1 active assessment" },
-        { included: true, text: "3 evidence items" },
-        { included: true, text: "1 published policy" },
-        { included: true, text: "NDPA + 1 framework" },
-        { included: false, text: "AI advisor" },
-        { included: false, text: "Unlimited assessments" },
+        { included: true, text: "Account creation" },
+        { included: true, text: "Local currency pricing" },
+        { included: true, text: "Plan selection via Paystack" },
+        { included: false, text: "Guided assessments" },
+        { included: false, text: "Roadmaps, evidence, and policies" },
+        { included: false, text: "AI advisor and reports" },
       ],
-      cta: "Start free",
+      cta: "Create account",
     },
     {
       tier: "starter",
@@ -1147,10 +1148,10 @@ function Pricing() {
                   {price === null ? (
                     <>
                       <div className="text-3xl font-bold text-slate-900">
-                        Free
+                        No licence
                       </div>
                       <div className="text-sm text-slate-500 mt-0.5">
-                        forever
+                        workspace locked
                       </div>
                     </>
                   ) : (
@@ -1237,8 +1238,8 @@ function FAQ() {
       a: "Your data stays in your tenant. The AI advisor sends sanitised assessment summaries to Anthropic's Claude API to generate your report — no customer-identifiable data leaves the platform without your action. We retain audit logs of all access. Full data processing details on request.",
     },
     {
-      q: "What does the free tier let me do?",
-      a: "Run a baseline, see a security roadmap, store up to 3 pieces of evidence, publish 1 policy, and work in NDPA plus one other framework. It is enough to understand the product and your first gaps; paid plans unlock broader evidence, policies, frameworks, and advisor support.",
+      q: "Can I use the advisory workspace for free?",
+      a: "No. You can create an account and view billing without a card, but guided assessments, PCI DSS and other readiness roadmaps, evidence, policies, reports, learning paths, and team access require a paid licence.",
     },
     {
       q: "What does the readiness prep workshop actually cover?",
@@ -1286,14 +1287,15 @@ function CTA() {
           Ready to make cybersecurity clear enough to act on?
         </h2>
         <p className="mt-4 text-brand-100 text-lg max-w-2xl mx-auto">
-          Start with a guided baseline, understand your readiness path, and
-          turn security goals into roadmap tasks, evidence, owners, and reports.
+          Choose a licence, start with a guided baseline, understand your
+          readiness path, and turn security goals into roadmap tasks, evidence,
+          owners, and reports.
         </p>
         <a
-          href={`${APP_URL}/signup`}
+          href="#pricing"
           className="inline-flex items-center justify-center gap-2 mt-8 bg-white hover:bg-slate-50 text-brand-700 font-semibold px-6 py-3 rounded-lg text-base"
         >
-          Start guided baseline
+          View licence options
           <ArrowRight className="h-4 w-4" />
         </a>
       </div>

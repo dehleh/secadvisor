@@ -21,9 +21,11 @@ import {
 
 import { Button } from "@/components/Button";
 import { useAuth } from "@/context/AuthContext";
+import { useCurrentSubscription } from "@/hooks/useBilling";
 import { cn } from "@/lib/cn";
+import { hasPaidLicense } from "@/routes/Guards";
 
-const NAV_ITEMS = [
+const WORKSPACE_NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/onboarding", label: "Program setup", icon: Target },
   { to: "/frameworks", label: "Guides", icon: BookOpen },
@@ -36,13 +38,24 @@ const NAV_ITEMS = [
   { to: "/evidence", label: "Evidence", icon: FilePlus2 },
   { to: "/reports", label: "Reports", icon: ShieldCheck },
   { to: "/team", label: "Team", icon: Users },
-  { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
 
-function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
+const BILLING_NAV_ITEM = { to: "/billing", label: "Billing", icon: CreditCard };
+
+function NavigationLinks({
+  onNavigate,
+  showWorkspace,
+}: {
+  onNavigate?: () => void;
+  showWorkspace: boolean;
+}) {
+  const navItems = showWorkspace
+    ? [...WORKSPACE_NAV_ITEMS, BILLING_NAV_ITEM]
+    : [BILLING_NAV_ITEM];
+
   return (
     <>
-      {NAV_ITEMS.map((item) => {
+      {navItems.map((item) => {
         const Icon = item.icon;
         return (
           <NavLink
@@ -69,8 +82,11 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
+  const subscriptionQuery = useCurrentSubscription();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const showWorkspaceNav =
+    subscriptionQuery.isLoading || hasPaidLicense(subscriptionQuery.data?.tier);
 
   const handleLogout = () => {
     logout();
@@ -102,7 +118,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
         {mobileOpen && (
           <div className="border-t border-slate-200 px-3 py-3">
             <nav className="space-y-1">
-              <NavigationLinks onNavigate={() => setMobileOpen(false)} />
+              <NavigationLinks
+                showWorkspace={showWorkspaceNav}
+                onNavigate={() => setMobileOpen(false)}
+              />
             </nav>
             <Button
               variant="ghost"
@@ -132,7 +151,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-1">
-          <NavigationLinks />
+          <NavigationLinks showWorkspace={showWorkspaceNav} />
         </nav>
 
         <div className="px-3 py-3 border-t border-slate-200">

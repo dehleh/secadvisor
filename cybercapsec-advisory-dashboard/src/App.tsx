@@ -2,7 +2,7 @@ import { Suspense, lazy, type ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { AppLayout } from "@/components/AppLayout";
-import { RequireAuth, RequireGuest } from "@/routes/Guards";
+import { RequireAuth, RequireGuest, RequirePaidLicense } from "@/routes/Guards";
 
 const AssessmentPage = lazy(() =>
   import("@/pages/AssessmentPage").then((module) => ({
@@ -111,11 +111,23 @@ function LazyRoute({ children }: { children: ReactNode }) {
   return <Suspense fallback={<RouteFallback />}>{children}</Suspense>;
 }
 
-function ProtectedRoute({ children }: { children: ReactNode }) {
+function ProtectedRoute({
+  children,
+  requiresLicense = true,
+}: {
+  children: ReactNode;
+  requiresLicense?: boolean;
+}) {
   return (
     <RequireAuth>
       <AppLayout>
-        <LazyRoute>{children}</LazyRoute>
+        <LazyRoute>
+          {requiresLicense ? (
+            <RequirePaidLicense>{children}</RequirePaidLicense>
+          ) : (
+            children
+          )}
+        </LazyRoute>
       </AppLayout>
     </RequireAuth>
   );
@@ -258,7 +270,7 @@ export function App() {
       <Route
         path="/billing"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiresLicense={false}>
             <BillingPage />
           </ProtectedRoute>
         }
@@ -266,7 +278,7 @@ export function App() {
       <Route
         path="/billing/return"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiresLicense={false}>
             <BillingPage />
           </ProtectedRoute>
         }

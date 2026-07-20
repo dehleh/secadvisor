@@ -144,10 +144,11 @@ class TestReportRetrieval:
 
 class TestTenantIsolation:
     def test_other_company_cannot_see_report(
-        self, client, signup_payload, full_responses
+        self, client, signup_payload, full_responses, license_company
     ):
         # Company A signs up and generates a report
-        client.post("/api/v1/auth/signup", json=signup_payload)
+        resp_a = client.post("/api/v1/auth/signup", json=signup_payload)
+        license_company(resp_a.json()["company"]["id"])
         login_a = client.post(
             "/api/v1/auth/login",
             json={
@@ -166,7 +167,8 @@ class TestTenantIsolation:
             "email": "rival@beta.ng",
             "company_name": "Rival Co",
         }
-        client.post("/api/v1/auth/signup", json=b_payload)
+        resp_b = client.post("/api/v1/auth/signup", json=b_payload)
+        license_company(resp_b.json()["company"]["id"])
         login_b = client.post(
             "/api/v1/auth/login",
             json={"email": b_payload["email"], "password": b_payload["password"]},

@@ -85,9 +85,9 @@ def signup_payload() -> dict:
 def authed_client(client, signup_payload, db_session):
     """A TestClient that has signed up and is authenticated.
 
-    The created company is upgraded to GROWTH tier (unlimited) so existing
-    feature tests are not blocked by free-tier caps. Tests that specifically
-    exercise free-tier limits use the ``free_tier_client`` fixture below.
+    The created company is upgraded to GROWTH tier so ordinary feature tests
+    can enter the licensed workspace. Tests that specifically exercise the
+    no-licence state use the ``free_tier_client`` fixture below.
     """
     resp = client.post("/api/v1/auth/signup", json=signup_payload)
     assert resp.status_code == 201, resp.text
@@ -110,10 +110,25 @@ def authed_client(client, signup_payload, db_session):
 def free_tier_client(client, signup_payload):
     """A TestClient where the company stays on the FREE tier (default).
 
-    Use this fixture in tests that specifically exercise the limits.
+    Use this fixture in tests that specifically exercise the no-licence gate.
     """
     resp = client.post("/api/v1/auth/signup", json=signup_payload)
     assert resp.status_code == 201, resp.text
     tokens = resp.json()["tokens"]
     client.headers.update({"Authorization": f"Bearer {tokens['access_token']}"})
     return client
+
+
+@pytest.fixture
+def license_company(db_session):
+    """Upgrade a manually-created test company so workspace setup can proceed."""
+
+    def _license(company_id: str):
+        from app.models import Company, SubscriptionTier
+
+        company = db_session.query(Company).filter(Company.id == company_id).first()
+        assert company is not None
+        company.subscription_tier = SubscriptionTier.GROWTH
+        db_session.commit()
+
+    return _license
