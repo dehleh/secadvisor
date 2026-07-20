@@ -99,14 +99,16 @@ function detectCurrencyFromBrowser(): Currency {
 
 function Header() {
   return (
-    <header className="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-40">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="CyberCapSec" className="h-9 w-9" />
-          <span className="font-semibold text-slate-900">CyberCapSec</span>
-          <span className="text-slate-500 text-sm">Advisory</span>
+    <header className="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-40 overflow-x-clip">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 md:h-16 flex items-center justify-between gap-3">
+        <a href="/" className="flex min-w-0 items-center gap-2">
+          <img src="/logo.png" alt="CyberCapSec" className="h-8 w-8 md:h-9 md:w-9" />
+          <span className="truncate text-sm font-semibold text-slate-900 sm:text-base">
+            CyberCapSec
+          </span>
+          <span className="hidden text-sm text-slate-500 sm:inline">Advisory</span>
         </a>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-4 text-sm lg:gap-6">
           <a
             href="#features"
             className="text-slate-700 hover:text-brand-600"
@@ -141,7 +143,7 @@ function Header() {
           </a>
           <a
             href="#pricing"
-            className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 py-2 rounded-md"
+            className="whitespace-nowrap bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-3 sm:px-4 py-2 rounded-md"
           >
             View plans
           </a>
@@ -152,100 +154,105 @@ function Header() {
 }
 
 function Hero() {
+  const pathCards = [
+    {
+      label: "Client goal",
+      text: "I need PCI DSS readiness",
+      icon: CreditCard,
+    },
+    {
+      label: "Guided scope",
+      text: "Where does card data enter, move, or get stored?",
+      icon: Map,
+    },
+    {
+      label: "Roadmap",
+      text: "Next 7 days, 30 days, 90 days, before validation",
+      icon: Route,
+    },
+    {
+      label: "Proof",
+      text: "Evidence, policies, owners, and report language",
+      icon: FileQuestion,
+    },
+  ];
+
   return (
     <section className="relative overflow-hidden bg-slate-950">
-      <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
-        <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-sky-100 ring-1 ring-white/15 mb-6">
-            <Sparkles className="h-3.5 w-3.5" />
-            Founder-friendly cybersecurity readiness
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.05]">
-            Cybersecurity guidance a founder can actually follow.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-3xl">
-            CyberCapSec-Advisory turns goals like "I need PCI DSS," "a customer
-            sent a security questionnaire," or "we need to reduce breach risk"
-            into a plain-English readiness roadmap, evidence plan, policies,
-            team owners, and shareable security posture report.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <a
-              href="#pricing"
-              className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-3 rounded-lg text-base"
-            >
-              Choose a licence
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#pci-roadmap"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 hover:bg-white/15 text-white font-medium px-6 py-3 rounded-lg text-base"
-            >
-              See PCI DSS example
-            </a>
-          </div>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {[
-              ["Start PCI DSS readiness", "pci_dss"],
-              ["Answer a questionnaire", "questionnaire"],
-              ["Prepare for SOC 2", "soc2"],
-              ["Reduce breach risk", "breach_risk"],
-            ].map(([label, goal]) => (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
+        <div className="grid gap-7 lg:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] lg:items-center">
+          <div className="min-w-0 max-w-3xl">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-sky-100 ring-1 ring-white/15">
+              <Sparkles className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Founder-friendly cybersecurity readiness</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+              Cybersecurity guidance a founder can actually follow.
+            </h1>
+            <p className="mt-4 max-w-2xl text-base sm:text-lg text-slate-300 leading-relaxed">
+              CyberCapSec-Advisory turns goals like "I need PCI DSS," "a
+              customer sent a security questionnaire," or "we need to reduce
+              breach risk" into a plain-English readiness roadmap, evidence
+              plan, policies, team owners, and shareable security posture
+              report.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <a
-                key={goal}
                 href="#pricing"
-                className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-sm font-medium text-slate-200 hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-3 rounded-lg text-base"
               >
-                {label}
+                Choose a licence
+                <ArrowRight className="h-4 w-4" />
               </a>
-            ))}
+              <a
+                href="#pci-roadmap"
+                className="inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 hover:bg-white/15 text-white font-medium px-5 py-3 rounded-lg text-base"
+              >
+                See PCI DSS example
+              </a>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {[
+                ["PCI DSS readiness", "pci_dss"],
+                ["Questionnaire", "questionnaire"],
+                ["SOC 2 prep", "soc2"],
+                ["Breach-risk reduction", "breach_risk"],
+              ].map(([label, goal]) => (
+                <a
+                  key={goal}
+                  href="#pricing"
+                  className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-200 hover:bg-white/10"
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid min-w-0 grid-cols-2 gap-3">
+            {pathCards.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.label}
+                  className="min-w-0 rounded-lg border border-white/10 bg-white/[0.06] p-3 sm:p-4"
+                >
+                  <div className="flex min-w-0 items-center gap-2 text-sky-100">
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate text-[0.68rem] font-semibold uppercase tracking-wide sm:text-xs">
+                      {item.label}
+                    </span>
+                  </div>
+                  <p className="mt-2 break-words text-xs leading-5 text-slate-200 sm:mt-3 sm:text-sm sm:leading-6">
+                    {item.text}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <div className="mt-12 grid gap-3 md:grid-cols-4">
-          {[
-            {
-              label: "Client goal",
-              text: "I need PCI DSS readiness",
-              icon: CreditCard,
-            },
-            {
-              label: "Guided scope",
-              text: "Where does card data enter, move, or get stored?",
-              icon: Map,
-            },
-            {
-              label: "Roadmap",
-              text: "Next 7 days, 30 days, 90 days, before validation",
-              icon: Route,
-            },
-            {
-              label: "Proof",
-              text: "Evidence, policies, owners, and report language",
-              icon: FileQuestion,
-            },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.label}
-                className="rounded-lg border border-white/10 bg-white/[0.06] p-4"
-              >
-                <div className="flex items-center gap-2 text-sky-100">
-                  <Icon className="h-4 w-4" />
-                  <span className="text-xs font-semibold uppercase tracking-wide">
-                    {item.label}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm leading-6 text-slate-200">
-                  {item.text}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        <p className="mt-5 text-sm text-slate-400">
+        <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-400">
           Account creation is free; a paid licence unlocks workspace access.
           Built for African startups, fintechs, SaaS teams, and founders who
           need security clarity without jargon.
@@ -1086,8 +1093,8 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="pricing" className="py-12 md:py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl mb-10">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
             Pricing in your currency
@@ -1098,13 +1105,13 @@ function Pricing() {
           </p>
         </div>
 
-        <div className="mb-8 inline-flex items-center gap-2 bg-slate-100 p-1 rounded-lg">
+        <div className="mb-8 flex max-w-full flex-wrap items-center gap-2 rounded-lg bg-slate-100 p-1 sm:inline-flex">
           {CURRENCIES.map((c) => (
             <button
               key={c.code}
               onClick={() => setCurrency(c.code)}
               className={
-                "px-3 py-1.5 text-sm rounded-md transition " +
+                "shrink-0 px-3 py-1.5 text-sm rounded-md transition " +
                 (currency === c.code
                   ? "bg-white text-slate-900 shadow-sm font-medium"
                   : "text-slate-600 hover:text-slate-900")
@@ -1115,7 +1122,7 @@ function Pricing() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid min-w-0 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {tiers.map((tier) => {
             const price =
               tier.tier === "free"
@@ -1127,7 +1134,7 @@ function Pricing() {
               <div
                 key={tier.tier}
                 className={
-                  "bg-white border rounded-xl p-6 flex flex-col " +
+                  "min-w-0 bg-white border rounded-xl p-5 sm:p-6 flex flex-col " +
                   (tier.highlighted
                     ? "border-brand-500 shadow-lg ring-1 ring-brand-500"
                     : "border-slate-200")
@@ -1147,7 +1154,7 @@ function Pricing() {
                 <div className="my-5">
                   {price === null ? (
                     <>
-                      <div className="text-3xl font-bold text-slate-900">
+                      <div className="text-2xl font-bold text-slate-900 sm:text-3xl">
                         No licence
                       </div>
                       <div className="text-sm text-slate-500 mt-0.5">
@@ -1156,7 +1163,7 @@ function Pricing() {
                     </>
                   ) : (
                     <>
-                      <div className="text-3xl font-bold text-slate-900">
+                      <div className="text-2xl font-bold text-slate-900 sm:text-3xl">
                         {formatPrice(price)}
                       </div>
                       <div className="text-sm text-slate-500 mt-0.5">
@@ -1169,7 +1176,7 @@ function Pricing() {
                   {tier.features.map((f, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm"
+                      className="min-w-0 flex items-start gap-2 text-sm"
                     >
                       {f.included ? (
                         <Check className="h-4 w-4 mt-0.5 text-emerald-500 shrink-0" />
@@ -1178,7 +1185,9 @@ function Pricing() {
                       )}
                       <span
                         className={
-                          f.included ? "text-slate-700" : "text-slate-400"
+                          f.included
+                            ? "min-w-0 break-words text-slate-700"
+                            : "min-w-0 break-words text-slate-400"
                         }
                       >
                         {f.text}
@@ -1389,9 +1398,9 @@ function Footer() {
 
 export function App() {
   return (
-    <>
+    <div className="min-h-screen overflow-x-hidden bg-white text-slate-900">
       <Header />
-      <main>
+      <main className="overflow-x-hidden">
         <Hero />
         <GuidedFlow />
         <PciInteractivePreview />
@@ -1408,6 +1417,6 @@ export function App() {
         <CTA />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
