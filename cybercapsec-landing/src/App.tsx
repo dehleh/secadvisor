@@ -253,9 +253,9 @@ function Hero() {
         </div>
 
         <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-400">
-          Account creation is free; a paid licence unlocks workspace access.
-          Built for African startups, fintechs, SaaS teams, and founders who
-          need security clarity without jargon.
+          Choose a paid licence to unlock workspace access. Built for African
+          startups, fintechs, SaaS teams, and founders who need security
+          clarity without jargon.
         </p>
       </div>
     </section>
@@ -1017,7 +1017,7 @@ function EducationLayer() {
 }
 
 interface PricingTierConfig {
-  tier: "free" | "starter" | "growth" | "audit_ready";
+  tier: "starter" | "growth" | "audit_ready";
   name: string;
   blurb: string;
   features: { included: boolean; text: string }[];
@@ -1033,20 +1033,6 @@ function Pricing() {
   }, []);
 
   const tiers: PricingTierConfig[] = [
-    {
-      tier: "free",
-      name: "Preview",
-      blurb: "Create an account and choose the licence that fits your team.",
-      features: [
-        { included: true, text: "Account creation" },
-        { included: true, text: "Local currency pricing" },
-        { included: true, text: "Plan selection via Paystack" },
-        { included: false, text: "Guided assessments" },
-        { included: false, text: "Roadmaps, evidence, and policies" },
-        { included: false, text: "AI advisor and reports" },
-      ],
-      cta: "Create account",
-    },
     {
       tier: "starter",
       name: "Starter",
@@ -1122,14 +1108,9 @@ function Pricing() {
           ))}
         </div>
 
-        <div className="grid min-w-0 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid min-w-0 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tiers.map((tier) => {
-            const price =
-              tier.tier === "free"
-                ? null
-                : PRICING[currency][
-                    tier.tier as "starter" | "growth" | "audit_ready"
-                  ];
+            const price = PRICING[currency][tier.tier];
             return (
               <div
                 key={tier.tier}
@@ -1152,25 +1133,12 @@ function Pricing() {
                   {tier.blurb}
                 </p>
                 <div className="my-5">
-                  {price === null ? (
-                    <>
-                      <div className="text-2xl font-bold text-slate-900 sm:text-3xl">
-                        No licence
-                      </div>
-                      <div className="text-sm text-slate-500 mt-0.5">
-                        workspace locked
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="text-2xl font-bold text-slate-900 sm:text-3xl">
-                        {formatPrice(price)}
-                      </div>
-                      <div className="text-sm text-slate-500 mt-0.5">
-                        per month
-                      </div>
-                    </>
-                  )}
+                  <div className="text-2xl font-bold text-slate-900 sm:text-3xl">
+                    {formatPrice(price)}
+                  </div>
+                  <div className="text-sm text-slate-500 mt-0.5">
+                    per month
+                  </div>
                 </div>
                 <ul className="space-y-2 mb-6 flex-1">
                   {tier.features.map((f, i) => (
@@ -1247,8 +1215,8 @@ function FAQ() {
       a: "Your data stays in your tenant. The AI advisor sends sanitised assessment summaries to Anthropic's Claude API to generate your report — no customer-identifiable data leaves the platform without your action. We retain audit logs of all access. Full data processing details on request.",
     },
     {
-      q: "Can I use the advisory workspace for free?",
-      a: "No. You can create an account and view billing without a card, but guided assessments, PCI DSS and other readiness roadmaps, evidence, policies, reports, learning paths, and team access require a paid licence.",
+      q: "Do users need to pay before accessing the workspace?",
+      a: "Yes. Guided assessments, PCI DSS and other readiness roadmaps, evidence, policies, reports, learning paths, and team access require a paid licence.",
     },
     {
       q: "What does the readiness prep workshop actually cover?",

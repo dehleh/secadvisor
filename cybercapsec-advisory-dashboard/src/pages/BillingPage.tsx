@@ -37,6 +37,9 @@ const TIER_ORDER: SubscriptionTierCode[] = [
   "audit_ready",
 ];
 
+type PaidSubscriptionTierCode = Exclude<SubscriptionTierCode, "free">;
+type PaidPlanOut = PlanOut & { tier: PaidSubscriptionTierCode };
+
 function tierRank(tier: SubscriptionTierCode): number {
   return TIER_ORDER.indexOf(tier);
 }
@@ -62,11 +65,11 @@ function PlanFeature({ included, children }: PlanFeatureProps) {
 }
 
 interface PlanCardProps {
-  plan: PlanOut;
+  plan: PaidPlanOut;
   currentTier: SubscriptionTierCode;
-  onSelect: (tier: SubscriptionTierCode) => void;
+  onSelect: (tier: PaidSubscriptionTierCode) => void;
   isCheckoutLoading: boolean;
-  pendingTier: SubscriptionTierCode | null;
+  pendingTier: PaidSubscriptionTierCode | null;
 }
 
 function PlanCard({
@@ -76,9 +79,9 @@ function PlanCard({
   isCheckoutLoading,
   pendingTier,
 }: PlanCardProps) {
-  const isCurrent = plan.tier === currentTier;
-  const isUpgrade = tierRank(plan.tier) > tierRank(currentTier);
-  const isDowngrade = tierRank(plan.tier) < tierRank(currentTier);
+  const isCurrent = currentTier !== "free" && plan.tier === currentTier;
+  const isUpgrade =
+    currentTier === "free" || tierRank(plan.tier) > tierRank(currentTier);
   const isPending = pendingTier === plan.tier && isCheckoutLoading;
 
   const cap = (n: number | null, label: string) =>
@@ -86,8 +89,7 @@ function PlanCard({
 
   // Highlight Growth — that's the price-anchor / recommended tier
   const isHighlighted = plan.tier === "growth" && !isCurrent;
-  const planFit: Record<SubscriptionTierCode, string> = {
-    free: "Account and billing preview only. Choose a paid licence to unlock the workspace.",
+  const planFit: Record<PaidSubscriptionTierCode, string> = {
     starter: "Run a focused security program for one or two priority areas.",
     growth:
       "Operate ongoing cybersecurity across controls, evidence, policies, and reports.",
@@ -121,14 +123,7 @@ function PlanCard({
       </CardHeader>
       <CardBody>
         <div className="mb-4">
-          {plan.tier === "free" ? (
-            <div>
-              <span className="text-3xl font-bold text-slate-900">
-                No licence
-              </span>
-              <span className="text-sm text-slate-500 ml-1">yet</span>
-            </div>
-          ) : plan.amount_minor === 0 ? (
+          {plan.amount_minor === 0 ? (
             <div>
               <span className="text-3xl font-bold text-slate-900">Free</span>
               <span className="text-sm text-slate-500 ml-1">forever</span>
@@ -148,69 +143,35 @@ function PlanCard({
         </div>
 
         <ul className="space-y-2 mb-5 min-h-[12rem]">
-          {plan.tier === "free" ? (
-            <>
-              <PlanFeature included>Account creation</PlanFeature>
-              <PlanFeature included>Billing and plan selection</PlanFeature>
-              <PlanFeature included={false}>
-                Assessments and guided roadmap
-              </PlanFeature>
-              <PlanFeature included={false}>
-                Evidence, policies, and reports
-              </PlanFeature>
-              <PlanFeature included={false}>
-                Framework learning paths
-              </PlanFeature>
-              <PlanFeature included={false}>AI advisor</PlanFeature>
-            </>
-          ) : (
-            <>
-              <PlanFeature included>
-                {cap(plan.max_active_assessments, "active assessments")}
-              </PlanFeature>
-              <PlanFeature included>
-                {cap(plan.max_evidence_items, "evidence items")}
-              </PlanFeature>
-              <PlanFeature included>
-                {cap(plan.max_published_policies, "published policies")}
-              </PlanFeature>
-              <PlanFeature included>
-                {plan.max_frameworks === null
-                  ? "All frameworks (SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, PCI DSS)"
-                  : `${plan.max_frameworks} frameworks`}
-              </PlanFeature>
-              <PlanFeature included={plan.ai_advisor_enabled}>
-                AI advisor (Claude-powered)
-              </PlanFeature>
-              <PlanFeature included={plan.custom_policy_drafting}>
-                Custom policy drafting
-              </PlanFeature>
-              <PlanFeature included={plan.dedicated_reviewer}>
-                Dedicated reviewer
-              </PlanFeature>
-            </>
-          )}
+          <PlanFeature included>
+            {cap(plan.max_active_assessments, "active assessments")}
+          </PlanFeature>
+          <PlanFeature included>
+            {cap(plan.max_evidence_items, "evidence items")}
+          </PlanFeature>
+          <PlanFeature included>
+            {cap(plan.max_published_policies, "published policies")}
+          </PlanFeature>
+          <PlanFeature included>
+            {plan.max_frameworks === null
+              ? "All frameworks (SOC 2, NDPA, CBN, ISO 27001, POPIA, Kenya DPA, PCI DSS)"
+              : `${plan.max_frameworks} frameworks`}
+          </PlanFeature>
+          <PlanFeature included={plan.ai_advisor_enabled}>
+            AI advisor (Claude-powered)
+          </PlanFeature>
+          <PlanFeature included={plan.custom_policy_drafting}>
+            Custom policy drafting
+          </PlanFeature>
+          <PlanFeature included={plan.dedicated_reviewer}>
+            Dedicated reviewer
+          </PlanFeature>
         </ul>
 
         {isCurrent ? (
           <Button variant="outline" className="w-full" disabled>
             Current plan
           </Button>
-        ) : plan.tier === "free" ? (
-          isDowngrade ? (
-            <Button
-              variant="outline"
-              className="w-full"
-              disabled
-              title="Cancel your subscription to downgrade to free"
-            >
-              Cancel subscription to downgrade
-            </Button>
-          ) : (
-            <Button variant="outline" className="w-full" disabled>
-              Free
-            </Button>
-          )
         ) : (
           <Button
             variant={isHighlighted ? "primary" : "outline"}
@@ -219,7 +180,11 @@ function PlanCard({
             disabled={isCheckoutLoading && !isPending}
             onClick={() => onSelect(plan.tier)}
           >
-            {isUpgrade ? "Upgrade" : "Switch"} to{" "}
+            {currentTier === "free"
+              ? "Choose"
+              : isUpgrade
+                ? "Upgrade to"
+                : "Switch to"}{" "}
             {plan.name.replace(/ \(Monthly\)/, "")}
           </Button>
         )}
@@ -237,7 +202,7 @@ export function BillingPage() {
 
   const [error, setError] = useState<string | null>(null);
   const [pendingTier, setPendingTier] =
-    useState<SubscriptionTierCode | null>(null);
+    useState<PaidSubscriptionTierCode | null>(null);
 
   // If the user came back from Paystack via the callback URL, refresh state.
   // Webhook is the source of truth, but a refresh sees the updated tier
@@ -271,7 +236,7 @@ export function BillingPage() {
   const showLicenceRequiredBanner =
     currentTier === "free" || routeState?.reason === "license_required";
 
-  const handleSelect = async (tier: SubscriptionTierCode) => {
+  const handleSelect = async (tier: PaidSubscriptionTierCode) => {
     setError(null);
     setPendingTier(tier);
     try {
@@ -304,7 +269,7 @@ export function BillingPage() {
     }
   };
 
-  const allPlans = [pricing.free, ...pricing.paid];
+  const paidPlans = pricing.paid as PaidPlanOut[];
 
   return (
     <>
@@ -328,9 +293,9 @@ export function BillingPage() {
                 Choose a licence to unlock your advisory workspace
               </div>
               <p className="mt-1 text-sm text-amber-900">
-                You can create an account without a card, but assessments,
-                guided readiness roadmaps, framework learning paths, evidence,
-                policies, reports, and team access require a paid licence.
+                A paid licence is required before assessments, guided readiness
+                roadmaps, framework learning paths, evidence, policies, reports,
+                and team access are available.
               </p>
             </div>
           </CardBody>
@@ -422,8 +387,8 @@ export function BillingPage() {
       )}
 
       {/* Plans grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {allPlans.map((plan) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-6">
+        {paidPlans.map((plan) => (
           <PlanCard
             key={plan.tier}
             plan={plan}
