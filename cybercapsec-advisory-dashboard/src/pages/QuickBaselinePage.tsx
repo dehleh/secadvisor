@@ -13,6 +13,10 @@ import {
   evaluateQuickBaseline,
   type BaselineAnswer,
 } from "@/lib/guidedReadiness";
+import {
+  useGuidedReadiness,
+  useSaveGuidedReadiness,
+} from "@/hooks/useGuidedReadiness";
 
 const answerOptions: Array<{
   value: BaselineAnswer;
@@ -61,6 +65,12 @@ function loadAnswers(companyId: string | null | undefined) {
 export function QuickBaselinePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { data: guidedProfile } = useGuidedReadiness();
+  const {
+    mutate: saveGuidedProfile,
+    isPending: isSavingGuidedProfile,
+  } = useSaveGuidedReadiness();
+  const [hydrated, setHydrated] = useState(false);
   const [answers, setAnswers] = useState<Record<string, BaselineAnswer>>(() =>
     loadAnswers(user?.company_id),
   );
@@ -68,8 +78,24 @@ export function QuickBaselinePage() {
   const answeredCount = Object.keys(answers).length;
 
   useEffect(() => {
+    if (hydrated) return;
+    const saved = guidedProfile?.baseline_answers as
+      | Record<string, BaselineAnswer>
+      | undefined;
+    if (saved && Object.keys(saved).length > 0 && Object.keys(answers).length === 0) {
+      setAnswers(saved);
+    }
+    if (guidedProfile !== undefined) setHydrated(true);
+  }, [answers, guidedProfile, hydrated]);
+
+  useEffect(() => {
+    if (Object.keys(answers).length === 0) return;
     window.localStorage.setItem(storageKey(user?.company_id), JSON.stringify(answers));
-  }, [answers, user?.company_id]);
+    saveGuidedProfile({
+      baseline_answers: answers,
+      selected_goal: guidedProfile?.selected_goal ?? "reduce_breach_risk",
+    });
+  }, [answers, guidedProfile?.selected_goal, saveGuidedProfile, user?.company_id]);
 
   return (
     <>
@@ -100,6 +126,7 @@ export function QuickBaselinePage() {
             </p>
             <div className="mt-4 text-xs text-slate-500">
               {answeredCount} of {baselineQuestions.length} answered
+              {isSavingGuidedProfile ? " · Saving" : ""}
             </div>
           </CardBody>
         </Card>

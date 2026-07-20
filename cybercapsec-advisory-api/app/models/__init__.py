@@ -19,6 +19,7 @@ from app.models.company import (
     UserRole,
     currency_for_country,
 )
+from app.models.guided_readiness import GuidedReadinessProfile
 from app.models.compliance import (
     Control,
     ControlMapping,
@@ -59,6 +60,7 @@ __all__ = [
     "EvidenceStatus",
     "Framework",
     "FrameworkCode",
+    "GuidedReadinessProfile",
     "MappingStrength",
     "Policy",
     "PolicyAcknowledgment",

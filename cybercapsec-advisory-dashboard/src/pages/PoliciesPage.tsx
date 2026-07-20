@@ -131,24 +131,59 @@ export function PoliciesPage() {
       </Card>
 
       {!policies?.length ? (
-        <Card>
-          <CardBody>
-            <EmptyState
-              icon={<FilePlus2 className="h-12 w-12" />}
-              title="No policies yet"
-              description="Generate the starter pack to create 10 draft policies covering SOC 2, NDPA, CBN, and PCI DSS essentials."
-              action={
-                <Button
-                  onClick={() => starterPack.mutate()}
-                  loading={starterPack.isPending}
-                  size="lg"
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recommended first policies</CardTitle>
+            </CardHeader>
+            <CardBody className="grid grid-cols-1 gap-3 md:grid-cols-3">
+              {[
+                {
+                  title: "Access control",
+                  body: "Defines MFA, roles, approvals, access reviews, and offboarding.",
+                },
+                {
+                  title: "Incident response",
+                  body: "Explains who acts, who decides, and how customers or regulators are notified.",
+                },
+                {
+                  title: "Data protection",
+                  body: "Connects customer, payment, and personal-data promises to real controls.",
+                },
+              ].map((policy) => (
+                <div
+                  key={policy.title}
+                  className="rounded-md border border-slate-200 bg-white p-4"
                 >
-                  Generate starter pack
-                </Button>
-              }
-            />
-          </CardBody>
-        </Card>
+                  <h3 className="text-sm font-semibold text-slate-900">
+                    {policy.title}
+                  </h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-600">
+                    {policy.body}
+                  </p>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
+              <EmptyState
+                icon={<FilePlus2 className="h-12 w-12" />}
+                title="No policies yet"
+                description="Generate the starter pack to create practical policies for access, incidents, vendors, backups, change management, data protection, and awareness."
+                action={
+                  <Button
+                    onClick={() => starterPack.mutate()}
+                    loading={starterPack.isPending}
+                    size="lg"
+                  >
+                    Generate starter pack
+                  </Button>
+                }
+              />
+            </CardBody>
+          </Card>
+        </div>
       ) : (
         <div className="space-y-6">
           {drafts.length > 0 && (

@@ -433,6 +433,33 @@ export interface ControlEvidence {
   propagated_evidence: Evidence[];
 }
 
+// ----- Guided readiness ------------------------------------------------------
+
+export interface GuidedReadinessProfile {
+  id: string;
+  company_id: string;
+  updated_by_user_id: string | null;
+  selected_goal: string | null;
+  target_framework: string | null;
+  program_profile: Record<string, unknown>;
+  scope_answers: Record<string, unknown>;
+  baseline_answers: Record<string, unknown>;
+  questionnaire_drafts: Array<Record<string, unknown>>;
+  readiness_notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GuidedReadinessPayload {
+  selected_goal?: string | null;
+  target_framework?: string | null;
+  program_profile?: Record<string, unknown>;
+  scope_answers?: Record<string, unknown>;
+  baseline_answers?: Record<string, unknown>;
+  questionnaire_drafts?: Array<Record<string, unknown>>;
+  readiness_notes?: string | null;
+}
+
 // ----- Roadmap ---------------------------------------------------------------
 
 export type RoadmapStatus =

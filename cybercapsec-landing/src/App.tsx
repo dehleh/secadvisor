@@ -4,11 +4,20 @@ import {
   BookOpen,
   Check,
   ClipboardCheck,
+  Clock3,
+  CreditCard,
+  Database,
+  FileQuestion,
   Globe,
+  GraduationCap,
   Layers,
+  LockKeyhole,
+  Map,
   MessageSquareText,
+  Route,
   ShieldCheck,
   Sparkles,
+  Users,
   Zap,
   X,
 } from "lucide-react";
@@ -104,6 +113,12 @@ function Header() {
           >
             Features
           </a>
+          <a href="#guided-flow" className="text-slate-700 hover:text-brand-600">
+            How it guides
+          </a>
+          <a href="#pci-roadmap" className="text-slate-700 hover:text-brand-600">
+            PCI DSS
+          </a>
           <a
             href="#frameworks"
             className="text-slate-700 hover:text-brand-600"
@@ -138,44 +153,605 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-50 via-brand-50 to-white" />
-      <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-700 mb-6">
+    <section className="relative overflow-hidden bg-slate-950">
+      <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+        <div className="max-w-4xl">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-sky-100 ring-1 ring-white/15 mb-6">
             <Sparkles className="h-3.5 w-3.5" />
-            Built for African fintechs and SaaS
+            Founder-friendly cybersecurity readiness
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 leading-[1.05]">
-            Run your cybersecurity program, not just your{" "}
-            <span className="text-brand-600">compliance checklist</span>.
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.05]">
+            Cybersecurity guidance a founder can actually follow.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl">
-            CyberCapSec Advisory helps startups in Lagos, Nairobi, Joburg, and
-            Accra assess cyber risk, prioritize controls, collect evidence,
-            publish policies, and share a credible posture report. Guided
-            readiness for PCI DSS, SOC 2, ISO 27001, NIST CSF, CIS Controls,
-            NDPA, CBN, POPIA, and Kenya DPA comes with it.
+          <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-3xl">
+            CyberCapSec-Advisory turns goals like "I need PCI DSS," "a customer
+            sent a security questionnaire," or "we need to reduce breach risk"
+            into a plain-English readiness roadmap, evidence plan, policies,
+            team owners, and shareable security posture report.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <a
-              href={`${APP_URL}/signup`}
-              className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium px-6 py-3 rounded-lg text-base"
+              href={`${APP_URL}/signup?goal=quick_baseline`}
+              className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-3 rounded-lg text-base"
             >
-              Start free baseline
+              Start guided baseline
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="#pricing"
-              className="inline-flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 font-medium px-6 py-3 rounded-lg text-base"
+              href="#pci-roadmap"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 hover:bg-white/15 text-white font-medium px-6 py-3 rounded-lg text-base"
             >
-              See pricing
+              See PCI DSS example
             </a>
           </div>
-          <p className="mt-4 text-sm text-slate-500">
-            No credit card required. NGN, KES, ZAR, GHS, or USD billing via
-            Paystack.
+          <div className="mt-5 flex flex-wrap gap-2">
+            {[
+              ["Start PCI DSS readiness", "pci_dss"],
+              ["Answer a questionnaire", "questionnaire"],
+              ["Prepare for SOC 2", "soc2"],
+              ["Reduce breach risk", "breach_risk"],
+            ].map(([label, goal]) => (
+              <a
+                key={goal}
+                href={`${APP_URL}/signup?goal=${goal}`}
+                className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-sm font-medium text-slate-200 hover:bg-white/10"
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-12 grid gap-3 md:grid-cols-4">
+          {[
+            {
+              label: "Client goal",
+              text: "I need PCI DSS readiness",
+              icon: CreditCard,
+            },
+            {
+              label: "Guided scope",
+              text: "Where does card data enter, move, or get stored?",
+              icon: Map,
+            },
+            {
+              label: "Roadmap",
+              text: "Next 7 days, 30 days, 90 days, before validation",
+              icon: Route,
+            },
+            {
+              label: "Proof",
+              text: "Evidence, policies, owners, and report language",
+              icon: FileQuestion,
+            },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.label}
+                className="rounded-lg border border-white/10 bg-white/[0.06] p-4"
+              >
+                <div className="flex items-center gap-2 text-sky-100">
+                  <Icon className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase tracking-wide">
+                    {item.label}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-slate-200">
+                  {item.text}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        <p className="mt-5 text-sm text-slate-400">
+          No credit card required. Built for African startups, fintechs, SaaS
+          teams, and founders who need security clarity without jargon.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function GuidedFlow() {
+  const steps = [
+    {
+      title: "Pick the security goal",
+      body: "Start from the sentence a founder already has: PCI DSS, SOC 2, customer questionnaire, breach-risk reduction, payments, or privacy readiness.",
+      icon: Sparkles,
+    },
+    {
+      title: "Understand scope in plain English",
+      body: "CyberCapSec asks the important questions first: what data is involved, which systems touch it, who has access, and what vendors are part of the flow.",
+      icon: Map,
+    },
+    {
+      title: "Get a readiness roadmap",
+      body: "The app explains what to fix now, what can wait, who should own it, and which evidence proves the work was done.",
+      icon: Route,
+    },
+    {
+      title: "Answer with confidence",
+      body: "Use policies, evidence, framework notes, and a security posture report to respond to customers, assessors, partners, or regulators.",
+      icon: MessageSquareText,
+    },
+  ];
+
+  return (
+    <section id="guided-flow" className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-3xl mb-12">
+          <p className="text-sm font-semibold text-brand-700">
+            Simpler, guided, educational
           </p>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+            The product starts from the founder's problem, not from a control
+            catalog.
+          </h2>
+          <p className="mt-4 text-slate-600 text-lg">
+            A client should not have to know the difference between scope,
+            evidence, controls, and validation before taking action. CyberCapSec
+            teaches the concept, then turns it into work.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-4">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.title}
+                className="rounded-xl border border-slate-200 bg-slate-50 p-5"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-brand-700 shadow-sm">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-semibold text-slate-400">
+                    0{index + 1}
+                  </span>
+                </div>
+                <h3 className="mt-5 text-base font-semibold text-slate-900">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {step.body}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PciInteractivePreview() {
+  const [paymentFlow, setPaymentFlow] = useState("hosted");
+  const [cardStorage, setCardStorage] = useState("no");
+  const [staffAccess, setStaffAccess] = useState("limited");
+
+  const scoreMap: Record<string, number> = {
+    hosted: 90,
+    embedded: 70,
+    direct: 35,
+    no: 90,
+    tokens: 75,
+    yes: 20,
+    limited: 80,
+    broad: 45,
+    unknown: 30,
+  };
+  const score = Math.round(
+    (scoreMap[paymentFlow] + scoreMap[cardStorage] + scoreMap[staffAccess]) / 3,
+  );
+  const label =
+    score >= 80
+      ? "Lower-scope starting point"
+      : score >= 60
+        ? "Needs scope confirmation"
+        : "Scope before certification";
+  const guidance =
+    score >= 80
+      ? "You may have a cleaner readiness path, but you still need provider proof, access reviews, logging checks, and evidence."
+      : score >= 60
+        ? "Clarify payment flows, logs, support access, and provider responsibility before promising a validation timeline."
+        : "Start by reducing card-data exposure and mapping every system that can touch payment data.";
+
+  return (
+    <section className="py-20 bg-slate-50 border-y border-slate-200">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div>
+            <p className="text-sm font-semibold text-brand-700">
+              Interactive PCI DSS preview
+            </p>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+              Let a founder understand PCI DSS scope in 30 seconds.
+            </h2>
+            <p className="mt-4 text-slate-600 text-lg leading-relaxed">
+              This is the landing-page proof of the product promise: choose a
+              few simple answers and see the likely readiness path immediately.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            {[
+              {
+                label: "How do card payments happen?",
+                value: paymentFlow,
+                setValue: setPaymentFlow,
+                options: [
+                  ["hosted", "Hosted checkout"],
+                  ["embedded", "Embedded provider fields"],
+                  ["direct", "Our app collects card details"],
+                ],
+              },
+              {
+                label: "Do you store card data?",
+                value: cardStorage,
+                setValue: setCardStorage,
+                options: [
+                  ["no", "No"],
+                  ["tokens", "Tokens or masked data"],
+                  ["yes", "Yes or not sure"],
+                ],
+              },
+              {
+                label: "Can staff access payment records?",
+                value: staffAccess,
+                setValue: setStaffAccess,
+                options: [
+                  ["limited", "Limited with MFA"],
+                  ["broad", "Broad access"],
+                  ["unknown", "Not sure"],
+                ],
+              },
+            ].map((question) => (
+              <div key={question.label} className="mb-5 last:mb-0">
+                <h3 className="text-sm font-semibold text-slate-900">
+                  {question.label}
+                </h3>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {question.options.map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => question.setValue(value)}
+                      className={
+                        "rounded-md border px-3 py-2 text-sm font-medium transition " +
+                        (question.value === value
+                          ? "border-brand-500 bg-brand-50 text-brand-700"
+                          : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50")
+                      }
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <div className="mt-6 rounded-lg border border-brand-200 bg-brand-50 p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold text-brand-800">
+                    Likely readiness path
+                  </p>
+                  <h3 className="mt-1 text-xl font-bold text-slate-900">
+                    {label}
+                  </h3>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">
+                    {score}
+                  </div>
+                  <div className="text-xs text-slate-500">scope clarity</div>
+                </div>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                {guidance}
+              </p>
+              <a
+                href={`${APP_URL}/signup?goal=pci_dss`}
+                className="mt-4 inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+              >
+                Start PCI DSS readiness
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PciRoadmap() {
+  const phases = [
+    {
+      title: "Map payment scope",
+      body: "Find where card data enters, moves, gets stored, appears in logs, or can be accessed by staff and vendors.",
+      evidence: "Payment data flow, provider contract, scoped asset list",
+      icon: CreditCard,
+    },
+    {
+      title: "Reduce card-data exposure",
+      body: "Use hosted payment pages or tokenized provider flows where possible, then isolate payment-impacting systems.",
+      evidence: "Payment architecture note, data minimization decision",
+      icon: Database,
+    },
+    {
+      title: "Harden access and systems",
+      body: "Enforce MFA, least privilege, patching, vulnerability scans, secure release checks, logging, and incident response.",
+      evidence: "MFA proof, access review, scan result, incident plan",
+      icon: LockKeyhole,
+    },
+    {
+      title: "Prepare validation proof",
+      body: "Collect evidence, assign owners, document exceptions, and know what remains before an assessor or payment partner reviews it.",
+      evidence: "Evidence tracker, exception log, readiness report",
+      icon: FileQuestion,
+    },
+  ];
+
+  return (
+    <section id="pci-roadmap" className="py-20 bg-slate-50 border-y border-slate-200">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <p className="text-sm font-semibold text-brand-700">
+              PCI DSS example
+            </p>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+              From "I need PCI DSS" to a readiness roadmap.
+            </h2>
+            <p className="mt-4 text-slate-600 text-lg leading-relaxed">
+              CyberCapSec-Advisory explains PCI DSS like a security coach: what
+              is in scope, what creates payment risk, what should be fixed
+              first, and what evidence proves readiness. The same guided pattern
+              applies to SOC 2, ISO 27001, NIST CSF, CIS Controls, NDPA, CBN,
+              POPIA, Kenya DPA, GDPR, and HIPAA.
+            </p>
+            <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <h3 className="font-semibold text-slate-900">
+                Founder translation
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                PCI DSS is not just a certificate. It is a way to prove payment
+                card data is scoped, minimized, protected, monitored, and ready
+                for the right validation path.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {phases.map((phase, index) => {
+              const Icon = phase.icon;
+              return (
+                <div
+                  key={phase.title}
+                  className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+                >
+                  <div className="flex gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+                          Phase {index + 1}
+                        </span>
+                        <span className="text-xs font-medium text-slate-500">
+                          Readiness roadmap
+                        </span>
+                      </div>
+                      <h3 className="mt-2 font-semibold text-slate-900">
+                        {phase.title}
+                      </h3>
+                      <p className="mt-1 text-sm leading-6 text-slate-600">
+                        {phase.body}
+                      </p>
+                      <p className="mt-3 text-xs leading-5 text-slate-500">
+                        Evidence: {phase.evidence}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhoItsFor() {
+  const audiences = [
+    {
+      title: "Fintech taking payments",
+      body: "Needs PCI DSS clarity, payment data-flow mapping, access hardening, and evidence customers or partners will trust.",
+      icon: CreditCard,
+    },
+    {
+      title: "SaaS selling to enterprise",
+      body: "Needs SOC 2-style answers, customer questionnaire support, security policies, and posture reports.",
+      icon: MessageSquareText,
+    },
+    {
+      title: "Health, finance, or data-heavy startup",
+      body: "Needs a practical view of sensitive data, vendor access, incident response, privacy, and cyber resilience.",
+      icon: Database,
+    },
+    {
+      title: "Founder under review pressure",
+      body: "Needs to understand what to fix now, what evidence is missing, and how to explain open risks honestly.",
+      icon: Users,
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-3xl mb-12">
+          <p className="text-sm font-semibold text-brand-700">Who it is for</p>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+            Built for teams that need security clarity before security headcount.
+          </h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {audiences.map((audience) => {
+            const Icon = audience.icon;
+            return (
+              <div key={audience.title} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-white text-brand-700 shadow-sm">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-semibold text-slate-900">
+                  {audience.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {audience.body}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SampleReports() {
+  const reports = [
+    {
+      title: "PCI DSS readiness report",
+      body: "Payment scope, card-data exposure, access controls, logging, vulnerability management, evidence gaps, and validation notes.",
+      sections: ["Scope", "Payment risks", "Evidence", "Validation path"],
+    },
+    {
+      title: "SOC 2 readiness report",
+      body: "Trust controls across access, change management, vendors, incidents, monitoring, resilience, and evidence history.",
+      sections: ["Trust story", "Control gaps", "Roadmap", "Proof status"],
+    },
+    {
+      title: "Cyber posture report",
+      body: "Plain-English risk register, first actions, team owners, policy status, evidence maturity, and shareable posture summary.",
+      sections: ["Top risks", "Owners", "Timeline", "Report link"],
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-slate-50 border-y border-slate-200">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-3xl mb-12">
+          <p className="text-sm font-semibold text-brand-700">
+            See the output before signing up
+          </p>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+            Sample readiness reports make the value tangible.
+          </h2>
+          <p className="mt-4 text-slate-600 text-lg">
+            Buyers should not have to imagine what CyberCapSec produces. The
+            product turns security work into reports that founders, customers,
+            assessors, and leadership can understand.
+          </p>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          {reports.map((report) => (
+            <div key={report.title} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <FileQuestion className="h-6 w-6 text-brand-700" />
+              <h3 className="mt-4 text-lg font-semibold text-slate-900">
+                {report.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {report.body}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {report.sections.map((section) => (
+                  <span key={section} className="rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+                    {section}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FrameworkComparison() {
+  const rows = [
+    ["PCI DSS", "Payment card security", "Scope payment flows and prove card-data controls."],
+    ["SOC 2", "Customer trust", "Show customers that security controls operate consistently."],
+    ["ISO 27001", "Security management system", "Run risk treatment, ownership, reviews, and improvement."],
+    ["NIST CSF", "Cyber risk baseline", "Communicate governance, protection, detection, response, and recovery."],
+    ["CIS Controls", "Technical safeguards", "Prioritize practical defenses engineers can implement."],
+    ["NDPA / GDPR / POPIA / Kenya DPA", "Privacy readiness", "Connect personal-data obligations to security controls and evidence."],
+  ];
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-3xl mb-10">
+          <p className="text-sm font-semibold text-brand-700">
+            Choose the right path
+          </p>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+            Frameworks should be compared in human language.
+          </h2>
+        </div>
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          {rows.map(([framework, purpose, action]) => (
+            <div key={framework} className="grid gap-3 border-b border-slate-200 p-4 last:border-b-0 md:grid-cols-[220px_240px_1fr]">
+              <div className="font-semibold text-slate-900">{framework}</div>
+              <div className="text-sm font-medium text-brand-700">{purpose}</div>
+              <div className="text-sm leading-6 text-slate-600">{action}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TrustProof() {
+  const proofs = [
+    "Example policy pack for access, incidents, data protection, vendors, backups, and change management.",
+    "Evidence checklist for MFA, access reviews, payment data flows, scans, restore tests, and vendor reviews.",
+    "Roadmap grouped by next 7 days, 30 days, 90 days, and before audit or customer review.",
+    "Methodology note: security fundamentals first, framework mapping second, certification by qualified reviewers.",
+  ];
+
+  return (
+    <section className="py-20 bg-slate-950">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <p className="text-sm font-semibold text-sky-200">Trust proof</p>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-white">
+              Clear about what the product does, and what it does not do.
+            </h2>
+            <p className="mt-4 text-slate-300 text-lg leading-relaxed">
+              CyberCapSec-Advisory helps teams get ready. It does not replace a
+              PCI assessor, SOC 2 auditor, ISO certification body, or legal
+              advisor. That honesty builds trust.
+            </p>
+          </div>
+          <div className="grid gap-3 md:grid-cols-2">
+            {proofs.map((proof) => (
+              <div key={proof} className="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+                <Check className="h-5 w-5 text-emerald-300" />
+                <p className="mt-3 text-sm leading-6 text-slate-200">
+                  {proof}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -262,74 +838,170 @@ function Frameworks() {
     {
       code: "PCI DSS",
       desc: "Payment card security readiness",
-      path: "Scope payments, harden systems, collect evidence, prepare validation.",
+      question: "Where does card data enter, move, get stored, or appear in logs?",
+      path: "Scope payments, reduce exposure, harden access, collect validation evidence.",
     },
     {
       code: "SOC 2",
       desc: "Customer trust and security operations",
-      path: "Build controls, operate them consistently, package auditor-ready proof.",
+      question: "Can you prove your controls operated consistently over time?",
+      path: "Build access, change, incident, vendor, and evidence habits customers trust.",
     },
     {
       code: "ISO 27001",
       desc: "Information security management system",
-      path: "Run risk treatment, policies, ownership, reviews, and improvement.",
+      question: "Do you manage security risk as a repeatable business process?",
+      path: "Run risk treatment, policies, owners, reviews, and improvement cycles.",
     },
     {
       code: "NIST CSF",
       desc: "Cybersecurity risk-management baseline",
-      path: "Govern, identify, protect, detect, respond, and recover with clarity.",
+      question: "Can leadership see how you govern, protect, detect, respond, and recover?",
+      path: "Create a security baseline before choosing a formal certification path.",
     },
     {
       code: "CIS Controls",
       desc: "Practical technical safeguards",
-      path: "Prioritize assets, access, configuration, vulnerability fixes, and logs.",
+      question: "Do you know what you own, who can access it, and whether it is monitored?",
+      path: "Prioritize asset inventory, access, configuration, vulnerabilities, and logs.",
     },
     {
       code: "NDPA",
       desc: "Nigeria data-protection readiness",
+      question: "Can you show how personal data is collected, protected, shared, and deleted?",
       path: "Map personal data, secure access, manage vendors, and prepare incidents.",
     },
     {
       code: "CBN",
       desc: "Financial-sector cybersecurity readiness",
-      path: "Show governance, resilience, monitoring, third-party risk, and reporting.",
+      question: "Can leadership see cyber risks, controls, incidents, vendors, and resilience?",
+      path: "Show governance, monitoring, third-party risk, reporting, and recovery readiness.",
     },
     {
       code: "POPIA",
       desc: "South Africa privacy readiness",
-      path: "Connect privacy obligations to real security controls and evidence.",
+      question: "Are privacy promises backed by real security controls and vendor oversight?",
+      path: "Connect privacy obligations to access, retention, vendor, and incident evidence.",
     },
     {
       code: "Kenya DPA",
       desc: "Kenya data-protection readiness",
-      path: "Track data flows, retention, access, vendors, and breach response.",
+      question: "Do you understand data flows, retention, access, vendors, and breach response?",
+      path: "Turn data-protection expectations into a clear operating roadmap.",
     },
   ];
   return (
-    <section id="frameworks" className="py-20 bg-slate-50 border-y border-slate-200">
+    <section id="frameworks" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="max-w-2xl mb-14">
+        <div className="max-w-3xl mb-14">
+          <p className="text-sm font-semibold text-brand-700">
+            Common framework guides
+          </p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
             Frameworks explained before they become work
           </h2>
           <p className="mt-4 text-slate-600 text-lg">
-            A client who needs PCI DSS, SOC 2, ISO 27001, NIST CSF, CIS
-            Controls, NDPA, CBN, POPIA, or Kenya DPA should understand the path
-            in minutes: what it is for, what to fix first, what evidence to
-            collect, and what readiness looks like.
+            A client should understand the security meaning of a framework in
+            minutes: the first readiness question, the likely roadmap, and the
+            evidence they will need before talking to customers, assessors, or
+            regulators.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {frameworks.map((fw) => (
             <div
               key={fw.code}
-              className="bg-white border border-slate-200 rounded-lg p-5 hover:border-brand-300 hover:shadow-sm transition"
+              className="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-brand-300 hover:shadow-sm transition"
             >
-              <div className="font-semibold text-slate-900">{fw.code}</div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="font-semibold text-slate-900">{fw.code}</div>
+                <BookOpen className="h-4 w-4 text-brand-700" />
+              </div>
               <div className="text-sm text-slate-600 mt-1">{fw.desc}</div>
-              <p className="mt-3 text-sm leading-6 text-slate-700">{fw.path}</p>
+              <div className="mt-4 rounded-lg bg-white p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  First question
+                </p>
+                <p className="mt-1 text-sm leading-6 text-slate-700">
+                  {fw.question}
+                </p>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                {fw.path}
+              </p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EducationLayer() {
+  const items = [
+    {
+      title: "Plain-English glossary",
+      body: "Explain CDE, MFA, least privilege, vulnerability management, incident response, evidence, and exceptions without making the founder feel behind.",
+      icon: GraduationCap,
+    },
+    {
+      title: "Evidence examples",
+      body: "Show what good proof looks like: MFA screenshots, access reviews, payment data flows, backup restore tests, vendor reviews, and incident tabletop notes.",
+      icon: ClipboardCheck,
+    },
+    {
+      title: "Customer questionnaire help",
+      body: "Draft clear answers using the company's actual policies, roadmap, evidence, and framework-readiness state.",
+      icon: MessageSquareText,
+    },
+    {
+      title: "Owner-ready tasks",
+      body: "Roadmap items explain why the work matters, how a founder should think about it, how an engineer fixes it, and what evidence closes it.",
+      icon: Users,
+    },
+    {
+      title: "Timeline clarity",
+      body: "Separate next 7 days, next 30 days, next 90 days, and before-audit work so teams know what to do first.",
+      icon: Clock3,
+    },
+    {
+      title: "Security first, compliance mapped",
+      body: "The workflow covers identity, cloud, application security, data protection, vendors, people, response, and resilience before mapping to frameworks.",
+      icon: ShieldCheck,
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-slate-50 border-y border-slate-200">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-3xl mb-12">
+          <p className="text-sm font-semibold text-brand-700">
+            Built to teach while it guides
+          </p>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+            Founder-friendly does not mean shallow.
+          </h2>
+          <p className="mt-4 text-slate-600 text-lg">
+            CyberCapSec should help non-security founders understand what
+            matters, while still giving security and engineering teams enough
+            structure to execute properly.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="rounded-xl bg-white p-5 border border-slate-200">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-semibold text-slate-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {item.body}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -389,7 +1061,7 @@ function Pricing() {
         { included: true, text: "Unlimited assessments" },
         { included: true, text: "Unlimited evidence" },
         { included: true, text: "Unlimited policies" },
-        { included: true, text: "All 6 frameworks" },
+        { included: true, text: "All common framework guides" },
         { included: true, text: "AI advisor (Claude)" },
         { included: true, text: "Priority support" },
       ],
@@ -399,13 +1071,13 @@ function Pricing() {
     {
       tier: "audit_ready",
       name: "Audit-Ready",
-      blurb: "Going into a SOC 2 audit in 90 days.",
+      blurb: "Going into PCI DSS, SOC 2, ISO, or customer review pressure.",
       features: [
         { included: true, text: "Everything in Growth" },
         { included: true, text: "Dedicated reviewer" },
-        { included: true, text: "Audit prep workshop" },
+        { included: true, text: "Readiness prep workshop" },
         { included: true, text: "Custom policy drafting" },
-        { included: true, text: "Pre-audit walkthrough" },
+        { included: true, text: "Pre-review walkthrough" },
         { included: true, text: "Direct messaging" },
       ],
       cta: "Talk to us",
@@ -545,12 +1217,20 @@ function Pricing() {
 function FAQ() {
   const items = [
     {
-      q: "Is this a replacement for a SOC 2 auditor?",
-      a: "No. CyberCapSec Advisory gets you ready for an audit. You'll still need a licensed audit firm to issue the SOC 2 report. We help you build the program, draft the policies, collect the evidence, and walk in confident.",
+      q: "Will CyberCapSec certify us for PCI DSS or SOC 2?",
+      a: "No. CyberCapSec-Advisory helps you understand readiness, scope the work, close security gaps, collect evidence, and prepare for the right validation path. Final certification, audit, or validation still depends on the relevant assessor, auditor, payment partner, or regulator.",
+    },
+    {
+      q: "Can a non-security founder understand PCI DSS with this?",
+      a: "That is the point. The product starts with plain questions: how payments happen, whether card data is stored, who can access payment systems, whether logs might contain sensitive data, and what proof is needed. Then it turns the answers into a readiness roadmap.",
+    },
+    {
+      q: "Is this only a compliance product?",
+      a: "No. Compliance mapping is included, but the core workflow is cybersecurity: identity and access, cloud infrastructure, application security, data protection, vendor risk, incident response, people, and resilience. Frameworks sit on top of that real security work.",
     },
     {
       q: "How is this different from Vanta or Drata?",
-      a: "Vanta and Drata are excellent products built for the US market. They charge USD pricing, integrate primarily with US-shaped SaaS, and don't model African regulators (NDPC, CBN, ODPC, Information Regulator). We're built African-first: NGN/KES/ZAR/GHS billing via Paystack, NDPA + CBN + POPIA + Kenya DPA in the core data model, paraphrased control text grounded in regulators we've actually read.",
+      a: "Vanta and Drata are strong automation platforms. CyberCapSec-Advisory is positioned as a guided cybersecurity advisor for founders and African startups: simpler language, local pricing, African regulatory context, readiness education, and a roadmap that explains what to do before automation becomes useful.",
     },
     {
       q: "Who reads the data we put in?",
@@ -558,11 +1238,11 @@ function FAQ() {
     },
     {
       q: "What does the free tier let me do?",
-      a: "Run one assessment, see your AI-generated risk register and 13-week roadmap, store up to 3 pieces of evidence, publish 1 policy, work in NDPA plus one other framework. It's enough to evaluate the platform; not enough to run a full SOC 2 prep. Upgrade to Starter or Growth when you outgrow it.",
+      a: "Run a baseline, see a security roadmap, store up to 3 pieces of evidence, publish 1 policy, and work in NDPA plus one other framework. It is enough to understand the product and your first gaps; paid plans unlock broader evidence, policies, frameworks, and advisor support.",
     },
     {
-      q: "What does the audit prep workshop in Audit-Ready actually cover?",
-      a: "A 90-minute working session before your audit kickoff: walk through your evidence with an experienced reviewer, identify gaps the platform might have missed, dry-run the auditor questions you'll get, and prioritise the last 2-3 weeks before fieldwork. Includes a written readiness memo.",
+      q: "What does the readiness prep workshop actually cover?",
+      a: "A working session before your customer review, PCI DSS validation, SOC 2 audit, ISO certification path, or regulator conversation. We review your scope, evidence, policies, roadmap, open risks, and likely questions, then produce a short readiness memo.",
     },
     {
       q: "Do you offer custom pricing for groups, accelerators, or VCs?",
@@ -603,17 +1283,17 @@ function CTA() {
     <section className="py-20 bg-gradient-to-br from-brand-600 to-brand-900">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
-          Ready to put real numbers on your cyber risk?
+          Ready to make cybersecurity clear enough to act on?
         </h2>
         <p className="mt-4 text-brand-100 text-lg max-w-2xl mx-auto">
-          The free assessment takes 20 minutes and produces a risk-ranked
-          security roadmap. No credit card. No sales call.
+          Start with a guided baseline, understand your readiness path, and
+          turn security goals into roadmap tasks, evidence, owners, and reports.
         </p>
         <a
           href={`${APP_URL}/signup`}
           className="inline-flex items-center justify-center gap-2 mt-8 bg-white hover:bg-slate-50 text-brand-700 font-semibold px-6 py-3 rounded-lg text-base"
         >
-          Start free assessment
+          Start guided baseline
           <ArrowRight className="h-4 w-4" />
         </a>
       </div>
@@ -711,8 +1391,16 @@ export function App() {
       <Header />
       <main>
         <Hero />
+        <GuidedFlow />
+        <PciInteractivePreview />
+        <PciRoadmap />
+        <WhoItsFor />
+        <SampleReports />
         <Features />
+        <FrameworkComparison />
         <Frameworks />
+        <EducationLayer />
+        <TrustProof />
         <Pricing />
         <FAQ />
         <CTA />

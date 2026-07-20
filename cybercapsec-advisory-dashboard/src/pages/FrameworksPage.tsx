@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
@@ -43,6 +43,10 @@ import {
   type ReadinessGoalKey,
 } from "@/lib/guidedReadiness";
 import { cn } from "@/lib/cn";
+import {
+  useGuidedReadiness,
+  useSaveGuidedReadiness,
+} from "@/hooks/useGuidedReadiness";
 
 const flowSteps = [
   {
@@ -87,6 +91,8 @@ export function FrameworksPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const profile = getSecurityProgramProfile(user?.company_id);
+  const { data: guidedProfile } = useGuidedReadiness();
+  const saveGuidedReadiness = useSaveGuidedReadiness();
   const defaultGuide = getDefaultFrameworkGuide(profile?.targetFrameworks);
   const [selectedKey, setSelectedKey] = useState<FrameworkKey>(defaultGuide.key);
   const [selectedGoalKey, setSelectedGoalKey] =
@@ -94,6 +100,7 @@ export function FrameworksPage() {
   const [scopeAnswers, setScopeAnswers] = useState<Record<string, string>>({});
   const [questionText, setQuestionText] = useState(questionnaireSamples[2]);
   const [glossarySearch, setGlossarySearch] = useState("");
+  const [hydrated, setHydrated] = useState(false);
 
   const selectedGuide = getFrameworkGuide(selectedKey) ?? defaultGuide;
   const selectedGoal =
@@ -135,16 +142,44 @@ export function FrameworksPage() {
     );
   });
 
+  useEffect(() => {
+    if (hydrated || guidedProfile === undefined) return;
+    const savedGuide = getFrameworkGuide(guidedProfile?.target_framework);
+    const savedGoal = readinessGoals.find(
+      (goal) => goal.key === guidedProfile?.selected_goal,
+    );
+    if (savedGuide) setSelectedKey(savedGuide.key);
+    if (savedGoal) setSelectedGoalKey(savedGoal.key);
+    if (
+      guidedProfile?.scope_answers &&
+      Object.keys(guidedProfile.scope_answers).length > 0
+    ) {
+      setScopeAnswers(guidedProfile.scope_answers as Record<string, string>);
+    }
+    setHydrated(true);
+  }, [guidedProfile, hydrated]);
+
   const chooseFramework = (key: FrameworkKey) => {
     setSelectedKey(key);
     setScopeAnswers({});
+    saveGuidedReadiness.mutate({
+      selected_goal: selectedGoalKey,
+      target_framework: key,
+      scope_answers: {},
+    });
   };
 
   const chooseGoal = (key: ReadinessGoalKey) => {
     const goal = readinessGoals.find((item) => item.key === key);
     if (!goal) return;
     setSelectedGoalKey(goal.key);
-    chooseFramework(goal.recommendedFramework);
+    setSelectedKey(goal.recommendedFramework);
+    setScopeAnswers({});
+    saveGuidedReadiness.mutate({
+      selected_goal: goal.key,
+      target_framework: goal.recommendedFramework,
+      scope_answers: {},
+    });
   };
 
   return (
@@ -359,12 +394,18 @@ export function FrameworksPage() {
                         <button
                           key={choice.value}
                           type="button"
-                          onClick={() =>
-                            setScopeAnswers((current) => ({
-                              ...current,
+                          onClick={() => {
+                            const nextAnswers = {
+                              ...scopeAnswers,
                               [question.id]: choice.value,
-                            }))
-                          }
+                            };
+                            setScopeAnswers(nextAnswers);
+                            saveGuidedReadiness.mutate({
+                              selected_goal: selectedGoal.key,
+                              target_framework: selectedGuide.key,
+                              scope_answers: nextAnswers,
+                            });
+                          }}
                           className={cn(
                             "rounded-md border p-3 text-left transition-colors",
                             selected

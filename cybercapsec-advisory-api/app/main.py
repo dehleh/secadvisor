@@ -10,6 +10,7 @@ from app.api import (
     auth,
     billing,
     evidence,
+    guided_readiness,
     meta,
     policies,
     public,
@@ -59,6 +60,7 @@ def create_app() -> FastAPI:
     app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
     app.include_router(policies.router, prefix=settings.API_V1_PREFIX)
     app.include_router(evidence.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(guided_readiness.router, prefix=settings.API_V1_PREFIX)
     app.include_router(roadmap.router, prefix=settings.API_V1_PREFIX)
     app.include_router(billing.router, prefix=settings.API_V1_PREFIX)
     app.include_router(public.router, prefix=settings.API_V1_PREFIX)

@@ -30,6 +30,10 @@ from app.schemas.billing import (
     PricingOut,
     SubscriptionOut,
 )
+from app.schemas.guided_readiness import (
+    GuidedReadinessOut,
+    GuidedReadinessUpdateRequest,
+)
 from app.schemas.report import (
     PublicReportOut,
     ReportOut,
@@ -84,6 +88,8 @@ __all__ = [
     "EvidenceUpdateStatusRequest",
     "EvidenceWithCoverageOut",
     "FrameworkScoreOut",
+    "GuidedReadinessOut",
+    "GuidedReadinessUpdateRequest",
     "LoginRequest",
     "PasswordChangeRequest",
     "PlanOut",

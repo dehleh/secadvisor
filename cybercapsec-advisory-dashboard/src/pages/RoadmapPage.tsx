@@ -291,6 +291,7 @@ function ItemDetail({
 }
 
 export function RoadmapPage() {
+  const navigate = useNavigate();
   const { data: items, isLoading, error } = useRoadmapItems();
   const { data: progress } = useRoadmapProgress();
   const [selected, setSelected] = useState<RoadmapItem | null>(null);
@@ -335,7 +336,20 @@ export function RoadmapPage() {
             <EmptyState
               icon={<Calendar className="h-12 w-12" />}
               title="No roadmap yet"
-              description="Complete an assessment to generate your tailored 13-week roadmap."
+              description="Start with the 5-minute baseline or full assessment. CyberCapSec will turn your answers into next 7 days, 30 days, 90 days, and before-review work."
+              action={
+                <div className="flex flex-col justify-center gap-2 sm:flex-row">
+                  <Button onClick={() => navigate("/quick-baseline")}>
+                    Quick baseline
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/frameworks")}
+                  >
+                    Read guides
+                  </Button>
+                </div>
+              }
             />
           </CardBody>
         </Card>

@@ -40,13 +40,49 @@ export function ReportsListPage() {
   if (!reports?.length) {
     return (
       <>
-        <PageHeader title="Reports" />
+        <PageHeader
+          title="Reports"
+          description="See what readiness reports will look like before the first assessment is complete."
+        />
+        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {[
+            "PCI DSS readiness report",
+            "SOC 2 readiness report",
+            "General cyber posture report",
+          ].map((title) => (
+            <Card key={title}>
+              <CardBody>
+                <Badge variant="brand">Sample</Badge>
+                <h2 className="mt-3 text-base font-semibold text-slate-900">
+                  {title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Preview scope, top gaps, roadmap phases, evidence checklist,
+                  owner actions, and plain-English readiness notes.
+                </p>
+                <Button
+                  className="mt-4"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate("/learn")}
+                >
+                  View sample
+                </Button>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
         <Card>
           <CardBody>
             <EmptyState
               icon={<FileText className="h-12 w-12" />}
               title="No reports yet"
-              description="Complete an assessment to generate your first AI-tailored report."
+              description="Complete a baseline or assessment to generate your first security posture and framework-readiness report."
+              action={
+                <Button onClick={() => navigate("/quick-baseline")}>
+                  Start quick baseline
+                </Button>
+              }
             />
           </CardBody>
         </Card>

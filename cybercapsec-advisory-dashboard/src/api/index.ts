@@ -5,6 +5,7 @@ export { billingApi } from "@/api/billing";
 export { reportApi } from "@/api/reports";
 export { policyApi } from "@/api/policies";
 export { evidenceApi } from "@/api/evidence";
+export { guidedReadinessApi } from "@/api/guidedReadiness";
 export { roadmapApi } from "@/api/roadmap";
 export { shareApi } from "@/api/shares";
 export { userApi } from "@/api/users";

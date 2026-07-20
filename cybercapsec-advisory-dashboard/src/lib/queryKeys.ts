@@ -48,6 +48,10 @@ export const queryKeys = {
     coverage: ["evidence", "coverage"] as const,
   },
 
+  guidedReadiness: {
+    profile: ["guided-readiness"] as const,
+  },
+
   roadmap: {
     items: (params: Record<string, string | undefined> = {}) =>
       ["roadmap", "items", params] as const,

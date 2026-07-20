@@ -33,6 +33,7 @@ import {
   getFrameworkGuide,
   type FrameworkGuide,
 } from "@/lib/frameworkReadiness";
+import { useSaveGuidedReadiness } from "@/hooks/useGuidedReadiness";
 
 const objectives: Array<{
   value: SecurityObjective;
@@ -165,6 +166,7 @@ function ToggleCard({
 export function OnboardingPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const saveGuidedReadiness = useSaveGuidedReadiness();
   const [objective, setObjective] =
     useState<SecurityObjective>("reduce_breach_risk");
   const [selectedPriorities, setSelectedPriorities] = useState<
@@ -206,16 +208,37 @@ export function OnboardingPage() {
     );
   };
 
-  const handleSubmit = () => {
+  const selectedGoal =
+    objective === "prepare_for_audit"
+      ? "need_soc2"
+      : objective === "secure_customer_data"
+        ? "secure_payments"
+        : objective === "win_customer_trust"
+          ? "customer_questionnaire"
+          : objective === "meet_regulatory_need"
+            ? "privacy_regulatory"
+            : "reduce_breach_risk";
+
+  const handleSubmit = async () => {
     if (!canSubmit) return;
-    saveSecurityProgramProfile(user?.company_id, {
+    const profile = {
       objective,
       priorities: selectedPriorities,
       assets: selectedAssets,
       targetFrameworks: selectedFrameworks,
       urgency,
       completedAt: new Date().toISOString(),
-    });
+    };
+    saveSecurityProgramProfile(user?.company_id, profile);
+    try {
+      await saveGuidedReadiness.mutateAsync({
+        selected_goal: selectedGoal,
+        target_framework: selectedFrameworks[0] ?? null,
+        program_profile: profile,
+      });
+    } catch {
+      // Local storage remains the offline fallback for program setup.
+    }
     navigate("/dashboard", { replace: true });
   };
 
@@ -416,8 +439,9 @@ export function OnboardingPage() {
               <Button
                 className="w-full"
                 size="lg"
-                onClick={handleSubmit}
-                disabled={!canSubmit}
+                onClick={() => void handleSubmit()}
+                disabled={!canSubmit || saveGuidedReadiness.isPending}
+                loading={saveGuidedReadiness.isPending}
               >
                 Build my security program
                 <ArrowRight className="h-4 w-4" />

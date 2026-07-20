@@ -1,22 +1,133 @@
+import { Suspense, lazy, type ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { AppLayout } from "@/components/AppLayout";
-import { AssessmentPage } from "@/pages/AssessmentPage";
-import { BillingPage } from "@/pages/BillingPage";
-import { DashboardPage } from "@/pages/DashboardPage";
-import { EvidencePage } from "@/pages/EvidencePage";
-import { FrameworksPage } from "@/pages/FrameworksPage";
-import { LoginPage } from "@/pages/LoginPage";
-import { OnboardingPage } from "@/pages/OnboardingPage";
-import { PoliciesPage } from "@/pages/PoliciesPage";
-import { PolicyDetailPage } from "@/pages/PolicyDetailPage";
-import { PublicReportPage } from "@/pages/PublicReportPage";
-import { QuickBaselinePage } from "@/pages/QuickBaselinePage";
-import { ReportDetailPage, ReportsListPage } from "@/pages/ReportPages";
-import { RoadmapPage } from "@/pages/RoadmapPage";
-import { SignupPage } from "@/pages/SignupPage";
-import { TeamPage } from "@/pages/TeamPage";
 import { RequireAuth, RequireGuest } from "@/routes/Guards";
+
+const AssessmentPage = lazy(() =>
+  import("@/pages/AssessmentPage").then((module) => ({
+    default: module.AssessmentPage,
+  })),
+);
+const BillingPage = lazy(() =>
+  import("@/pages/BillingPage").then((module) => ({
+    default: module.BillingPage,
+  })),
+);
+const DashboardPage = lazy(() =>
+  import("@/pages/DashboardPage").then((module) => ({
+    default: module.DashboardPage,
+  })),
+);
+const EvidencePage = lazy(() =>
+  import("@/pages/EvidencePage").then((module) => ({
+    default: module.EvidencePage,
+  })),
+);
+const FrameworksPage = lazy(() =>
+  import("@/pages/FrameworksPage").then((module) => ({
+    default: module.FrameworksPage,
+  })),
+);
+const LearnPage = lazy(() =>
+  import("@/pages/LearnPage").then((module) => ({
+    default: module.LearnPage,
+  })),
+);
+const LoginPage = lazy(() =>
+  import("@/pages/LoginPage").then((module) => ({
+    default: module.LoginPage,
+  })),
+);
+const OnboardingPage = lazy(() =>
+  import("@/pages/OnboardingPage").then((module) => ({
+    default: module.OnboardingPage,
+  })),
+);
+const PoliciesPage = lazy(() =>
+  import("@/pages/PoliciesPage").then((module) => ({
+    default: module.PoliciesPage,
+  })),
+);
+const PolicyDetailPage = lazy(() =>
+  import("@/pages/PolicyDetailPage").then((module) => ({
+    default: module.PolicyDetailPage,
+  })),
+);
+const PublicReportPage = lazy(() =>
+  import("@/pages/PublicReportPage").then((module) => ({
+    default: module.PublicReportPage,
+  })),
+);
+const QuickBaselinePage = lazy(() =>
+  import("@/pages/QuickBaselinePage").then((module) => ({
+    default: module.QuickBaselinePage,
+  })),
+);
+const QuestionnairePage = lazy(() =>
+  import("@/pages/QuestionnairePage").then((module) => ({
+    default: module.QuestionnairePage,
+  })),
+);
+const ReportsListPage = lazy(() =>
+  import("@/pages/ReportPages").then((module) => ({
+    default: module.ReportsListPage,
+  })),
+);
+const ReportDetailPage = lazy(() =>
+  import("@/pages/ReportPages").then((module) => ({
+    default: module.ReportDetailPage,
+  })),
+);
+const RoadmapPage = lazy(() =>
+  import("@/pages/RoadmapPage").then((module) => ({
+    default: module.RoadmapPage,
+  })),
+);
+const SignupPage = lazy(() =>
+  import("@/pages/SignupPage").then((module) => ({
+    default: module.SignupPage,
+  })),
+);
+const TeamPage = lazy(() =>
+  import("@/pages/TeamPage").then((module) => ({
+    default: module.TeamPage,
+  })),
+);
+
+function RouteFallback() {
+  return (
+    <div className="flex items-center justify-center py-24">
+      <div
+        role="status"
+        aria-label="Loading page"
+        className="h-8 w-8 animate-spin rounded-full border-2 border-brand-600 border-t-transparent"
+      />
+    </div>
+  );
+}
+
+function LazyRoute({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<RouteFallback />}>{children}</Suspense>;
+}
+
+function ProtectedRoute({ children }: { children: ReactNode }) {
+  return (
+    <RequireAuth>
+      <AppLayout>
+        <LazyRoute>{children}</LazyRoute>
+      </AppLayout>
+    </RequireAuth>
+  );
+}
+
+function GuestRoute({ children }: { children: ReactNode }) {
+  return (
+    <RequireGuest>
+      <LazyRoute>{children}</LazyRoute>
+    </RequireGuest>
+  );
+}
 
 export function App() {
   return (
@@ -25,17 +136,17 @@ export function App() {
       <Route
         path="/login"
         element={
-          <RequireGuest>
+          <GuestRoute>
             <LoginPage />
-          </RequireGuest>
+          </GuestRoute>
         }
       />
       <Route
         path="/signup"
         element={
-          <RequireGuest>
+          <GuestRoute>
             <SignupPage />
-          </RequireGuest>
+          </GuestRoute>
         }
       />
 
@@ -43,146 +154,141 @@ export function App() {
       <Route
         path="/dashboard"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <DashboardPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/onboarding"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <OnboardingPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <OnboardingPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/assessment"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <AssessmentPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <AssessmentPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/frameworks"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <FrameworksPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <FrameworksPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/quick-baseline"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <QuickBaselinePage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <QuickBaselinePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/questionnaire"
+        element={
+          <ProtectedRoute>
+            <QuestionnairePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/learn"
+        element={
+          <ProtectedRoute>
+            <LearnPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/roadmap"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <RoadmapPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <RoadmapPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/policies"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <PoliciesPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <PoliciesPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/policies/:policyId"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <PolicyDetailPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <PolicyDetailPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/evidence"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <EvidencePage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <EvidencePage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/reports"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <ReportsListPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <ReportsListPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/reports/:reportId"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <ReportDetailPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <ReportDetailPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/billing"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <BillingPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <BillingPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/billing/return"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <BillingPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <BillingPage />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/team"
         element={
-          <RequireAuth>
-            <AppLayout>
-              <TeamPage />
-            </AppLayout>
-          </RequireAuth>
+          <ProtectedRoute>
+            <TeamPage />
+          </ProtectedRoute>
         }
       />
 
       {/* Public shared report */}
-      <Route path="/shared/reports/:token" element={<PublicReportPage />} />
+      <Route
+        path="/shared/reports/:token"
+        element={
+          <LazyRoute>
+            <PublicReportPage />
+          </LazyRoute>
+        }
+      />
 
       {/* Redirects */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
