@@ -142,9 +142,9 @@ never changes.
 
 **Tiers:**
 - **Free** — 1 assessment, 3 evidence items, 1 policy, NDPA + 1 framework, no AI advisor
-- **Starter** — 4 assessments, 25 evidence, 5 policies, 2 frameworks, AI advisor (₦15K/mo)
-- **Growth** — Unlimited assessments / evidence / policies / frameworks, AI advisor, priority support (₦45K/mo)
-- **Audit-Ready** — Growth + dedicated reviewer + audit prep workshop (₦150K/mo)
+- **Starter** — 4 assessments, 25 evidence, 5 policies, 2 frameworks, AI advisor (₦40K/mo)
+- **Growth** — Unlimited assessments / evidence / policies / frameworks, AI advisor, priority support (₦100K/mo)
+- **Audit-Ready** — Growth + dedicated reviewer + audit prep workshop (₦250K/mo)
 
 Pricing for KES, ZAR, GHS, and USD is set at locally-appropriate price points,
 not just FX-converted. Edit `app/services/billing/catalog.py` to adjust.

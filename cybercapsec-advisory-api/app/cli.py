@@ -130,7 +130,7 @@ def cmd_sync_plans(args: argparse.Namespace) -> int:
     for plan in CATALOG:
         try:
             ps_plan = client.upsert_plan(
-                name=plan.name + f" ({plan.currency.value})",
+                name=plan.paystack_name,
                 amount_minor=plan.amount_minor,
                 currency=plan.currency.value,
                 interval=plan.interval.value,

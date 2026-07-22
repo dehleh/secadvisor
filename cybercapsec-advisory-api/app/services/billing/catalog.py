@@ -33,13 +33,24 @@ class PlanDefinition:
         """Stable key for matching to a Paystack plan_code in storage."""
         return f"{self.tier.value}.{self.currency.value}.{self.interval.value}"
 
+    @property
+    def paystack_name(self) -> str:
+        """Versioned Paystack plan name.
+
+        Paystack plans are effectively immutable for subscription pricing. Keep
+        the UI-facing name stable, but include currency and amount in Paystack's
+        plan name so price changes create a fresh plan_code during sync.
+        """
+        amount = f"{self.amount_major:,.0f}"
+        return f"{self.name} ({self.currency.value} {amount})"
+
 
 # ----- Plan catalog ----------------------------------------------------------
 #
 # Reasoning behind the pricing:
-# - NGN benchmarks: a SaaS at ₦15K/mo is "I can put it on my company card without
-#   asking" for a seed-stage Nigerian fintech. ₦45K/mo is "this is a real line item
-#   I need to justify". ₦150K/mo is "this is on par with a junior engineer's
+# - NGN benchmarks: a SaaS at ₦40K/mo is "I can put it on my company card without
+#   asking" for a seed-stage Nigerian fintech. ₦100K/mo is "this is a real line item
+#   I need to justify". ₦250K/mo is "this is on par with a junior engineer's
 #   monthly cost; we're committing".
 # - KES, ZAR, GHS approximate the NGN tier at local purchasing power, not just
 #   FX conversion (which would price out non-Nigerian markets at parity).
@@ -52,7 +63,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.STARTER,
         currency=BillingCurrency.NGN,
         interval=BillingInterval.MONTHLY,
-        amount_minor=15_000_00,  # ₦15,000
+        amount_minor=40_000_00,  # ₦40,000
         name="Starter (Monthly)",
         description="Solo founder. 1 framework, 5 evidence items, 3 policies.",
     ),
@@ -93,7 +104,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.GROWTH,
         currency=BillingCurrency.NGN,
         interval=BillingInterval.MONTHLY,
-        amount_minor=45_000_00,
+        amount_minor=100_000_00,
         name="Growth (Monthly)",
         description="Real compliance program. All frameworks, AI advisor, unlimited evidence.",
     ),
@@ -134,7 +145,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.AUDIT_READY,
         currency=BillingCurrency.NGN,
         interval=BillingInterval.MONTHLY,
-        amount_minor=150_000_00,
+        amount_minor=250_000_00,
         name="Audit-Ready (Monthly)",
         description="Growth + dedicated reviewer, audit prep workshop, custom drafting.",
     ),

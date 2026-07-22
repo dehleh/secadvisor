@@ -50,9 +50,9 @@ const PRICING: Record<
   Record<"starter" | "growth" | "audit_ready", PricePoint>
 > = {
   NGN: {
-    starter: { amount: 15000, symbol: "₦", locale: "en-NG", decimals: 0 },
-    growth: { amount: 45000, symbol: "₦", locale: "en-NG", decimals: 0 },
-    audit_ready: { amount: 150000, symbol: "₦", locale: "en-NG", decimals: 0 },
+    starter: { amount: 40000, symbol: "₦", locale: "en-NG", decimals: 0 },
+    growth: { amount: 100000, symbol: "₦", locale: "en-NG", decimals: 0 },
+    audit_ready: { amount: 250000, symbol: "₦", locale: "en-NG", decimals: 0 },
   },
   KES: {
     starter: { amount: 1500, symbol: "KSh", locale: "en-KE", decimals: 0 },

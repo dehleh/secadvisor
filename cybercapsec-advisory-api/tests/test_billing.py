@@ -70,8 +70,8 @@ class TestCatalog:
             interval=BillingInterval.MONTHLY,
         )
         assert plan is not None
-        assert plan.amount_minor == 45_000_00  # ₦45,000
-        assert plan.amount_major == 45_000.0
+        assert plan.amount_minor == 100_000_00  # ₦100,000
+        assert plan.amount_major == 100_000.0
 
     def test_plans_for_currency_returns_only_one_currency(self):
         plans = plans_for_currency(BillingCurrency.NGN)

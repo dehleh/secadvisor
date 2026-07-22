@@ -109,7 +109,7 @@ def start_checkout(
         # without a plan binding.
         try:
             ps_plan = paystack_client.upsert_plan(
-                name=plan.name,
+                name=plan.paystack_name,
                 amount_minor=plan.amount_minor,
                 currency=plan.currency.value,
                 interval=plan.interval.value,
