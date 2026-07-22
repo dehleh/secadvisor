@@ -45,10 +45,11 @@ class Settings(BaseSettings):
     # CORS
     CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
 
-    # Paystack
-    PAYSTACK_SECRET_KEY: str = ""
-    PAYSTACK_PUBLIC_KEY: str = ""
-    PAYSTACK_CHECKOUT_CALLBACK_URL: str = "http://localhost:5173/billing/return"
+    # Flutterwave
+    FLUTTERWAVE_SECRET_KEY: str = ""
+    FLUTTERWAVE_PUBLIC_KEY: str = ""
+    FLUTTERWAVE_SECRET_HASH: str = ""
+    FLUTTERWAVE_CHECKOUT_CALLBACK_URL: str = "http://localhost:5173/billing/return"
 
     # Feature flags
     ENABLE_AI_REPORTS: bool = True

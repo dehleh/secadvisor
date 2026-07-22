@@ -139,7 +139,7 @@ SECTION_COMPANY = Section(
             ),
             help_text=(
                 "If yes, PCI DSS applies. If you fully outsource card data to "
-                "a PCI-certified processor (Paystack, Flutterwave, Stripe), "
+                "a PCI-certified processor (Flutterwave, Stripe, or similar), "
                 "answer no — your scope is reduced to SAQ-A."
             ),
             type=QuestionType.BOOLEAN,

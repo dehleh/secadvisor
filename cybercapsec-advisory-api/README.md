@@ -25,7 +25,7 @@ Companies onboard, complete a structured security & compliance assessment, and r
 | 4 | ✅ | Policy templates, evidence vault, roadmap tracker |
 | 5 | ✅ | Dashboard frontend |
 | 6 | ✅ | Knowledge base seed: 101 controls, 87 mappings, 44 snippets across 6 frameworks |
-| 7 | ✅ | Paystack billing, free tier, Railway / Vercel deploy config, marketing landing page |
+| 7 | ✅ | Flutterwave billing, free tier, Railway / Vercel deploy config, marketing landing page |
 
 ## Stack
 
@@ -131,12 +131,12 @@ GET    /api/v1/billing/pricing                  pricing in company's currency
 GET    /api/v1/billing/subscription             current subscription state
 POST   /api/v1/billing/checkout                 start checkout, returns auth URL
 POST   /api/v1/billing/cancel                   cancel current subscription
-POST   /api/v1/billing/webhook                  Paystack webhook (HMAC-SHA512 signed)
+POST   /api/v1/billing/webhook                  Flutterwave webhook (HMAC-SHA256 signed)
 ```
 
-## Billing — Paystack
+## Billing - Flutterwave
 
-Subscription billing is Paystack-backed with native pricing in NGN, KES, ZAR,
+Subscription billing is Flutterwave-backed with native pricing in NGN, KES, ZAR,
 GHS, and USD. Currency is locked at signup based on the company's country and
 never changes.
 
@@ -150,11 +150,11 @@ Pricing for KES, ZAR, GHS, and USD is set at locally-appropriate price points,
 not just FX-converted. Edit `app/services/billing/catalog.py` to adjust.
 
 **Plan setup:** after deploying, run `python -m app.cli sync-plans` once. It
-creates Paystack plans from the catalog and prints shell-format env vars to
-add to your environment so the backend knows each tier's plan_code.
+creates Flutterwave payment plans from the catalog and prints shell-format env
+vars to add to your environment so the backend knows each tier's payment plan ID.
 
-**Webhook signing:** all Paystack webhooks are verified with HMAC-SHA512 over
-the raw body using `PAYSTACK_SECRET_KEY`. Failure is fail-closed (401).
+**Webhook signing:** all Flutterwave webhooks are verified with HMAC-SHA256 over
+the raw body using `FLUTTERWAVE_SECRET_HASH`. Failure is fail-closed (401).
 
 **Tier limit enforcement:** when a free-tier user hits a cap, the API returns
 HTTP 402 with a structured `tier_limit` detail the dashboard surfaces as an
@@ -167,8 +167,8 @@ upgrade prompt (rather than a generic error).
 railway link
 railway up
 # After first deploy:
-railway run python -m app.cli sync-plans  # capture plan codes
-# Add the printed PAYSTACK_PLAN_* env vars in Railway dashboard
+railway run python -m app.cli sync-plans  # capture payment plan IDs
+# Add the printed FLUTTERWAVE_PLAN_* env vars in Railway dashboard
 ```
 
 The `railway.toml` runs `alembic upgrade head` and `python -m app.cli seed`

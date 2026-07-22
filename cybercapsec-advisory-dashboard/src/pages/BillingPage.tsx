@@ -204,12 +204,17 @@ export function BillingPage() {
   const [pendingTier, setPendingTier] =
     useState<PaidSubscriptionTierCode | null>(null);
 
-  // If the user came back from Paystack via the callback URL, refresh state.
+  // If the user came back from Flutterwave via the callback URL, refresh state.
   // Webhook is the source of truth, but a refresh sees the updated tier
   // soon after.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.has("reference") || params.has("trxref")) {
+    if (
+      params.has("reference") ||
+      params.has("trxref") ||
+      params.has("tx_ref") ||
+      params.has("transaction_id")
+    ) {
       void subscriptionQuery.refetch();
       // Clean URL
       window.history.replaceState({}, "", window.location.pathname);
@@ -245,7 +250,7 @@ export function BillingPage() {
         tier,
         callbackUrl: callback,
       });
-      // Redirect to Paystack
+      // Redirect to Flutterwave
       window.location.href = result.authorization_url;
     } catch (err) {
       setError(normalizeApiError(err).message);
@@ -406,19 +411,19 @@ export function BillingPage() {
           <p>
             Payments are processed securely via{" "}
             <a
-              href="https://paystack.com"
+              href="https://flutterwave.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand-600 hover:underline inline-flex items-center gap-1"
             >
-              Paystack
+              Flutterwave
               <ExternalLink className="h-3 w-3" />
             </a>
             . We accept cards, bank transfers, and (in supported regions) mobile
             money. We never see or store your card details.
           </p>
           <p>
-            You'll be redirected to Paystack to complete payment. After payment
+            You'll be redirected to Flutterwave to complete payment. After payment
             you'll be returned here automatically.
           </p>
         </CardBody>

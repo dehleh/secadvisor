@@ -1,12 +1,12 @@
 """Subscription and billing-related models.
 
 Subscription
-  Mirror of the Paystack subscription state for one company. We don't
-  trust our local copy; webhook events from Paystack are the source of
+  Mirror of the Flutterwave subscription state for one company. We don't
+  trust our local copy; signed webhook events are the source of
   truth and we update Subscription rows in response.
 
 BillingEvent
-  Append-only log of every webhook we received from Paystack. Useful for
+  Append-only log of every billing webhook we receive. Useful for
   debugging and audit trails. We never delete from this table.
 """
 from datetime import datetime
@@ -32,9 +32,8 @@ from app.models.mixins import TimestampMixin, UUIDPKMixin
 
 
 class SubscriptionStatus(str, PyEnum):
-    """Mirrors Paystack subscription status values plus our internal ones.
+    """Mirrors provider subscription status values plus our internal ones.
 
-    Paystack values: active, non-renewing, attention, completed, cancelled.
     Our additions: pending (created locally, awaiting first payment).
     """
     PENDING = "pending"
@@ -79,14 +78,14 @@ class Subscription(Base, UUIDPKMixin, TimestampMixin):
     )
     amount_minor: Mapped[int] = mapped_column(Integer, nullable=False)  # kobo / cents
 
-    # Paystack identifiers
+    # Payment provider identifiers. Column names are legacy DB names.
     paystack_plan_code: Mapped[str | None] = mapped_column(String(100), nullable=True)
     paystack_subscription_code: Mapped[str | None] = mapped_column(
         String(100), nullable=True, index=True
     )
     paystack_customer_code: Mapped[str | None] = mapped_column(String(100), nullable=True)
     paystack_email_token: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    # email_token is needed to call cancel-subscription on Paystack
+    # Kept for legacy rows; Flutterwave cancellation only needs subscription ID.
 
     # State
     status: Mapped[SubscriptionStatus] = mapped_column(
@@ -117,7 +116,7 @@ class Subscription(Base, UUIDPKMixin, TimestampMixin):
 
 
 class BillingEventType(str, PyEnum):
-    """Paystack webhook event types we care about.
+    """Billing webhook event types we care about.
 
     OTHER is for events we receive but don't act on; we still log them.
     """
@@ -136,7 +135,7 @@ class BillingEventType(str, PyEnum):
 
 
 class BillingEvent(Base, UUIDPKMixin, TimestampMixin):
-    """Append-only log of Paystack webhook events.
+    """Append-only log of billing webhook events.
 
     Idempotency: paystack_event_id (when present) is unique. Re-deliveries
     of the same event are no-ops on the second encounter.
@@ -144,7 +143,7 @@ class BillingEvent(Base, UUIDPKMixin, TimestampMixin):
 
     __tablename__ = "billing_events"
 
-    # Paystack's event identifier (from the payload). Webhooks don't always
+    # Provider event identifier (from the payload). Webhooks don't always
     # carry one in older formats so this can be null; we then dedupe via
     # signature + body hash if needed.
     paystack_event_id: Mapped[str | None] = mapped_column(

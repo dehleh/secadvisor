@@ -1,9 +1,19 @@
-"""Billing — Paystack-backed subscription management."""
+"""Billing - Flutterwave-backed subscription management."""
 from app.services.billing.catalog import (
     CATALOG,
     PlanDefinition,
     get_plan,
     plans_for_currency,
+)
+from app.services.billing.flutterwave_client import (
+    FlutterwaveClient,
+    FlutterwaveClientBase,
+    FlutterwaveError,
+    FlutterwavePlan,
+    FlutterwaveSubscription,
+    FlutterwaveTransactionInit,
+    MockFlutterwaveClient,
+    get_flutterwave_client,
 )
 from app.services.billing.limits import (
     TIER_LIMITS,
@@ -11,16 +21,6 @@ from app.services.billing.limits import (
     get_limits,
     require_feature,
     require_within_limit,
-)
-from app.services.billing.paystack_client import (
-    MockPaystackClient,
-    PaystackClient,
-    PaystackClientBase,
-    PaystackError,
-    PaystackPlan,
-    PaystackSubscription,
-    PaystackTransactionInit,
-    get_paystack_client,
 )
 from app.services.billing.service import (
     cancel_subscription,
@@ -30,26 +30,26 @@ from app.services.billing.service import (
     start_checkout,
 )
 from app.services.billing.webhook_signing import (
-    compute_paystack_signature,
-    verify_paystack_signature,
+    compute_flutterwave_signature,
+    verify_flutterwave_signature,
 )
 
 __all__ = [
     "CATALOG",
-    "MockPaystackClient",
-    "PaystackClient",
-    "PaystackClientBase",
-    "PaystackError",
-    "PaystackPlan",
-    "PaystackSubscription",
-    "PaystackTransactionInit",
+    "FlutterwaveClient",
+    "FlutterwaveClientBase",
+    "FlutterwaveError",
+    "FlutterwavePlan",
+    "FlutterwaveSubscription",
+    "FlutterwaveTransactionInit",
+    "MockFlutterwaveClient",
     "PlanDefinition",
     "TIER_LIMITS",
     "TierLimits",
     "cancel_subscription",
-    "compute_paystack_signature",
+    "compute_flutterwave_signature",
+    "get_flutterwave_client",
     "get_limits",
-    "get_paystack_client",
     "get_plan",
     "plans_for_currency",
     "process_webhook_event",
@@ -58,5 +58,5 @@ __all__ = [
     "require_within_limit",
     "resolve_plan_code",
     "start_checkout",
-    "verify_paystack_signature",
+    "verify_flutterwave_signature",
 ]

@@ -49,7 +49,7 @@ class SubscriptionTier(str, PyEnum):
 
 
 class BillingCurrency(str, PyEnum):
-    """Currencies Paystack supports for our markets."""
+    """Currencies Flutterwave supports for our markets."""
     NGN = "NGN"
     KES = "KES"
     ZAR = "ZAR"
@@ -85,7 +85,8 @@ class Company(Base, UUIDPKMixin, TimestampMixin):
     website: Mapped[str | None] = mapped_column(String(255), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    # Subscription — Paystack-backed
+    # Subscription - Flutterwave-backed. The paystack_* columns are legacy DB
+    # names retained until a safe migration renames them.
     subscription_tier: Mapped[SubscriptionTier] = mapped_column(
         Enum(SubscriptionTier), nullable=False, default=SubscriptionTier.FREE
     )

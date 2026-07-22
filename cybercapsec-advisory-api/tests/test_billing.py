@@ -1,10 +1,10 @@
-"""Session 7 tests — Paystack-backed billing.
+"""Session 7 tests - Flutterwave-backed billing.
 
 Covers:
   - Pricing catalog (currency-aware)
   - Paid licence enforcement for workspace access
   - Webhook signature verification
-  - Mock Paystack client behaves like the real one
+  - Mock Flutterwave client behaves like the real one
   - End-to-end checkout flow with mock client
   - Webhook event processing (subscription.create, subscription.disable, etc.)
 """
@@ -23,12 +23,12 @@ from app.models import (
 )
 from app.services.billing import (
     CATALOG,
-    MockPaystackClient,
-    PaystackError,
-    compute_paystack_signature,
+    FlutterwaveError,
+    MockFlutterwaveClient,
+    compute_flutterwave_signature,
     get_plan,
     plans_for_currency,
-    verify_paystack_signature,
+    verify_flutterwave_signature,
 )
 from app.services.billing.limits import TIER_LIMITS
 
@@ -39,12 +39,12 @@ from app.services.billing.limits import TIER_LIMITS
 
 
 @pytest.fixture
-def mock_paystack(monkeypatch):
-    """Inject a fresh MockPaystackClient via FastAPI's dependency overrides."""
-    client = MockPaystackClient()
+def mock_flutterwave(monkeypatch):
+    """Inject a fresh MockFlutterwaveClient via FastAPI's dependency overrides."""
+    client = MockFlutterwaveClient()
     app.dependency_overrides[billing_api.get_billing_client] = lambda: client
     # Also set the secret so webhook verification works
-    monkeypatch.setenv("PAYSTACK_SECRET_KEY", "test_secret")
+    monkeypatch.setenv("FLUTTERWAVE_SECRET_HASH", "test_secret")
     from app.config import get_settings
 
     get_settings.cache_clear()
@@ -237,48 +237,48 @@ class TestWebhookSigning:
     def test_correct_signature_verifies(self):
         body = b'{"event":"charge.success","data":{}}'
         secret = "sk_test_secret_key"
-        sig = compute_paystack_signature(raw_body=body, secret_key=secret)
-        assert verify_paystack_signature(
-            raw_body=body, signature_header=sig, secret_key=secret
+        sig = compute_flutterwave_signature(raw_body=body, secret_hash=secret)
+        assert verify_flutterwave_signature(
+            raw_body=body, signature_header=sig, secret_hash=secret
         )
 
     def test_wrong_signature_rejected(self):
         body = b'{"event":"charge.success","data":{}}'
         secret = "sk_test_secret_key"
-        assert not verify_paystack_signature(
+        assert not verify_flutterwave_signature(
             raw_body=body,
-            signature_header="0" * 128,
-            secret_key=secret,
+            signature_header="0" * 44,
+            secret_hash=secret,
         )
 
     def test_tampered_body_rejected(self):
         body = b'{"event":"charge.success","data":{}}'
         secret = "sk_test_secret_key"
-        sig = compute_paystack_signature(raw_body=body, secret_key=secret)
+        sig = compute_flutterwave_signature(raw_body=body, secret_hash=secret)
         tampered = b'{"event":"charge.success","data":{"hijacked":true}}'
-        assert not verify_paystack_signature(
-            raw_body=tampered, signature_header=sig, secret_key=secret
+        assert not verify_flutterwave_signature(
+            raw_body=tampered, signature_header=sig, secret_hash=secret
         )
 
     def test_missing_signature_rejected(self):
-        assert not verify_paystack_signature(
-            raw_body=b"{}", signature_header=None, secret_key="x"
+        assert not verify_flutterwave_signature(
+            raw_body=b"{}", signature_header=None, secret_hash="x"
         )
 
     def test_missing_secret_fails_closed(self):
-        sig = compute_paystack_signature(raw_body=b"{}", secret_key="x")
+        sig = compute_flutterwave_signature(raw_body=b"{}", secret_hash="x")
         # Server has no secret configured: even a valid-looking sig is rejected.
-        assert not verify_paystack_signature(
-            raw_body=b"{}", signature_header=sig, secret_key=""
+        assert not verify_flutterwave_signature(
+            raw_body=b"{}", signature_header=sig, secret_hash=""
         )
 
 
-# ----- Mock Paystack client --------------------------------------------------
+# ----- Mock Flutterwave client ----------------------------------------------
 
 
-class TestMockPaystackClient:
+class TestMockFlutterwaveClient:
     def test_upsert_plan_is_idempotent(self):
-        client = MockPaystackClient()
+        client = MockFlutterwaveClient()
         a = client.upsert_plan(
             name="Test Plan",
             amount_minor=10000,
@@ -292,7 +292,7 @@ class TestMockPaystackClient:
         assert a.plan_code == b.plan_code
 
     def test_initialize_transaction_returns_url(self):
-        client = MockPaystackClient()
+        client = MockFlutterwaveClient()
         init = client.initialize_transaction(
             email="x@example.com",
             amount_minor=10000,
@@ -303,7 +303,7 @@ class TestMockPaystackClient:
         assert init.reference.startswith("ref_mock_")
 
     def test_disable_subscription_marks_cancelled(self):
-        client = MockPaystackClient()
+        client = MockFlutterwaveClient()
         sub = client._seed_subscription(
             subscription_code="SUB_test",
             email_token="tok",
@@ -314,8 +314,8 @@ class TestMockPaystackClient:
         assert client.fetch_subscription("SUB_test").status == "cancelled"
 
     def test_fetch_unknown_subscription_raises(self):
-        client = MockPaystackClient()
-        with pytest.raises(PaystackError):
+        client = MockFlutterwaveClient()
+        with pytest.raises(FlutterwaveError):
             client.fetch_subscription("nope")
 
 
@@ -324,7 +324,7 @@ class TestMockPaystackClient:
 
 class TestCheckoutFlow:
     def test_checkout_returns_authorization_url(
-        self, authed_client, mock_paystack
+        self, authed_client, mock_flutterwave
     ):
         resp = authed_client.post(
             "/api/v1/billing/checkout",
@@ -337,7 +337,7 @@ class TestCheckoutFlow:
         assert body["reference"].startswith("ref_mock_")
 
     def test_free_tier_can_start_checkout_for_paid_licence(
-        self, free_tier_client, mock_paystack
+        self, free_tier_client, mock_flutterwave
     ):
         resp = free_tier_client.post(
             "/api/v1/billing/checkout",
@@ -346,7 +346,7 @@ class TestCheckoutFlow:
         assert resp.status_code == 201, resp.text
         assert resp.json()["authorization_url"].startswith("https://")
 
-    def test_cannot_checkout_for_free(self, authed_client, mock_paystack):
+    def test_cannot_checkout_for_free(self, authed_client, mock_flutterwave):
         resp = authed_client.post(
             "/api/v1/billing/checkout",
             json={"tier": "free"},
@@ -362,25 +362,25 @@ class TestWebhookProcessing:
         self, client, payload: dict, secret: str = "test_secret"
     ):
         body = json.dumps(payload).encode("utf-8")
-        sig = compute_paystack_signature(raw_body=body, secret_key=secret)
+        sig = compute_flutterwave_signature(raw_body=body, secret_hash=secret)
         return client.post(
             "/api/v1/billing/webhook",
             content=body,
             headers={
-                "x-paystack-signature": sig,
+                "flutterwave-signature": sig,
                 "content-type": "application/json",
             },
         )
 
-    def test_invalid_signature_returns_401(self, client, mock_paystack):
+    def test_invalid_signature_returns_401(self, client, mock_flutterwave):
         resp = client.post(
             "/api/v1/billing/webhook",
             content=b'{"event":"charge.success","data":{}}',
-            headers={"x-paystack-signature": "0" * 128},
+            headers={"flutterwave-signature": "0" * 44},
         )
         assert resp.status_code == 401
 
-    def test_missing_signature_header_returns_401(self, client, mock_paystack):
+    def test_missing_signature_header_returns_401(self, client, mock_flutterwave):
         resp = client.post(
             "/api/v1/billing/webhook",
             content=b'{"event":"charge.success","data":{}}',
@@ -388,7 +388,7 @@ class TestWebhookProcessing:
         assert resp.status_code == 401
 
     def test_subscription_create_activates_company(
-        self, authed_client, client, db_session, mock_paystack
+        self, authed_client, client, db_session, mock_flutterwave
     ):
         co = authed_client.post(
             "/api/v1/billing/checkout",
@@ -397,16 +397,15 @@ class TestWebhookProcessing:
         sub_id = co["subscription_id"]
 
         payload = {
-            "event": "subscription.create",
+            "type": "subscription.created",
             "data": {
-                "subscription_code": "SUB_paystack_test",
-                "email_token": "tok_xyz",
+                "id": "SUB_flutterwave_test",
                 "customer": {
-                    "customer_code": "CUS_paystack_test",
+                    "id": "CUS_flutterwave_test",
                     "email": "founder@acmefintech.ng",
                 },
-                "plan": {"plan_code": "PLN_test"},
-                "metadata": {
+                "plan": 1000,
+                "meta": {
                     "subscription_id": sub_id,
                     "tier": "growth",
                 },
@@ -421,7 +420,7 @@ class TestWebhookProcessing:
             .first()
         )
         assert sub.status == SubscriptionStatus.ACTIVE
-        assert sub.paystack_subscription_code == "SUB_paystack_test"
+        assert sub.paystack_subscription_code == "SUB_flutterwave_test"
 
         company = (
             db_session.query(Company).filter(Company.id == sub.company_id).first()
@@ -429,7 +428,7 @@ class TestWebhookProcessing:
         assert company.subscription_tier == SubscriptionTier.GROWTH
 
     def test_subscription_disable_downgrades_to_free(
-        self, authed_client, client, db_session, mock_paystack
+        self, authed_client, client, db_session, mock_flutterwave
     ):
         co = authed_client.post(
             "/api/v1/billing/checkout", json={"tier": "growth"}
@@ -439,13 +438,12 @@ class TestWebhookProcessing:
         self._post_webhook(
             client,
             {
-                "event": "subscription.create",
+                "type": "subscription.created",
                 "data": {
-                    "subscription_code": "SUB_active",
-                    "email_token": "tok",
-                    "customer": {"customer_code": "CUS_x"},
-                    "plan": {"plan_code": "PLN_x"},
-                    "metadata": {"subscription_id": sub_id},
+                    "id": "SUB_active",
+                    "customer": {"id": "CUS_x"},
+                    "plan": 1000,
+                    "meta": {"subscription_id": sub_id},
                 },
             },
             secret="test_secret",
@@ -454,8 +452,8 @@ class TestWebhookProcessing:
         resp = self._post_webhook(
             client,
             {
-                "event": "subscription.disable",
-                "data": {"subscription_code": "SUB_active"},
+                "type": "subscription.cancelled",
+                "data": {"id": "SUB_active"},
             },
             secret="test_secret",
         )
@@ -474,7 +472,7 @@ class TestWebhookProcessing:
         assert company.subscription_tier == SubscriptionTier.FREE
 
     def test_duplicate_webhook_acked_but_not_reprocessed(
-        self, authed_client, client, db_session, mock_paystack
+        self, authed_client, client, db_session, mock_flutterwave
     ):
         from app.models import BillingEvent
 
@@ -483,13 +481,12 @@ class TestWebhookProcessing:
         ).json()
 
         payload = {
-            "event": "subscription.create",
+            "type": "subscription.created",
             "data": {
-                "subscription_code": "SUB_dupe_test",
-                "email_token": "tok",
-                "customer": {"customer_code": "CUS_x"},
-                "plan": {"plan_code": "PLN_x"},
-                "metadata": {"subscription_id": co["subscription_id"]},
+                "id": "SUB_dupe_test",
+                "customer": {"id": "CUS_x"},
+                "plan": 1000,
+                "meta": {"subscription_id": co["subscription_id"]},
             },
         }
 
@@ -503,13 +500,13 @@ class TestWebhookProcessing:
 
         events = (
             db_session.query(BillingEvent)
-            .filter(BillingEvent.raw_event_name == "subscription.create")
+            .filter(BillingEvent.raw_event_name == "subscription.created")
             .all()
         )
         assert len(events) == 1
 
     def test_unknown_event_logged_but_not_acted_on(
-        self, client, db_session, mock_paystack
+        self, client, db_session, mock_flutterwave
     ):
         from app.models import BillingEvent
 

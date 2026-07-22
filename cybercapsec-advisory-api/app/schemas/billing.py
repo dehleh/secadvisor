@@ -41,7 +41,7 @@ class CheckoutRequest(BaseModel):
     tier: SubscriptionTier
     callback_url: str | None = Field(
         default=None,
-        description="URL Paystack redirects to after payment. Defaults to env config.",
+        description="URL Flutterwave redirects to after payment. Defaults to env config.",
     )
 
 

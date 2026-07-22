@@ -801,7 +801,7 @@ function Features() {
     {
       icon: Globe,
       title: "African market by default",
-      body: "Pricing in your local currency, NDPC's 72-hour breach clock, CBN's 24-hour reporting, Paystack billing. We assume Lagos, not San Francisco.",
+      body: "Pricing in your local currency, NDPC's 72-hour breach clock, CBN's 24-hour reporting, Flutterwave billing. We assume Lagos, not San Francisco.",
     },
   ];
   return (
@@ -1086,7 +1086,7 @@ function Pricing() {
             Pricing in your currency
           </h2>
           <p className="mt-4 text-slate-600 text-lg">
-            We bill in NGN, KES, ZAR, GHS, and USD via Paystack. No surprise
+            We bill in NGN, KES, ZAR, GHS, and USD via Flutterwave. No surprise
             bank charges, no FX markup, no Stripe-routing-through-Ireland fees.
           </p>
         </div>
@@ -1350,12 +1350,12 @@ function Footer() {
           <div>
             Payments via{" "}
             <a
-              href="https://paystack.com"
+              href="https://flutterwave.com"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white"
             >
-              Paystack
+              Flutterwave
             </a>
           </div>
         </div>

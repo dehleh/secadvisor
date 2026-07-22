@@ -12,7 +12,7 @@ deployed to Vercel.
 - Pricing with currency switcher (NGN/KES/ZAR/GHS/USD) — auto-detects from
   browser timezone for African TZs, defaults to NGN
 - FAQ (6 questions including the Vanta/Drata differentiation)
-- Footer with legal + Paystack mention
+- Footer with legal + Flutterwave mention
 
 ## Local development
 

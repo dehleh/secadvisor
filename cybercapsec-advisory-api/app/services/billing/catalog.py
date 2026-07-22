@@ -2,11 +2,11 @@
 
 Pricing is stored in minor units (kobo for NGN, cents for KES/ZAR/GHS/USD).
 Adjust here, no code changes needed elsewhere — the pricing flows through
-Paystack plan creation and the billing UI from this single config.
+Flutterwave plan creation and the billing UI from this single config.
 
-Plan codes for Paystack are populated at deploy time. Production deploys
+Plan IDs for Flutterwave are populated at deploy time. Production deploys
 should call `python -m app.cli sync-plans` once after seeding to upsert
-plans into Paystack and capture their plan_codes.
+plans into Flutterwave and capture their payment plan IDs.
 """
 from dataclasses import dataclass
 
@@ -30,16 +30,16 @@ class PlanDefinition:
 
     @property
     def lookup_key(self) -> str:
-        """Stable key for matching to a Paystack plan_code in storage."""
+        """Stable key for matching to a payment provider plan ID in storage."""
         return f"{self.tier.value}.{self.currency.value}.{self.interval.value}"
 
     @property
-    def paystack_name(self) -> str:
-        """Versioned Paystack plan name.
+    def provider_name(self) -> str:
+        """Versioned payment-provider plan name.
 
-        Paystack plans are effectively immutable for subscription pricing. Keep
-        the UI-facing name stable, but include currency and amount in Paystack's
-        plan name so price changes create a fresh plan_code during sync.
+        Provider plans are effectively immutable for subscription pricing. Keep
+        the UI-facing name stable, but include currency and amount so price
+        changes create a fresh plan during sync.
         """
         amount = f"{self.amount_major:,.0f}"
         return f"{self.name} ({self.currency.value} {amount})"
