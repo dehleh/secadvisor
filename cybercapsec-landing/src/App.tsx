@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -13,8 +13,10 @@ import {
   Layers,
   LockKeyhole,
   Map,
+  Mail,
   MessageSquareText,
   Route,
+  Send,
   ShieldCheck,
   Sparkles,
   Users,
@@ -1166,7 +1168,7 @@ function Pricing() {
                 <a
                   href={
                     tier.tier === "audit_ready"
-                      ? "mailto:hello@cybercapsec.com?subject=Audit-Ready%20plan%20enquiry"
+                      ? "#audit-ready-enquiry"
                       : `${APP_URL}/signup`
                   }
                   className={
@@ -1187,6 +1189,123 @@ function Pricing() {
           All paid plans bill monthly. Cancel any time. Annual billing coming
           soon.
         </p>
+      </div>
+    </section>
+  );
+}
+
+function AuditReadyEnquiry() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message:
+      "I am interested in the Audit-Ready plan. Please contact me about pricing, onboarding, and reviewer support.",
+  });
+
+  const update = (key: keyof typeof form, value: string) => {
+    setForm((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const subject = "Audit-Ready plan enquiry";
+    const body = [
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      `Company: ${form.company}`,
+      `Phone: ${form.phone || "Not provided"}`,
+      "",
+      form.message,
+    ].join("\n");
+    window.location.href = `mailto:admin@cybercapsec.com?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+  };
+
+  return (
+    <section id="audit-ready-enquiry" className="bg-slate-50 py-14 md:py-16">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+            <Mail className="h-5 w-5" />
+          </div>
+          <p className="text-sm font-semibold text-brand-700">
+            Audit-Ready enquiry
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            Talk to us before your customer review, audit, or PCI DSS push.
+          </h2>
+          <p className="mt-4 text-lg leading-8 text-slate-600">
+            Send the team a short note and we will follow up about scope,
+            timeline, reviewer support, and the right onboarding path.
+          </p>
+          <p className="mt-4 text-sm text-slate-500">
+            Enquiries go to admin@cybercapsec.com.
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="text-sm font-medium text-slate-900">
+              Full name
+              <input
+                required
+                value={form.name}
+                onChange={(e) => update("name", e.target.value)}
+                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+              />
+            </label>
+            <label className="text-sm font-medium text-slate-900">
+              Work email
+              <input
+                required
+                type="email"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+              />
+            </label>
+            <label className="text-sm font-medium text-slate-900">
+              Company
+              <input
+                required
+                value={form.company}
+                onChange={(e) => update("company", e.target.value)}
+                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+              />
+            </label>
+            <label className="text-sm font-medium text-slate-900">
+              Phone
+              <input
+                value={form.phone}
+                onChange={(e) => update("phone", e.target.value)}
+                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+              />
+            </label>
+            <label className="text-sm font-medium text-slate-900 sm:col-span-2">
+              Message
+              <textarea
+                required
+                rows={5}
+                value={form.message}
+                onChange={(e) => update("message", e.target.value)}
+                className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+              />
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-700 sm:w-auto"
+          >
+            Send enquiry
+            <Send className="h-4 w-4" />
+          </button>
+        </form>
       </div>
     </section>
   );
@@ -1381,6 +1500,7 @@ export function App() {
         <EducationLayer />
         <TrustProof />
         <Pricing />
+        <AuditReadyEnquiry />
         <FAQ />
         <CTA />
       </main>

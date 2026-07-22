@@ -8,6 +8,18 @@ import { App } from "@/App";
 import { AuthProvider } from "@/context/AuthContext";
 import "./index.css";
 
+const CANONICAL_HOST = "app.cybercapsec.com";
+
+if (
+  import.meta.env.PROD &&
+  window.location.hostname.endsWith(".up.railway.app") &&
+  window.location.hostname !== CANONICAL_HOST
+) {
+  window.location.replace(
+    `https://${CANONICAL_HOST}${window.location.pathname}${window.location.search}${window.location.hash}`,
+  );
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

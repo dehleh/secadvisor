@@ -137,6 +137,21 @@ export function normalizeApiError(error: unknown): NormalizedApiError {
       message = detail;
     } else if (detail && typeof detail === "object" && "message" in detail) {
       message = String((detail as { message: unknown }).message);
+    } else if (Array.isArray(detail) && detail.length > 0) {
+      const first = detail[0] as {
+        loc?: unknown[];
+        msg?: unknown;
+        type?: unknown;
+      };
+      const field =
+        Array.isArray(first.loc) && first.loc.length > 0
+          ? String(first.loc[first.loc.length - 1]).replaceAll("_", " ")
+          : "This field";
+      const msg =
+        typeof first.msg === "string"
+          ? first.msg.replace(/^Value error,\s*/i, "")
+          : "Please check this value.";
+      message = `${field.charAt(0).toUpperCase()}${field.slice(1)}: ${msg}`;
     } else {
       message = error.message;
     }
