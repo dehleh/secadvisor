@@ -102,7 +102,7 @@ function detectCurrencyFromBrowser(): Currency {
 function Header() {
   return (
     <header className="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-40 overflow-x-clip">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 md:h-16 flex items-center justify-between gap-3">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-14 md:h-16 flex items-center justify-between gap-3">
         <a href="/" className="flex min-w-0 items-center gap-2">
           <img src="/logo.png" alt="CyberCapSec" className="h-8 w-8 md:h-9 md:w-9" />
           <span className="truncate text-sm font-semibold text-slate-900 sm:text-base">
@@ -181,7 +181,7 @@ function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-slate-950">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
         <div className="grid gap-7 lg:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] lg:items-center">
           <div className="min-w-0 max-w-3xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-sky-100 ring-1 ring-white/15">
@@ -290,7 +290,7 @@ function GuidedFlow() {
 
   return (
     <section id="guided-flow" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-sm font-semibold text-brand-700">
             Simpler, guided, educational
@@ -371,7 +371,7 @@ function PciInteractivePreview() {
 
   return (
     <section className="py-20 bg-slate-50 border-y border-slate-200">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
             <p className="text-sm font-semibold text-brand-700">
@@ -508,7 +508,7 @@ function PciRoadmap() {
 
   return (
     <section id="pci-roadmap" className="py-20 bg-slate-50 border-y border-slate-200">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
             <p className="text-sm font-semibold text-brand-700">
@@ -604,7 +604,7 @@ function WhoItsFor() {
 
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-sm font-semibold text-brand-700">Who it is for</p>
           <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
@@ -655,7 +655,7 @@ function SampleReports() {
 
   return (
     <section className="py-20 bg-slate-50 border-y border-slate-200">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-sm font-semibold text-brand-700">
             See the output before signing up
@@ -706,7 +706,7 @@ function FrameworkComparison() {
 
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-10">
           <p className="text-sm font-semibold text-brand-700">
             Choose the right path
@@ -739,7 +739,7 @@ function TrustProof() {
 
   return (
     <section className="py-20 bg-slate-950">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
             <p className="text-sm font-semibold text-sky-200">Trust proof</p>
@@ -808,7 +808,7 @@ function Features() {
   ];
   return (
     <section id="features" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mb-14">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
             Everything an early-stage cybersecurity program needs
@@ -902,7 +902,7 @@ function Frameworks() {
   ];
   return (
     <section id="frameworks" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-14">
           <p className="text-sm font-semibold text-brand-700">
             Common framework guides
@@ -983,7 +983,7 @@ function EducationLayer() {
 
   return (
     <section className="py-20 bg-slate-50 border-y border-slate-200">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-sm font-semibold text-brand-700">
             Built to teach while it guides
@@ -1082,7 +1082,7 @@ function Pricing() {
 
   return (
     <section id="pricing" className="py-12 md:py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mb-10">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
             Pricing in your currency
@@ -1226,7 +1226,7 @@ function AuditReadyEnquiry() {
 
   return (
     <section id="audit-ready-enquiry" className="bg-slate-50 py-14 md:py-16">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div className="mx-auto grid max-w-screen-2xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:px-8">
         <div>
           <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
             <Mail className="h-5 w-5" />
@@ -1402,7 +1402,7 @@ function CTA() {
 function Footer() {
   return (
     <footer className="bg-slate-900 text-slate-300 py-12">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-3">

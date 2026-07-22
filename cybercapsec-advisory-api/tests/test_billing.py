@@ -323,6 +323,24 @@ class TestMockFlutterwaveClient:
 
 
 class TestCheckoutFlow:
+    def test_missing_flutterwave_secret_returns_service_unavailable(
+        self, monkeypatch
+    ):
+        from fastapi import HTTPException
+
+        from app.config import get_settings
+
+        monkeypatch.delenv("FLUTTERWAVE_SECRET_KEY", raising=False)
+        monkeypatch.setenv("USE_MOCK_PAYMENTS", "false")
+        get_settings.cache_clear()
+        try:
+            with pytest.raises(HTTPException) as exc_info:
+                billing_api.get_billing_client()
+            assert exc_info.value.status_code == 503
+            assert "Payment checkout is not configured" in exc_info.value.detail
+        finally:
+            get_settings.cache_clear()
+
     def test_checkout_returns_authorization_url(
         self, authed_client, mock_flutterwave
     ):

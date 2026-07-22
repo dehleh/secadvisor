@@ -54,10 +54,20 @@ router = APIRouter(prefix="/billing", tags=["billing"])
 
 def get_billing_client() -> FlutterwaveClientBase:
     settings = get_settings()
-    return get_flutterwave_client(
-        use_mock=settings.USE_MOCK_PAYMENTS,
-        secret_key=settings.FLUTTERWAVE_SECRET_KEY or None,
-    )
+    try:
+        return get_flutterwave_client(
+            use_mock=settings.USE_MOCK_PAYMENTS,
+            secret_key=settings.FLUTTERWAVE_SECRET_KEY or None,
+        )
+    except ValueError as exc:
+        logger.error("Flutterwave billing client is not configured")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "Payment checkout is not configured yet. "
+                "Please contact support."
+            ),
+        ) from exc
 
 
 def _plan_to_out(plan, limits) -> PlanOut:
