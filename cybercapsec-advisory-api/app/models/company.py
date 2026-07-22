@@ -85,16 +85,15 @@ class Company(Base, UUIDPKMixin, TimestampMixin):
     website: Mapped[str | None] = mapped_column(String(255), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    # Subscription - Flutterwave-backed. The paystack_* columns are legacy DB
-    # names retained until a safe migration renames them.
+    # Subscription - Flutterwave-backed provider identifiers.
     subscription_tier: Mapped[SubscriptionTier] = mapped_column(
         Enum(SubscriptionTier), nullable=False, default=SubscriptionTier.FREE
     )
     billing_currency: Mapped[BillingCurrency] = mapped_column(
         Enum(BillingCurrency), nullable=False, default=BillingCurrency.NGN
     )
-    paystack_customer_code: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    paystack_subscription_code: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    flutterwave_customer_code: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    flutterwave_subscription_code: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Status
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)

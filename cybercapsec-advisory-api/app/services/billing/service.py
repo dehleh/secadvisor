@@ -1,8 +1,6 @@
 """Subscription lifecycle service.
 
-Checkout and webhook processing are Flutterwave-backed. The database still has
-legacy paystack_* column names; those columns store Flutterwave identifiers until
-a separate migration can safely rename them.
+Checkout and webhook processing are Flutterwave-backed.
 """
 from __future__ import annotations
 
@@ -97,7 +95,7 @@ def start_checkout(
         interval=BillingInterval.MONTHLY,
         currency=company.billing_currency,
         amount_minor=plan.amount_minor,
-        paystack_plan_code=plan_code,
+        flutterwave_plan_code=plan_code,
         status=SubscriptionStatus.PENDING,
     )
     db.add(sub)
@@ -151,11 +149,11 @@ def cancel_subscription(
             detail="No active subscription to cancel",
         )
 
-    if sub.paystack_subscription_code:
+    if sub.flutterwave_subscription_code:
         try:
             flutterwave_client.disable_subscription(
-                sub.paystack_subscription_code,
-                sub.paystack_email_token,
+                sub.flutterwave_subscription_code,
+                sub.flutterwave_email_token,
             )
         except FlutterwaveError:
             logger.exception("Flutterwave cancellation failed")
@@ -206,14 +204,14 @@ def record_event(
     if provider_event_id:
         existing = (
             db.query(BillingEvent)
-            .filter(BillingEvent.paystack_event_id == provider_event_id)
+            .filter(BillingEvent.flutterwave_event_id == provider_event_id)
             .first()
         )
         if existing:
             return None
 
     event = BillingEvent(
-        paystack_event_id=provider_event_id,
+        flutterwave_event_id=provider_event_id,
         event_type=_classify_event(event_name),
         raw_event_name=event_name,
         payload=payload,
@@ -258,7 +256,7 @@ def _find_subscription_for_event(db: Session, data: dict) -> Subscription | None
     if sub_code:
         sub = (
             db.query(Subscription)
-            .filter(Subscription.paystack_subscription_code == str(sub_code))
+            .filter(Subscription.flutterwave_subscription_code == str(sub_code))
             .first()
         )
         if sub:
@@ -290,7 +288,7 @@ def _find_subscription_for_event(db: Session, data: dict) -> Subscription | None
     if customer_code:
         company = (
             db.query(Company)
-            .filter(Company.paystack_customer_code == str(customer_code))
+            .filter(Company.flutterwave_customer_code == str(customer_code))
             .first()
         )
         if company:
@@ -311,7 +309,7 @@ def _activate_company_tier(db: Session, sub: Subscription) -> None:
     if company is None:
         return
     company.subscription_tier = sub.tier
-    company.paystack_subscription_code = sub.paystack_subscription_code
+    company.flutterwave_subscription_code = sub.flutterwave_subscription_code
     db.flush()
 
 
@@ -320,7 +318,7 @@ def _downgrade_company_to_free(db: Session, sub: Subscription) -> None:
     if company is None:
         return
     company.subscription_tier = SubscriptionTier.FREE
-    company.paystack_subscription_code = None
+    company.flutterwave_subscription_code = None
     db.flush()
 
 
@@ -358,16 +356,16 @@ def _handle_subscription_create(db: Session, event: BillingEvent, data: dict) ->
         )
         return
 
-    sub.paystack_subscription_code = _provider_subscription_id(data)
-    sub.paystack_email_token = data.get("email_token")
-    sub.paystack_customer_code = _provider_customer_id(data)
+    sub.flutterwave_subscription_code = _provider_subscription_id(data)
+    sub.flutterwave_email_token = data.get("email_token")
+    sub.flutterwave_customer_code = _provider_customer_id(data)
     sub.status = SubscriptionStatus.ACTIVE
     event.subscription_id = sub.id
     event.company_id = sub.company_id
 
     company = db.query(Company).filter(Company.id == sub.company_id).first()
-    if company and sub.paystack_customer_code:
-        company.paystack_customer_code = sub.paystack_customer_code
+    if company and sub.flutterwave_customer_code:
+        company.flutterwave_customer_code = sub.flutterwave_customer_code
 
     _activate_company_tier(db, sub)
 
@@ -384,12 +382,12 @@ def _handle_charge_success(db: Session, event: BillingEvent, data: dict) -> None
     event.company_id = sub.company_id
 
     provider_sub_id = _provider_subscription_id(data)
-    if provider_sub_id and not sub.paystack_subscription_code:
-        sub.paystack_subscription_code = provider_sub_id
+    if provider_sub_id and not sub.flutterwave_subscription_code:
+        sub.flutterwave_subscription_code = provider_sub_id
 
     provider_customer_id = _provider_customer_id(data)
-    if provider_customer_id and not sub.paystack_customer_code:
-        sub.paystack_customer_code = provider_customer_id
+    if provider_customer_id and not sub.flutterwave_customer_code:
+        sub.flutterwave_customer_code = provider_customer_id
 
     if sub.status in (SubscriptionStatus.PENDING, SubscriptionStatus.ATTENTION):
         sub.status = SubscriptionStatus.ACTIVE

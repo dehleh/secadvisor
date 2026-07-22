@@ -78,13 +78,13 @@ class Subscription(Base, UUIDPKMixin, TimestampMixin):
     )
     amount_minor: Mapped[int] = mapped_column(Integer, nullable=False)  # kobo / cents
 
-    # Payment provider identifiers. Column names are legacy DB names.
-    paystack_plan_code: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    paystack_subscription_code: Mapped[str | None] = mapped_column(
+    # Payment provider identifiers.
+    flutterwave_plan_code: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    flutterwave_subscription_code: Mapped[str | None] = mapped_column(
         String(100), nullable=True, index=True
     )
-    paystack_customer_code: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    paystack_email_token: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    flutterwave_customer_code: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    flutterwave_email_token: Mapped[str | None] = mapped_column(String(100), nullable=True)
     # Kept for legacy rows; Flutterwave cancellation only needs subscription ID.
 
     # State
@@ -137,7 +137,7 @@ class BillingEventType(str, PyEnum):
 class BillingEvent(Base, UUIDPKMixin, TimestampMixin):
     """Append-only log of billing webhook events.
 
-    Idempotency: paystack_event_id (when present) is unique. Re-deliveries
+    Idempotency: flutterwave_event_id (when present) is unique. Re-deliveries
     of the same event are no-ops on the second encounter.
     """
 
@@ -146,7 +146,7 @@ class BillingEvent(Base, UUIDPKMixin, TimestampMixin):
     # Provider event identifier (from the payload). Webhooks don't always
     # carry one in older formats so this can be null; we then dedupe via
     # signature + body hash if needed.
-    paystack_event_id: Mapped[str | None] = mapped_column(
+    flutterwave_event_id: Mapped[str | None] = mapped_column(
         String(100), nullable=True, unique=True, index=True
     )
 

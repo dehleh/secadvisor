@@ -461,7 +461,7 @@ class TestWebhookProcessing:
             .first()
         )
         assert sub.status == SubscriptionStatus.ACTIVE
-        assert sub.paystack_subscription_code == "SUB_flutterwave_test"
+        assert sub.flutterwave_subscription_code == "SUB_flutterwave_test"
 
         company = (
             db_session.query(Company).filter(Company.id == sub.company_id).first()
