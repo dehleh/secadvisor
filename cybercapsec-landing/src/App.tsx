@@ -57,24 +57,24 @@ const PRICING: Record<
     audit_ready: { amount: 250000, symbol: "₦", locale: "en-NG", decimals: 0 },
   },
   KES: {
-    starter: { amount: 1500, symbol: "KSh", locale: "en-KE", decimals: 0 },
-    growth: { amount: 4500, symbol: "KSh", locale: "en-KE", decimals: 0 },
-    audit_ready: { amount: 15000, symbol: "KSh", locale: "en-KE", decimals: 0 },
+    starter: { amount: 3748, symbol: "KSh", locale: "en-KE", decimals: 0 },
+    growth: { amount: 9370, symbol: "KSh", locale: "en-KE", decimals: 0 },
+    audit_ready: { amount: 23425, symbol: "KSh", locale: "en-KE", decimals: 0 },
   },
   ZAR: {
-    starter: { amount: 200, symbol: "R", locale: "en-ZA", decimals: 0 },
-    growth: { amount: 600, symbol: "R", locale: "en-ZA", decimals: 0 },
-    audit_ready: { amount: 2000, symbol: "R", locale: "en-ZA", decimals: 0 },
+    starter: { amount: 474, symbol: "R", locale: "en-ZA", decimals: 0 },
+    growth: { amount: 1184, symbol: "R", locale: "en-ZA", decimals: 0 },
+    audit_ready: { amount: 2960, symbol: "R", locale: "en-ZA", decimals: 0 },
   },
   GHS: {
-    starter: { amount: 150, symbol: "₵", locale: "en-GH", decimals: 0 },
-    growth: { amount: 450, symbol: "₵", locale: "en-GH", decimals: 0 },
-    audit_ready: { amount: 1500, symbol: "₵", locale: "en-GH", decimals: 0 },
+    starter: { amount: 333, symbol: "₵", locale: "en-GH", decimals: 0 },
+    growth: { amount: 832, symbol: "₵", locale: "en-GH", decimals: 0 },
+    audit_ready: { amount: 2080, symbol: "₵", locale: "en-GH", decimals: 0 },
   },
   USD: {
-    starter: { amount: 10, symbol: "$", locale: "en-US", decimals: 0 },
-    growth: { amount: 30, symbol: "$", locale: "en-US", decimals: 0 },
-    audit_ready: { amount: 100, symbol: "$", locale: "en-US", decimals: 0 },
+    starter: { amount: 29, symbol: "$", locale: "en-US", decimals: 0 },
+    growth: { amount: 73, symbol: "$", locale: "en-US", decimals: 0 },
+    audit_ready: { amount: 182, symbol: "$", locale: "en-US", decimals: 0 },
   },
 };
 

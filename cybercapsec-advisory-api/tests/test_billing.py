@@ -73,6 +73,29 @@ class TestCatalog:
         assert plan.amount_minor == 100_000_00  # ₦100,000
         assert plan.amount_major == 100_000.0
 
+    def test_foreign_currency_prices_match_rounded_ngn_equivalents(self):
+        from app.models import BillingInterval
+
+        expected = {
+            (SubscriptionTier.STARTER, BillingCurrency.KES): 3_748_00,
+            (SubscriptionTier.GROWTH, BillingCurrency.KES): 9_370_00,
+            (SubscriptionTier.AUDIT_READY, BillingCurrency.KES): 23_425_00,
+            (SubscriptionTier.STARTER, BillingCurrency.ZAR): 474_00,
+            (SubscriptionTier.GROWTH, BillingCurrency.ZAR): 1_184_00,
+            (SubscriptionTier.AUDIT_READY, BillingCurrency.ZAR): 2_960_00,
+            (SubscriptionTier.STARTER, BillingCurrency.GHS): 333_00,
+            (SubscriptionTier.GROWTH, BillingCurrency.GHS): 832_00,
+            (SubscriptionTier.AUDIT_READY, BillingCurrency.GHS): 2_080_00,
+            (SubscriptionTier.STARTER, BillingCurrency.USD): 29_00,
+            (SubscriptionTier.GROWTH, BillingCurrency.USD): 73_00,
+            (SubscriptionTier.AUDIT_READY, BillingCurrency.USD): 182_00,
+        }
+
+        for (tier, currency), amount_minor in expected.items():
+            plan = get_plan(tier, currency, BillingInterval.MONTHLY)
+            assert plan is not None
+            assert plan.amount_minor == amount_minor
+
     def test_plans_for_currency_returns_only_one_currency(self):
         plans = plans_for_currency(BillingCurrency.NGN)
         assert len(plans) == 3  # starter, growth, audit_ready

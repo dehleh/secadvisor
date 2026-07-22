@@ -52,10 +52,8 @@ class PlanDefinition:
 #   asking" for a seed-stage Nigerian fintech. ₦100K/mo is "this is a real line item
 #   I need to justify". ₦250K/mo is "this is on par with a junior engineer's
 #   monthly cost; we're committing".
-# - KES, ZAR, GHS approximate the NGN tier at local purchasing power, not just
-#   FX conversion (which would price out non-Nigerian markets at parity).
-# - USD is for everyone outside our four core markets — priced at the equivalent
-#   of "a Vanta-lite subscription a US founder would notice but pay".
+# - KES, ZAR, GHS, and USD mirror the NGN tier prices using current reference
+#   FX rates, rounded up to the nearest whole major currency unit.
 
 CATALOG: list[PlanDefinition] = [
     # Starter tier
@@ -71,7 +69,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.STARTER,
         currency=BillingCurrency.KES,
         interval=BillingInterval.MONTHLY,
-        amount_minor=1_500_00,
+        amount_minor=3_748_00,
         name="Starter (Monthly)",
         description="Solo founder. 1 framework, 5 evidence items, 3 policies.",
     ),
@@ -79,7 +77,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.STARTER,
         currency=BillingCurrency.ZAR,
         interval=BillingInterval.MONTHLY,
-        amount_minor=200_00,
+        amount_minor=474_00,
         name="Starter (Monthly)",
         description="Solo founder. 1 framework, 5 evidence items, 3 policies.",
     ),
@@ -87,7 +85,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.STARTER,
         currency=BillingCurrency.GHS,
         interval=BillingInterval.MONTHLY,
-        amount_minor=150_00,
+        amount_minor=333_00,
         name="Starter (Monthly)",
         description="Solo founder. 1 framework, 5 evidence items, 3 policies.",
     ),
@@ -95,7 +93,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.STARTER,
         currency=BillingCurrency.USD,
         interval=BillingInterval.MONTHLY,
-        amount_minor=10_00,
+        amount_minor=29_00,
         name="Starter (Monthly)",
         description="Solo founder. 1 framework, 5 evidence items, 3 policies.",
     ),
@@ -112,7 +110,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.GROWTH,
         currency=BillingCurrency.KES,
         interval=BillingInterval.MONTHLY,
-        amount_minor=4_500_00,
+        amount_minor=9_370_00,
         name="Growth (Monthly)",
         description="Real compliance program. All frameworks, AI advisor, unlimited evidence.",
     ),
@@ -120,7 +118,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.GROWTH,
         currency=BillingCurrency.ZAR,
         interval=BillingInterval.MONTHLY,
-        amount_minor=600_00,
+        amount_minor=1_184_00,
         name="Growth (Monthly)",
         description="Real compliance program. All frameworks, AI advisor, unlimited evidence.",
     ),
@@ -128,7 +126,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.GROWTH,
         currency=BillingCurrency.GHS,
         interval=BillingInterval.MONTHLY,
-        amount_minor=450_00,
+        amount_minor=832_00,
         name="Growth (Monthly)",
         description="Real compliance program. All frameworks, AI advisor, unlimited evidence.",
     ),
@@ -136,7 +134,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.GROWTH,
         currency=BillingCurrency.USD,
         interval=BillingInterval.MONTHLY,
-        amount_minor=30_00,
+        amount_minor=73_00,
         name="Growth (Monthly)",
         description="Real compliance program. All frameworks, AI advisor, unlimited evidence.",
     ),
@@ -153,7 +151,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.AUDIT_READY,
         currency=BillingCurrency.KES,
         interval=BillingInterval.MONTHLY,
-        amount_minor=15_000_00,
+        amount_minor=23_425_00,
         name="Audit-Ready (Monthly)",
         description="Growth + dedicated reviewer, audit prep workshop, custom drafting.",
     ),
@@ -161,7 +159,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.AUDIT_READY,
         currency=BillingCurrency.ZAR,
         interval=BillingInterval.MONTHLY,
-        amount_minor=2_000_00,
+        amount_minor=2_960_00,
         name="Audit-Ready (Monthly)",
         description="Growth + dedicated reviewer, audit prep workshop, custom drafting.",
     ),
@@ -169,7 +167,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.AUDIT_READY,
         currency=BillingCurrency.GHS,
         interval=BillingInterval.MONTHLY,
-        amount_minor=1_500_00,
+        amount_minor=2_080_00,
         name="Audit-Ready (Monthly)",
         description="Growth + dedicated reviewer, audit prep workshop, custom drafting.",
     ),
@@ -177,7 +175,7 @@ CATALOG: list[PlanDefinition] = [
         tier=SubscriptionTier.AUDIT_READY,
         currency=BillingCurrency.USD,
         interval=BillingInterval.MONTHLY,
-        amount_minor=100_00,
+        amount_minor=182_00,
         name="Audit-Ready (Monthly)",
         description="Growth + dedicated reviewer, audit prep workshop, custom drafting.",
     ),

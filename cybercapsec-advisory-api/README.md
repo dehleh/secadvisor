@@ -146,8 +146,10 @@ never changes.
 - **Growth** — Unlimited assessments / evidence / policies / frameworks, AI advisor, priority support (₦100K/mo)
 - **Audit-Ready** — Growth + dedicated reviewer + audit prep workshop (₦250K/mo)
 
-Pricing for KES, ZAR, GHS, and USD is set at locally-appropriate price points,
-not just FX-converted. Edit `app/services/billing/catalog.py` to adjust.
+Pricing for KES, ZAR, GHS, and USD mirrors the NGN base tiers using reference
+FX rates, rounded up to the nearest whole major currency unit. Edit
+`app/services/billing/catalog.py` and the landing page `PRICING` constant
+together when prices change.
 
 **Plan setup:** after deploying, run `python -m app.cli sync-plans` once. It
 creates Flutterwave payment plans from the catalog and prints shell-format env
